@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+const String COLOR_CODE = "#F44336"; // color code for the scanner
+const String CANCEL_BUTTON_TEXT = "Cancel"; // text for the cancel button
+const bool isShowFlashIcon = true; // whether to show the flash icon or not
+const ScanMode scanMode = ScanMode.BARCODE; // the
 void main() {
   runApp(const MyApp());
 }
