@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'Home Screen for Tablet Mode.dart';
 const String COLOR_CODE = "#F44336"; // color code for the scanner
 const String CANCEL_BUTTON_TEXT = "Cancel"; // text for the cancel button
 const bool isShowFlashIcon = true; // whether to show the flash icon or not
@@ -28,7 +29,10 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      routes: {
+        '/': (_) => Scene()
+      },
+      //home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
