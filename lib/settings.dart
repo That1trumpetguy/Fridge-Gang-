@@ -1,4 +1,5 @@
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -55,10 +56,65 @@ class _SettingsPageState extends State<SettingsPage> {
             buildAccountOption(context, "Change Password"),
             buildAccountOption(context, "Edit Profile"),
             buildAccountOption(context, "Edit Profile"),
+
+            const SizedBox(height: 40,),
+            Row(
+              children: const [
+                Icon(Icons.volume_up_outlined, color: Colors.black),
+                SizedBox(width: 8,),
+                Text(
+                  "Notifications",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+
+              ],
+            ),
+            const Divider(
+                height: 15,
+                thickness: 2
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            buildNotificationRow("About to expire", true),
+            buildNotificationRow("Adding to grocery list", true),
+            buildNotificationRow("Account activity", true),
+            const SizedBox(height: 100,),
+            Center(
+              child: OutlinedButton(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(const Color(0xffdbdfd1)),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                        )
+                    )
+                  ),
+                  onPressed: (){},
+                  child: const Text("Sign Out", style: TextStyle(
+                    fontSize: 16, letterSpacing: 2.2, color: Colors.black
+                  ),)
+              ),
+            )
           ],
+
         )
       ),
     );
+  }
+
+  Row buildNotificationRow(String text, bool isActive) {
+    return Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+            Text(text, style: TextStyle(
+              fontSize: 18, fontWeight: FontWeight.w500, color: Colors.grey[600]
+            ),),
+            Transform.scale(
+                scale: 0.7,
+                child: CupertinoSwitch(value: true, onChanged: (bool val) {},))
+          ],
+          );
   }
 
   GestureDetector buildAccountOption(BuildContext context, String title) {
