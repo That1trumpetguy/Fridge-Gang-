@@ -1,6 +1,8 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/ChangePasswordPage.dart';
+import 'package:flutter_app/EditProfilePage.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -52,10 +54,10 @@ class _SettingsPageState extends State<SettingsPage> {
               height: 10,
             ),
 
-            buildAccountOption(context, "Edit Profile"),
-            buildAccountOption(context, "Change Password"),
-            buildAccountOption(context, "Edit Profile"),
-            buildAccountOption(context, "Edit Profile"),
+            buildAccountOption(context, "Edit Profile", const EditProfilePage()),
+            buildAccountOption(context, "Change Password", const ChangePasswordPage()),
+            //buildAccountOption(context, "Edit Profile"),
+            //buildAccountOption(context, "Edit Profile"),
 
             const SizedBox(height: 40,),
             Row(
@@ -117,29 +119,14 @@ class _SettingsPageState extends State<SettingsPage> {
           );
   }
 
-  GestureDetector buildAccountOption(BuildContext context, String title) {
+  GestureDetector buildAccountOption(BuildContext context, String title, Widget myWidget) {
     return GestureDetector(
             onTap: (){
-              showDialog(context: context, builder: (BuildContext context){
-                return AlertDialog(
-                  title: Text(title),
-                  content: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: const [
-                      Text("Option 1"),
-                      Text("Option 2"),
-                      Text("Option 3"),
-                    ],
-                  ),
-                  actions: [
-                    TextButton(
-                        onPressed: () {
-
-                        },
-                        child: const Text("close")),
-                  ],
-                );
-              });
+              Navigator.of(context).push(
+                MaterialPageRoute (
+                  builder: (BuildContext context) => myWidget,
+                ),
+              );
 
             },
             child: Padding(
