@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/style.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'HomeScreenforTabletMode.dart';
 import 'login.dart';
+import 'NewUserPage.dart';
 const String COLOR_CODE = "#F44336"; // color code for the scanner
 const String CANCEL_BUTTON_TEXT = "Cancel"; // text for the cancel button
 const bool isShowFlashIcon = true; // whether to show the flash icon or not
@@ -23,8 +25,8 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       routes: {
-
         '/': (_) => LoginScreen(),
+        '/NewUser': (_) => NewUserScreen(),
         '/home': (_) => Scene(),
       },
 
@@ -47,23 +49,13 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _incrementCounter() {
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
       _counter++;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
+
     return Scaffold(
       appBar: AppBar(
 
