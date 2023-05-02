@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
+import 'package:flutter_app/GroceryListPage.dart';
 import 'package:flutter_app/settings.dart';
 import 'package:flutter_app/utils.dart';
 import 'dart:ui';
@@ -904,18 +905,25 @@ class _SceneState extends State<Scene> {
                       child: Center(
                         // mygrocerylistfkf (6:13)
                         child: SizedBox(
-                          child: Container(
-                            constraints: BoxConstraints(
-                              maxWidth: 132 * fem,
-                            ),
-                            child: Text(
-                              'My grocery list',
-                              style: SafeGoogleFont(
-                                'Inter',
-                                fontSize: 24 * ffem,
-                                fontWeight: FontWeight.w600,
-                                height: 1.2125 * ffem / fem,
-                                color: const Color(0xff000000),
+                          child: GestureDetector(
+                            onTap: (){
+                              Navigator.of(context).push(
+                                  MaterialPageRoute (
+                                  builder: (BuildContext context) => const GroceryListPage()
+                                  ));},
+                            child: Container(
+                              constraints: BoxConstraints(
+                                maxWidth: 132 * fem,
+                              ),
+                              child: Text(
+                                'My grocery list',
+                                style: SafeGoogleFont(
+                                  'Inter',
+                                  fontSize: 24 * ffem,
+                                  fontWeight: FontWeight.w600,
+                                  height: 1.2125 * ffem / fem,
+                                  color: const Color(0xff000000),
+                                ),
                               ),
                             ),
                           ),

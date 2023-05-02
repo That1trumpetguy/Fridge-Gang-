@@ -36,8 +36,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
             const SizedBox(
               height: 25,
             ),
-            buildTextField("Name", "Bryant Hays", false),
-            buildTextField("Email", "Bryant1234@gmail.com", false),
+            buildTextField("Name", "John Doe", false),
+            buildTextField("Email", "JDoe1234@gmail.com", false),
             buildTextField("Password", "*******************", true),
 
             Row(
@@ -54,6 +54,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         ),
                       ),
                     style: OutlinedButton.styleFrom(
+                        backgroundColor: Color(0xffdbdfd1),
                         padding: const EdgeInsets.symmetric(horizontal: 50),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20)
