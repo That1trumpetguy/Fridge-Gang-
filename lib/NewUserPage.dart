@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/HomeScreenforTabletMode.dart';
 import 'package:flutter_app/login.dart';
 import 'package:flutter_app/style.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 class NewUserScreen extends StatelessWidget {
   TextEditingController emailinputController = TextEditingController();
   TextEditingController nameinputController = TextEditingController();
@@ -197,8 +200,8 @@ class NewUserScreen extends StatelessWidget {
 
     );
   }
-}
-/*  final FirebaseAuth _firebaseAuth= FirebaseAuth.instance;
+
+  final FirebaseAuth _firebaseAuth= FirebaseAuth.instance;
   void registerNewUser(BuildContext context) async {
     final User? firebaseUser = (await _firebaseAuth.createUserWithEmailAndPassword(
         email: emailinputController.text,
@@ -211,11 +214,11 @@ class NewUserScreen extends StatelessWidget {
       "email": emailinputController.text.trim(),
       "password": passwordinputController.text.trim(),
     };
-    usersRef.child(firebaseUser!.uid).set(userDataMap);
+    //usersRef.child(firebaseUser!.uid).set(userDataMap);
     displayToastMsg("Congrats account created", context);
   }
   displayToastMsg(String msg, BuildContext context){
     Fluttertoast.showToast(msg: msg);
   }
 }
-*/
+
