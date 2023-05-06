@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 class GroceryListPage extends StatefulWidget {
   const GroceryListPage({Key? key}) : super(key: key);
@@ -40,19 +41,50 @@ class _GroceryListPageState extends State<GroceryListPage> {
             Expanded(child: ListView.builder(
                 itemCount: 10, //Todo: add grocery list size here.
                 itemBuilder: (BuildContext context, int index){
-                  return Container(
-                    margin: EdgeInsets.all(20),
-                    height: 150,
-                    child: Stack(
+
+                  return Slidable(
+
+                    startActionPane: ActionPane(
+                      motion: const StretchMotion(),
                       children: [
-                        Positioned.fill(
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                color: Color(0xffdbdfd1),
-                              ),
-                            ),),
+                        SlidableAction(onPressed: (context){
+                          //Do action here
+                        },
+                          //borderRadius: BorderRadius.circular(20),
+                          backgroundColor: Colors.blue,
+                          //padding: const EdgeInsets.all(20),
+                          icon: Icons.add,
+                        ),
                       ],
+                    ),
+                    endActionPane: ActionPane(
+                      motion: const StretchMotion(),
+                      children: [
+                        SlidableAction(onPressed: (context){
+                          //Do action here
+                        },
+                          //borderRadius: BorderRadius.circular(20),
+                          backgroundColor: Colors.red,
+                          //padding: const EdgeInsets.all(20),
+                          icon: Icons.delete,
+                        ),
+                      ],
+                    ),
+                    child: Container(
+                      //margin: EdgeInsets.all(20),
+                      height: 150,
+                      child: Stack(
+                        children: [
+                          Positioned.fill(
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  //borderRadius: BorderRadius.circular(20),
+                                  color: Color(0xffdbdfd1),
+                                    border: Border.all(color: Colors.grey)
+                                ),
+                              ),),
+                        ],
+                      ),
                     ),
                   );
                 },

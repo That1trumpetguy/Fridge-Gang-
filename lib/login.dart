@@ -126,11 +126,12 @@ class LoginScreen extends StatelessWidget {
                         ),
                         decoration: AppDecoration.txtFillTeal300.copyWith(
                           borderRadius: BorderRadiusStyle.txtRoundedBorder10,
+                          color: Color(0xffdbdfd1),
                         ),
                         child: Text(
                           "Login",
                           overflow: TextOverflow.ellipsis,
-                          textAlign: TextAlign.left,
+                          textAlign: TextAlign.center,
                           style: AppStyle.txtRobotoBold20,
                         ),
                       ),
