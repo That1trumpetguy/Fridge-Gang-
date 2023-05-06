@@ -143,6 +143,9 @@ class ColorConstant {
   }
 }
 class AppDecoration {
+  static BoxDecoration get fillBluegray100 => BoxDecoration(
+    color: ColorConstant.blueGray100,
+  );
   static BoxDecoration get txtFillTeal300 => BoxDecoration(
     color: ColorConstant.teal300,
   );
@@ -191,7 +194,14 @@ class AppStyle {
     fontFamily: 'Roboto',
     fontWeight: FontWeight.w400,
   );
-
+  static TextStyle txtInterSemiBold20 = TextStyle(
+    color: ColorConstant.black900,
+    fontSize: getFontSize(
+      20,
+    ),
+    fontFamily: 'Inter',
+    fontWeight: FontWeight.w600,
+  );
   static TextStyle txtRobotoBold24 = TextStyle(
     color: ColorConstant.blueGray900,
     fontSize: getFontSize(
