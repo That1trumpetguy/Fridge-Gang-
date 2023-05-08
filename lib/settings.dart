@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/ChangePasswordPage.dart';
 import 'package:flutter_app/EditProfilePage.dart';
+import 'package:flutter_app/style.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -85,7 +86,7 @@ class _SettingsPageState extends State<SettingsPage> {
             Center(
               child: OutlinedButton(
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(const Color(0xffdbdfd1)),
+                    backgroundColor: MaterialStateProperty.all<Color>(ColorConstant.teal300),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20.0),
@@ -93,9 +94,12 @@ class _SettingsPageState extends State<SettingsPage> {
                     )
                   ),
                   onPressed: (){},
-                  child: const Text("Sign Out", style: TextStyle(
-                    fontSize: 16, letterSpacing: 2.2, color: Colors.black
-                  ),)
+                  child: Text(
+                    "Sign Out",
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.left,
+                    style: AppStyle.txtRobotoBold20,
+                  )
               ),
             )
           ],

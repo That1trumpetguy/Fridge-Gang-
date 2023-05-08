@@ -874,7 +874,6 @@ class _SceneState extends State<Scene> {
                       ),
                       child: Align(
                         // abouttoexpiredvT (6:12)
-                        alignment: Alignment.centerLeft,
                         child: SizedBox(
                           child: GestureDetector(
                             onTap: (){
