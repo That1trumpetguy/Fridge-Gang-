@@ -153,11 +153,12 @@ class NewUserScreen extends StatelessWidget {
                       ),
                       GestureDetector(
                         onTap: () {
-                          //registerNewUser(context);
+                          registerNewUser(context);
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => Scene()),
+                                builder: (context) => Scene()
+                            ),
                           );
                         },
 
@@ -167,7 +168,7 @@ class NewUserScreen extends StatelessWidget {
                           ),
                           margin: getMargin(
                             left: 5,
-                            top: 71,
+                            top: 27,
                             bottom: 12,
                           ),
                           padding: getPadding(

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/ChangePasswordPage.dart';
+import 'package:flutter_app/EditProfilePage.dart';
+import 'package:flutter_app/HomeScreenforTabletMode.dart';
 import 'package:flutter_app/NewUserPage.dart';
 import 'package:flutter_app/main.dart';
 import 'package:flutter_app/style.dart';
@@ -109,8 +112,15 @@ class LoginScreen extends StatelessWidget {
                         ),
                         textInputAction: TextInputAction.done,
                       ),
-
-                      Container(
+                  GestureDetector(
+                    onTap: (){
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Scene()
+                          ),
+                      );
+                    },
+                      child : Container(
                         width: getHorizontalSize(
                           295,
                         ),
@@ -134,19 +144,27 @@ class LoginScreen extends StatelessWidget {
                           style: AppStyle.txtRobotoBold20,
                         ),
                       ),
+),
                       Align(
                         alignment: Alignment.center,
                         child: Padding(
                           padding: getPadding(
                             top: 41,
                           ),
+                          child: GestureDetector(
+                            onTap: () {
+                            Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => ChangePasswordPage()),
+                          );
+                          },
                           child: Text(
                             "Forgot Password?",
-                            overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.left,
-                            style: AppStyle.txtInterRegular16.copyWith(
-                              decoration: TextDecoration.underline,
-
+                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.left,
+                                style: AppStyle.txtInterRegular16.copyWith(
+                                decoration: TextDecoration.underline,
+                            )
                             ),
                           ),
                         ),
@@ -187,4 +205,5 @@ class LoginScreen extends StatelessWidget {
       ),
     );
   }
+
 }
