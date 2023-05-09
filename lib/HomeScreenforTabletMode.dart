@@ -59,10 +59,11 @@ class _SceneState extends State<Scene> {
                             MaterialPageRoute(
                                 builder: (context) => BarScanner()));
                       },
-                      iconSize: 200,
-                      splashRadius: 50,
+                      padding: const EdgeInsets.all(0.0),
                       icon: Image.asset(
                         'assets/page-1/images/camera.png',
+                        width: 71 * fem,
+                        height: 64 * fem,
                       ),
                     ),
                   ),
