@@ -1,26 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter_app/BarScanner.dart';
-import 'package:flutter_app/GroceryListPage.dart';
+import 'package:flutter_app/pages/GroceryListPage.dart';
 import 'package:flutter_app/AboutToExpireList.dart';
-import 'package:flutter_app/settings.dart';
+import 'package:flutter_app/pages/settings.dart';
 import 'package:flutter_app/style.dart';
 import 'package:flutter_app/utils.dart';
 import 'dart:ui';
-import 'package:google_fonts/google_fonts.dart';
-//import 'package:myapp/utils.dart';
-
+import 'package:flutter_app/api_services.dart';
 class Scene extends StatefulWidget {
+
   @override
   State<Scene> createState() => _SceneState();
+
 }
 
 class _SceneState extends State<Scene> {
+  late Map<String, dynamic> _recipe;
   @override
-  Widget build(BuildContext context) {
+
+   _fetchRecipe() async{
+     _recipe = await fetchRandomRecipe();
+  }
+  Widget build  (BuildContext context)      {
+  _fetchRecipe();
     double baseWidth = 834;
-    double fem = MediaQuery.of(context).size.width / baseWidth;
+    double fem = MediaQuery
+        .of(context)
+        .size
+        .width / baseWidth;
     double ffem = fem * 0.97;
+
     return Scaffold(
       body: Container(
         padding: EdgeInsets.only(top: 20),
@@ -248,7 +257,7 @@ class _SceneState extends State<Scene> {
                                                   fontWeight: FontWeight.w600,
                                                   height: 1.2125 * ffem / fem,
                                                   color:
-                                                      const Color(0xff000000),
+                                                  const Color(0xff000000),
                                                 ),
                                               ),
                                             ),
@@ -312,7 +321,7 @@ class _SceneState extends State<Scene> {
                                                   fontWeight: FontWeight.w600,
                                                   height: 1.2125 * ffem / fem,
                                                   color:
-                                                      const Color(0xff000000),
+                                                  const Color(0xff000000),
                                                 ),
                                               ),
                                             ),
@@ -376,7 +385,7 @@ class _SceneState extends State<Scene> {
                                                   fontWeight: FontWeight.w600,
                                                   height: 1.2125 * ffem / fem,
                                                   color:
-                                                      const Color(0xff000000),
+                                                  const Color(0xff000000),
                                                 ),
                                               ),
                                             ),
@@ -440,7 +449,7 @@ class _SceneState extends State<Scene> {
                                                   fontWeight: FontWeight.w600,
                                                   height: 1.2125 * ffem / fem,
                                                   color:
-                                                      const Color(0xff000000),
+                                                  const Color(0xff000000),
                                                 ),
                                               ),
                                             ),
@@ -467,7 +476,7 @@ class _SceneState extends State<Scene> {
                                     ),
                                     child: Row(
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.center,
+                                      CrossAxisAlignment.center,
                                       children: [
                                         Container(
                                           // image594P (5:23)
@@ -514,65 +523,57 @@ class _SceneState extends State<Scene> {
                         width: 482 * fem,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
+
                           children: [
                             Container(
-                              // breakfastWjV (4:9)
-                              margin: EdgeInsets.fromLTRB(
-                                  9 * fem, 0 * fem, 0 * fem, 3 * fem),
+                              margin: const EdgeInsets.fromLTRB(9, 0, 0, 3),
                               child: Text(
-                                'Breakfast',
-                                style: SafeGoogleFont(
-                                  'Inter',
-                                  fontSize: 32 * ffem,
+                                //_recipe['title'],
+                                'COMPSCI',
+                                style: const TextStyle(
+                                  fontSize: 32,
                                   fontWeight: FontWeight.w600,
-                                  height: 1.2125 * ffem / fem,
-                                  color: const Color(0xff000000),
                                 ),
                               ),
                             ),
                             Container(
-                              // autogroupfrnpjcF (NYL5dUZSiZDBsjpDujFrNP)
-                              margin: EdgeInsets.fromLTRB(
-                                  0 * fem, 0 * fem, 0 * fem, 1 * fem),
+                              margin: const EdgeInsets.fromLTRB(0, 0, 0, 1),
                               width: double.infinity,
-                              height: 221 * fem,
+                              height: 221,
                               child: Stack(
                                 children: [
                                   Positioned(
-                                    // rectangle12QCb (6:31)
-                                    left: 9 * fem,
-                                    top: 0 * fem,
+                                    left: 9,
+                                    top: 0,
                                     child: Align(
                                       child: SizedBox(
-                                        width: 473 * fem,
-                                        height: 221 * fem,
+                                        width: 473,
+                                        height: 221,
                                         child: Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(25 * fem),
-                                            color: const Color(0xffdbdfd1),
+                                          decoration: const BoxDecoration(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(25)),
+                                            color: Color(0xffdbdfd1),
                                           ),
                                         ),
                                       ),
                                     ),
                                   ),
                                   Positioned(
-                                    // rectangle9dr3 (6:32)
-                                    left: 0 * fem,
-                                    top: 5 * fem,
+                                    left: 0,
+                                    top: 5,
                                     child: Align(
                                       child: SizedBox(
-                                        width: 264 * fem,
-                                        height: 216 * fem,
+                                        width: 264,
+                                        height: 216,
                                         child: Container(
                                           decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(25 * fem),
-                                            image: const DecorationImage(
+                                            borderRadius: const BorderRadius
+                                                .all(Radius.circular(25)),
+                                            image: DecorationImage(
                                               fit: BoxFit.cover,
-                                              image: AssetImage(
-                                                'assets/page-1/images/rectangle-9-bg.png',
-                                              ),
+                                              image: NetworkImage(
+                                                  _recipe['image']),
                                             ),
                                           ),
                                         ),
@@ -580,35 +581,29 @@ class _SceneState extends State<Scene> {
                                     ),
                                   ),
                                   Positioned(
-                                    // frenchtoastpreptime15minsFMd (6:33)
-                                    left: 305 * fem,
-                                    top: 25 * fem,
+                                    left: 305,
+                                    top: 25,
                                     child: Align(
                                       child: SizedBox(
-                                        width: 150 * fem,
-                                        height: 194 * fem,
+                                        width: 150,
+                                        height: 194,
                                         child: RichText(
                                           text: TextSpan(
-                                            style: SafeGoogleFont(
-                                              'Inter',
-                                              fontSize: 24 * ffem,
+                                            style: const TextStyle(
+                                              fontSize: 24,
                                               fontWeight: FontWeight.w500,
-                                              height: 1.2125 * ffem / fem,
-                                              color: const Color(0xff000000),
+                                              color: Color(0xff000000),
                                             ),
                                             children: [
-                                              const TextSpan(
-                                                text: 'French Toast\n\n\n\n\n',
+                                              TextSpan(
+                                                text: '${_recipe['title']}\n\n\n\n\n',
                                               ),
                                               TextSpan(
-                                                text: 'Prep time: 15 mins',
-                                                style: SafeGoogleFont(
-                                                  'Inter',
-                                                  fontSize: 20 * ffem,
+                                                text: 'Prep time: ${_recipe['readyInMinutes']} mins',
+                                                style: const TextStyle(
+                                                  fontSize: 20,
                                                   fontWeight: FontWeight.w500,
-                                                  height: 1.2125 * ffem / fem,
-                                                  color:
-                                                      const Color(0xff000000),
+                                                  color: Color(0xff000000),
                                                 ),
                                               ),
                                             ],
@@ -620,12 +615,111 @@ class _SceneState extends State<Scene> {
                                 ],
                               ),
                             ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        // lunchGbV (4:10)
+                        margin: EdgeInsets.fromLTRB(
+                            9 * fem, 0 * fem, 0 * fem, 0 * fem),
+                        child: Text(
+                          'Lunch',
+                          style: SafeGoogleFont(
+                            'Inter',
+                            fontSize: 32 * ffem,
+                            fontWeight: FontWeight.w600,
+                            height: 1.2125 * ffem / fem,
+                            color: const Color(0xff000000),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        // autogroup3lkv7s1 (NYL6UCfFj17XyFoay33LKV)
+                        padding: EdgeInsets.fromLTRB(
+                            0 * fem, 15 * fem, 0 * fem, 0 * fem),
+                        width: double.infinity,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
                             Container(
-                              // lunchGbV (4:10)
+                              // autogroupa61qQ5R (NYL5ty7dVueAEXducwA61q)
                               margin: EdgeInsets.fromLTRB(
-                                  9 * fem, 0 * fem, 0 * fem, 0 * fem),
+                                  0 * fem, 0 * fem, 9 * fem, 25 * fem),
+                              padding: EdgeInsets.fromLTRB(
+                                  0 * fem, 0 * fem, 29 * fem, 0 * fem),
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color: const Color(0xffdbdfd1),
+                                borderRadius:
+                                BorderRadius.circular(25 * fem),
+                              ),
+                              child: Row(
+                                crossAxisAlignment:
+                                CrossAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    // rectangle10S27 (6:35)
+                                    margin: EdgeInsets.fromLTRB(0 * fem,
+                                        0 * fem, 36 * fem, 0 * fem),
+                                    width: 264 * fem,
+                                    height: 221 * fem,
+                                    decoration: BoxDecoration(
+                                      borderRadius:
+                                      BorderRadius.circular(25 * fem),
+                                      image: const DecorationImage(
+                                        fit: BoxFit.cover,
+                                        image: AssetImage(
+                                          'assets/page-1/images/rectangle-10-bg.png',
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    // turkeyclubsandwichpreptime10mi (6:36)
+                                    margin: EdgeInsets.fromLTRB(0 * fem,
+                                        11 * fem, 0 * fem, 0 * fem),
+                                    constraints: BoxConstraints(
+                                      maxWidth: 144 * fem,
+                                    ),
+                                    child: RichText(
+                                      text: TextSpan(
+                                        style: SafeGoogleFont(
+                                          'Inter',
+                                          fontSize: 24 * ffem,
+                                          fontWeight: FontWeight.w500,
+                                          height: 1.2125 * ffem / fem,
+                                          color: const Color(0xff000000),
+                                        ),
+                                        children: [
+                                          const TextSpan(
+                                            text:
+                                            'Turkey Club Sandwich\n\n\n',
+                                          ),
+                                          TextSpan(
+                                            text:
+                                            '\nPrep time: 10 mins\n',
+                                            style: SafeGoogleFont(
+                                              'Inter',
+                                              fontSize: 20 * ffem,
+                                              fontWeight: FontWeight.w500,
+                                              height: 1.2125 * ffem / fem,
+                                              color:
+                                              const Color(0xff000000),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              // dinnerSiF (4:11)
+                              margin: EdgeInsets.fromLTRB(
+                                  17 * fem, 0 * fem, 0 * fem, 17 * fem),
                               child: Text(
-                                'Lunch',
+                                'Dinner',
                                 style: SafeGoogleFont(
                                   'Inter',
                                   fontSize: 32 * ffem,
@@ -636,209 +730,108 @@ class _SceneState extends State<Scene> {
                               ),
                             ),
                             Container(
-                              // autogroup3lkv7s1 (NYL6UCfFj17XyFoay33LKV)
-                              padding: EdgeInsets.fromLTRB(
-                                  0 * fem, 15 * fem, 0 * fem, 0 * fem),
-                              width: double.infinity,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                              // autogroupbyurKGF (NYL67o5bCaPHc7D9njBYuR)
+                              margin: EdgeInsets.fromLTRB(
+                                  9 * fem, 0 * fem, 0 * fem, 0 * fem),
+                              width: 473 * fem,
+                              height: 223 * fem,
+                              child: Stack(
                                 children: [
-                                  Container(
-                                    // autogroupa61qQ5R (NYL5ty7dVueAEXducwA61q)
-                                    margin: EdgeInsets.fromLTRB(
-                                        0 * fem, 0 * fem, 9 * fem, 25 * fem),
-                                    padding: EdgeInsets.fromLTRB(
-                                        0 * fem, 0 * fem, 29 * fem, 0 * fem),
-                                    width: double.infinity,
-                                    decoration: BoxDecoration(
-                                      color: const Color(0xffdbdfd1),
-                                      borderRadius:
-                                          BorderRadius.circular(25 * fem),
-                                    ),
-                                    child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Container(
-                                          // rectangle10S27 (6:35)
-                                          margin: EdgeInsets.fromLTRB(0 * fem,
-                                              0 * fem, 36 * fem, 0 * fem),
-                                          width: 264 * fem,
-                                          height: 221 * fem,
+                                  Positioned(
+                                    // rectangle14PG7 (6:38)
+                                    left: 0 * fem,
+                                    top: 0 * fem,
+                                    child: Align(
+                                      child: SizedBox(
+                                        width: 473 * fem,
+                                        height: 221 * fem,
+                                        child: Container(
                                           decoration: BoxDecoration(
                                             borderRadius:
-                                                BorderRadius.circular(25 * fem),
-                                            image: const DecorationImage(
-                                              fit: BoxFit.cover,
-                                              image: AssetImage(
-                                                'assets/page-1/images/rectangle-10-bg.png',
-                                              ),
-                                            ),
+                                            BorderRadius.circular(
+                                                25 * fem),
+                                            color:
+                                            const Color(0xffdbdfd1),
                                           ),
                                         ),
-                                        Container(
-                                          // turkeyclubsandwichpreptime10mi (6:36)
-                                          margin: EdgeInsets.fromLTRB(0 * fem,
-                                              11 * fem, 0 * fem, 0 * fem),
-                                          constraints: BoxConstraints(
-                                            maxWidth: 144 * fem,
-                                          ),
-                                          child: RichText(
-                                            text: TextSpan(
-                                              style: SafeGoogleFont(
-                                                'Inter',
-                                                fontSize: 24 * ffem,
-                                                fontWeight: FontWeight.w500,
-                                                height: 1.2125 * ffem / fem,
-                                                color: const Color(0xff000000),
-                                              ),
-                                              children: [
-                                                const TextSpan(
-                                                  text:
-                                                      'Turkey Club Sandwich\n\n\n',
-                                                ),
-                                                TextSpan(
-                                                  text:
-                                                      '\nPrep time: 10 mins\n',
-                                                  style: SafeGoogleFont(
-                                                    'Inter',
-                                                    fontSize: 20 * ffem,
-                                                    fontWeight: FontWeight.w500,
-                                                    height: 1.2125 * ffem / fem,
-                                                    color:
-                                                        const Color(0xff000000),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Container(
-                                    // dinnerSiF (4:11)
-                                    margin: EdgeInsets.fromLTRB(
-                                        17 * fem, 0 * fem, 0 * fem, 17 * fem),
-                                    child: Text(
-                                      'Dinner',
-                                      style: SafeGoogleFont(
-                                        'Inter',
-                                        fontSize: 32 * ffem,
-                                        fontWeight: FontWeight.w600,
-                                        height: 1.2125 * ffem / fem,
-                                        color: const Color(0xff000000),
                                       ),
                                     ),
                                   ),
-                                  Container(
-                                    // autogroupbyurKGF (NYL67o5bCaPHc7D9njBYuR)
-                                    margin: EdgeInsets.fromLTRB(
-                                        9 * fem, 0 * fem, 0 * fem, 0 * fem),
-                                    width: 473 * fem,
-                                    height: 223 * fem,
-                                    child: Stack(
-                                      children: [
-                                        Positioned(
-                                          // rectangle14PG7 (6:38)
-                                          left: 0 * fem,
-                                          top: 0 * fem,
-                                          child: Align(
-                                            child: SizedBox(
-                                              width: 473 * fem,
-                                              height: 221 * fem,
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          25 * fem),
-                                                  color:
-                                                      const Color(0xffdbdfd1),
-                                                ),
+                                  Positioned(
+                                    // rectangle111YP (6:39)
+                                    left: 1 * fem,
+                                    top: 1 * fem,
+                                    child: Align(
+                                      child: SizedBox(
+                                        width: 254 * fem,
+                                        height: 222 * fem,
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                            BorderRadius.circular(
+                                                25 * fem),
+                                            image: const DecorationImage(
+                                              fit: BoxFit.cover,
+                                              image: AssetImage(
+                                                'assets/page-1/images/rectangle-11-bg.png',
                                               ),
                                             ),
                                           ),
                                         ),
-                                        Positioned(
-                                          // rectangle111YP (6:39)
-                                          left: 1 * fem,
-                                          top: 1 * fem,
-                                          child: Align(
-                                            child: SizedBox(
-                                              width: 254 * fem,
-                                              height: 222 * fem,
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          25 * fem),
-                                                  image: const DecorationImage(
-                                                    fit: BoxFit.cover,
-                                                    image: AssetImage(
-                                                      'assets/page-1/images/rectangle-11-bg.png',
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        Positioned(
-                                          // spaghettiandmeatballspreptime2 (6:40)
-                                          left: 277 * fem,
-                                          top: 18 * fem,
-                                          child: Align(
-                                            child: SizedBox(
-                                              width: 176 * fem,
-                                              height: 170 * fem,
-                                              child: RichText(
-                                                text: TextSpan(
-                                                  style: SafeGoogleFont(
-                                                    'Inter',
-                                                    fontSize: 24 * ffem,
-                                                    fontWeight: FontWeight.w500,
-                                                    height: 1.2125 * ffem / fem,
-                                                    color:
-                                                        const Color(0xff000000),
-                                                  ),
-                                                  children: [
-                                                    const TextSpan(
-                                                      text:
-                                                          'Spaghetti and meatballs\n\n\n\n',
-                                                    ),
-                                                    TextSpan(
-                                                      text:
-                                                          'Prep time: 25 mins',
-                                                      style: SafeGoogleFont(
-                                                        'Inter',
-                                                        fontSize: 20 * ffem,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        height:
-                                                            1.2125 * ffem / fem,
-                                                        color: const Color(
-                                                            0xff000000),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
+                                      ),
                                     ),
                                   ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+                                  Positioned(
+                                    // spaghettiandmeatballspreptime2 (6:40)
+                                    left: 277 * fem,
+                                    top: 18 * fem,
+                                    child: Align(
+                                      child: SizedBox(
+                                        width: 176 * fem,
+                                        height: 170 * fem,
+                                        child: RichText(
+                                          text: TextSpan(
+                                            style: SafeGoogleFont(
+                                              'Inter',
+                                              fontSize: 24 * ffem,
+                                              fontWeight: FontWeight.w500,
+                                              height: 1.2125 * ffem / fem,
+                                              color:
+                                              const Color(0xff000000),
+                                            ),
+                                            children: [
+                                              const TextSpan(
+                                                text:
+                                                'Spaghetti and meatballs\n\n\n\n',
+                                              ),
+                                              TextSpan(
+                                                text:
+                                                'Prep time: 25 mins',
+                                                style: SafeGoogleFont(
+                                                  'Inter',
+                                                  fontSize: 20 * ffem,
+                                                  fontWeight:
+                                                  FontWeight.w500,
+                                                  height:
+                                                  1.2125 * ffem / fem,
+                                                  color: const Color(
+                                                      0xff000000),
+                                                      ),
+                                                      ),
+                                                      ],
+                                                      ),
+    ),
+    ),
+    ),
+    ),
+    ],
+    ),
+    ),
+    ],
+    ),
+    ),
+
+
               Positioned(
                 // autogroupumzvs6j (NYKzbcwkNdVCs7Z179uMZV)
                 left: 61 * fem,
@@ -1018,6 +1011,11 @@ class _SceneState extends State<Scene> {
           ),
         ),
       ),
+    ],
+      ),
+    ),
+      ),
     );
   }
+
 }

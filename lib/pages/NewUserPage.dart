@@ -148,7 +148,7 @@ class NewUserScreen extends StatelessWidget {
                       ),
                       Padding(
                         padding: getPadding(
-                          top: 27,
+                          top: 12,
                         ),
                       ),
                       GestureDetector(
