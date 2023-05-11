@@ -1,8 +1,21 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/pages/NewUserPage.dart';
+import 'package:flutter_app/GroceryListPage.dart';
+import 'package:flutter_app/ChangePasswordPage.dart';
+import 'package:flutter_app/EditProfilePage.dart';
+import 'package:flutter_app/HomeScreenforTabletMode.dart';
+import 'package:flutter_app/NewUserPage.dart';
 import 'package:flutter_app/main.dart';
 import 'package:flutter_app/style.dart';
-class LoginScreen extends StatelessWidget {
+import 'package:fluttertoast/fluttertoast.dart';
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({Key? key}) : super(key: key);
+
+  @override
+  _SignupState createState() => _SignupState();
+}
+
+class _SignupState extends State<LoginScreen> {
   TextEditingController emailInputController = TextEditingController();
   TextEditingController passwordInputController = TextEditingController();
 
@@ -109,8 +122,16 @@ class LoginScreen extends StatelessWidget {
                         ),
                         textInputAction: TextInputAction.done,
                       ),
-
-                      Container(
+                  GestureDetector(
+                    onTap: (){
+                      loginUser();
+                      /*Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Scene()
+                          ),
+                      );*/
+                    },
+                      child : Container(
                         width: getHorizontalSize(
                           295,
                         ),
@@ -126,28 +147,35 @@ class LoginScreen extends StatelessWidget {
                         ),
                         decoration: AppDecoration.txtFillTeal300.copyWith(
                           borderRadius: BorderRadiusStyle.txtRoundedBorder10,
-                          color: Color(0xffdbdfd1),
                         ),
                         child: Text(
                           "Login",
                           overflow: TextOverflow.ellipsis,
-                          textAlign: TextAlign.center,
+                          textAlign: TextAlign.left,
                           style: AppStyle.txtRobotoBold20,
                         ),
                       ),
+),
                       Align(
                         alignment: Alignment.center,
                         child: Padding(
                           padding: getPadding(
                             top: 41,
                           ),
+                          child: GestureDetector(
+                            onTap: () {
+                            Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => ChangePasswordPage()),
+                          );
+                          },
                           child: Text(
                             "Forgot Password?",
-                            overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.left,
-                            style: AppStyle.txtInterRegular16.copyWith(
-                              decoration: TextDecoration.underline,
-
+                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.left,
+                                style: AppStyle.txtInterRegular16.copyWith(
+                                decoration: TextDecoration.underline,
+                            )
                             ),
                           ),
                         ),
@@ -188,4 +216,52 @@ class LoginScreen extends StatelessWidget {
       ),
     );
   }
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  Future<void> loginWithEmail({
+    required String email,
+    required String password,
+    required BuildContext context,
+  })async {
+    try {
+      await _auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+    }on FirebaseAuthException catch(e){
+      displayToastMsg(context, e.message!);
+      //
+    }
+  }
+
+  void loginUser() async{
+    try{
+      loginWithEmail(
+          email: emailInputController.text,
+          password: passwordInputController.text,
+          context: context,
+      );
+     Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => Scene()),
+      );
+    }catch(e){
+
+    }
+    //print(passwordController.text);
+
+  }
+  //memory leak prevention
+  @override
+  void dispose(){
+    emailInputController.dispose();
+    passwordInputController.dispose();
+    super.dispose();
+  }
+
+  displayToastMsg(BuildContext context, String msg){
+    Fluttertoast.showToast(msg: msg);
+  }
+
 }

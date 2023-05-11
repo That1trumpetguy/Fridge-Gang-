@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
-import 'package:flutter_app/pages/GroceryListPage.dart';
-import 'package:flutter_app/pages/settings.dart';
+import 'package:flutter_app/GroceryListPage.dart';
+import 'package:flutter_app/settings.dart';
 import 'package:flutter_app/utils.dart';
 import 'dart:ui';
 import 'package:google_fonts/google_fonts.dart';
-//import 'package:myapp/ListItemHelper.dart';
+//import 'package:myapp/utils.dart';
 
 class Scene extends StatefulWidget {
   @override
