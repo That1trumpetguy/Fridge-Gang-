@@ -4,6 +4,7 @@ import 'package:flutter_app/BarScanner.dart';
 import 'package:flutter_app/GroceryListPage.dart';
 import 'package:flutter_app/AboutToExpireList.dart';
 import 'package:flutter_app/settings.dart';
+import 'package:flutter_app/style.dart';
 import 'package:flutter_app/utils.dart';
 import 'dart:ui';
 import 'package:google_fonts/google_fonts.dart';
@@ -33,6 +34,36 @@ class _SceneState extends State<Scene> {
           ),
           child: Stack(
             children: [
+              SizedBox(
+                width: double.maxFinite,
+                child: Container(
+                  width: double.maxFinite,
+                  padding: getPadding(
+                    left: 20,
+                    top: 13,
+                    right: 20,
+                    bottom: 13,
+                  ),
+                  decoration: AppDecoration.fillGray100,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: getPadding(
+                          bottom: 9,
+                        ),
+                        child: Text(
+                          "",
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.left,
+                          style: AppStyle.txtRobotoBold24,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
               Positioned(
                 // autogroupiiawBrT (NYL8n3ytkRmYShsPWRiiAw)
                 left: 372 * fem,
