@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/NewUserPage.dart';
+import 'package:flutter_app/pages/NewUserPage.dart';
 import 'package:flutter_app/main.dart';
 import 'package:flutter_app/style.dart';
 class LoginScreen extends StatelessWidget {

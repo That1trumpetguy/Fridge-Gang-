@@ -1,15 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/style.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
-import 'HomeScreenforTabletMode.dart';
-import 'login.dart';
-import 'NewUserPage.dart';
+import 'pages/HomeScreenforTabletMode.dart';
+import 'firebase_options.dart';
+import 'pages/login.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'pages/NewUserPage.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:openfoodfacts/openfoodfacts.dart';
 const String COLOR_CODE = "#F44336"; // color code for the scanner
 const String CANCEL_BUTTON_TEXT = "Cancel"; // text for the cancel button
 const bool isShowFlashIcon = true; // whether to show the flash icon or not
 const ScanMode scanMode = ScanMode.BARCODE; // the
-void main() {
+
+
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
+
 }
 
 class MyApp extends StatelessWidget {
