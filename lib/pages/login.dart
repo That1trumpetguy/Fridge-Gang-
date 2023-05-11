@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/GroceryListPage.dart';
-import 'package:flutter_app/ChangePasswordPage.dart';
-import 'package:flutter_app/EditProfilePage.dart';
-import 'package:flutter_app/HomeScreenforTabletMode.dart';
-import 'package:flutter_app/NewUserPage.dart';
+import 'package:flutter_app/pages/GroceryListPage.dart';
+import 'package:flutter_app/pages/ChangePasswordPage.dart';
+import 'package:flutter_app/pages/EditProfilePage.dart';
+import 'package:flutter_app/pages/HomeScreenforTabletMode.dart';
+import 'package:flutter_app/pages/NewUserPage.dart';
 import 'package:flutter_app/main.dart';
 import 'package:flutter_app/style.dart';
 import 'package:fluttertoast/fluttertoast.dart';

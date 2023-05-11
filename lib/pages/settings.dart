@@ -1,8 +1,8 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/ChangePasswordPage.dart';
-import 'package:flutter_app/EditProfilePage.dart';
+import 'package:flutter_app/pages/ChangePasswordPage.dart';
+import 'package:flutter_app/pages/EditProfilePage.dart';
 import 'package:flutter_app/style.dart';
 
 class SettingsPage extends StatefulWidget {

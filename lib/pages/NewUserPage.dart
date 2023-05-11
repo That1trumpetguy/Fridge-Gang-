@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/HomeScreenforTabletMode.dart';
+import 'package:flutter_app/pages/HomeScreenforTabletMode.dart';
 import 'package:flutter_app/main.dart';
 import 'package:flutter_app/style.dart';
 import 'package:firebase_auth/firebase_auth.dart';
