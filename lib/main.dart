@@ -8,6 +8,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'pages/NewUserPage.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:openfoodfacts/openfoodfacts.dart';
+import 'package:sizer/sizer.dart';
 const String COLOR_CODE = "#F44336"; // color code for the scanner
 const String CANCEL_BUTTON_TEXT = "Cancel"; // text for the cancel button
 const bool isShowFlashIcon = true; // whether to show the flash icon or not
@@ -29,20 +30,24 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
+    return Sizer(
+        builder: (context, orientation, deviceType) {
+          return MaterialApp(
+            title: 'Flutter Demo',
+            theme: ThemeData(
 
-        primarySwatch: Colors.blue,
-      ),
-      routes: {
-        '/': (_) => LoginScreen(),
-        '/NewUser': (_) => NewUserScreen(),
-        '/home': (_) => Scene(),
-      },
+              primarySwatch: Colors.blue,
+            ),
+            routes: {
+              '/': (_) => LoginScreen(),
+              '/NewUser': (_) => NewUserScreen(),
+              '/home': (_) => Scene(),
+            },
 
-      //home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
+            //home: const MyHomePage(title: 'Flutter Demo Home Page'),
+          );
+        }
+      );
   }
 }
 
