@@ -1,9 +1,8 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-
-Future<Map<String, dynamic>> fetchRecipeData(String apiKey, int recipeId) async {
+Future<Map<String, dynamic>> fetchRecipeData( int recipeId) async {
   final response = await http.get(Uri.parse(
-      'https://api.spoonacular.com/recipes/$recipeId/information?apiKey=$apiKey'));
+      'https://api.spoonacular.com/recipes/$recipeId/information?apiKey=d06e57ea3ff9451985a6f2856e19b2b2'));
 
   if (response.statusCode == 200) {
     return jsonDecode(response.body);
@@ -11,23 +10,15 @@ Future<Map<String, dynamic>> fetchRecipeData(String apiKey, int recipeId) async 
     throw Exception('Failed to load recipe data');
   }
 }
+
 Future<Map<String, dynamic>> fetchRandomRecipe() async {
   final response = await http.get(Uri.parse(
-      'https://api.spoonacular.com/recipes/random?apiKey=<c6ffa181d6d044d59f1076d9e79bf391>&tags=breakfast'));
+      'https://api.spoonacular.com/recipes/random?apiKey=<d06e57ea3ff9451985a6f2856e19b2b2>&tags=breakfast'));
 
   if (response.statusCode == 200) {
-
-      return json.decode(response.body)['recipes'][0];
-
+    return json.decode(response.body)['recipes'][0];
   } else {
     throw Exception('Failed to load recipe');
   }
 }
 
-
-void main() async {
-  final apiKey = 'YOUR_API_KEY_HERE';
-  final recipeId = 12345;
-  final recipeData = await fetchRecipeData(apiKey, recipeId);
-  print(recipeData);
-}
