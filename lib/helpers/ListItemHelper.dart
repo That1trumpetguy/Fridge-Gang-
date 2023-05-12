@@ -10,9 +10,18 @@ class ListItemHelper {
   static Future<List<ListItem>> getGroceryListItems() async {
 
     var data = await Future.wait([getList("me", "Grocery List")]);
-    // data[0]['name']
+    List<ListItem> foodList = [];
+
+    for(var i = 0; i < data[0].length; i++) {
+      ListItem temp = ListItem(itemName: data[0][i]["name"], imageName: 'assets/page-1/images/image-1.png', expirationDate: "05/06/2023");
+      foodList.add(temp);
+    }
+
+    return foodList;
+
+    /* data[0]['name']
     return [
-      ListItem(itemName: "data[0]['name']", imageName: 'assets/page-1/images/image-1.png', expirationDate: "05/06/2023"),
+      ListItem(itemName: data[0]['name'], imageName: 'assets/page-1/images/image-1.png', expirationDate: "05/06/2023"),
       ListItem(itemName: "Tomatoes", imageName: 'assets/page-1/images/image-1.png', expirationDate: "05/06/2023"),
       ListItem(itemName: "Tomatoes", imageName: 'assets/page-1/images/image-1.png', expirationDate: "05/06/2023"),
       ListItem(itemName: "Tomatoes", imageName: 'assets/page-1/images/image-1.png', expirationDate: "05/06/2023"),
@@ -20,7 +29,7 @@ class ListItemHelper {
       ListItem(itemName: "Tomatoes", imageName: 'assets/page-1/images/image-1.png', expirationDate: "05/06/2023"),
       ListItem(itemName: "Tomatoes", imageName: 'assets/page-1/images/image-1.png', expirationDate: "05/06/2023"),
       ListItem(itemName: "Tomatoes", imageName: 'assets/page-1/images/image-1.png', expirationDate: "05/06/2023"),
-    ];
+    ]; */
   }
 
   static Future<List> getList(String username, String listName) async {
