@@ -14,9 +14,17 @@ class GroceryListPage extends StatefulWidget {
 
 class _GroceryListPageState extends State<GroceryListPage> {
 
-  List<ListItem> groceryList = ListItemHelper.getGroceryListItems();
+  List<ListItem> groceryList = [];
+
+  Future<int> something() async {
+    groceryList = await ListItemHelper.getGroceryListItems();
+    print(groceryList);
+    return 1;
+  }
+
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       drawer: Drawer(),
       appBar: AppBar(
@@ -24,6 +32,7 @@ class _GroceryListPageState extends State<GroceryListPage> {
         leading: IconButton(
           onPressed: () {
             Navigator.of(context).pop();
+            
           },
           icon: const Icon(
             Icons.arrow_back,
@@ -43,12 +52,26 @@ class _GroceryListPageState extends State<GroceryListPage> {
                 fontSize: 36
               ),),
             ),
-            Expanded(child: ListView.builder(
-                itemCount: groceryList.length, //Todo: add grocery list size here.
-                itemBuilder: (BuildContext context, int index){
-                  return ListCard(item: groceryList[index]);
-                },
-            ),
+            Expanded(
+              child: FutureBuilder(
+              future: something(),
+              builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
+                if (!snapshot.hasData) {
+                  print("here");
+                  return Center(child: CircularProgressIndicator());
+                } else {
+                  print("there");
+                  return Container(
+                    child: ListView.builder(
+                    itemCount: groceryList.length, //Todo: add grocery list size here.
+                    itemBuilder: (BuildContext context, int index){
+                      return ListCard(item: groceryList[index]);
+                    },
+                  )
+                  );
+                }
+                }
+              ),
             )
           ],
         ),
