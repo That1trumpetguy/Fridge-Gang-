@@ -11,6 +11,7 @@ class ListItemHelper {
 
     var data = await Future.wait([getList("me", "Grocery List")]);
     List<ListItem> foodList = [];
+    print("hi");
 
     for(var i = 0; i < data[0].length; i++) {
       ListItem temp = ListItem(itemName: data[0][i]["name"], imageName: 'assets/page-1/images/image-1.png', expirationDate: "05/06/2023");

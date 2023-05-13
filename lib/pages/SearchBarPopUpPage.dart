@@ -1,5 +1,6 @@
   import 'package:flutter/cupertino.dart';
   import 'package:flutter/material.dart';
+import 'package:flutter_app/models/ListItem.dart';
   import 'package:openfoodfacts/openfoodfacts.dart';
 
   class SearchBarPopUpPage extends StatefulWidget {
@@ -19,24 +20,54 @@
 
   //Search bar popup to search for food items by name using autocomplete.
     //Todo: add more error handling!!!
-    //Todo: add photo.
     @override
     Widget build(BuildContext context) {
       return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          leading: IconButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+
+            },
+            icon: const Icon(
+              Icons.arrow_back,
+              color: Colors.black,
+            ),
+          ),
+        ),
         body: Padding(
           padding: const EdgeInsets.all(10.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Expanded(child: Container(
-                child: Center(
-                  child: Text(
-                      result?.productName ?? '', //View will be updated based on query result.
-                      style: const TextStyle(
-                    fontSize: 25,
-                  )),
-                ),
-              ),),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 8),
+                      child: Center(
+                        child: GestureDetector(
+                          child: Image.network(result?.imageFrontSmallUrl ?? '',
+                          ),
+                          behavior: HitTestBehavior.translucent,
+                          onTap: () {
+                            showAlertDialog(context, result!);
+                            _textController.clear();
+                          },
+                        ),
+                      ),
+                    ),
+                    Center(
+                      child: Text(
+                          result?.productName ?? '', //View will be updated based on query result.
+                          style: const TextStyle(
+                        fontSize: 25,
+                      )),
+                    ),
+                  ],
+                ),),
               TextField(
                 controller: _textController,
                 decoration: InputDecoration(
@@ -86,6 +117,45 @@
       } else {
         throw Exception('product not found, please insert data for $barcode');
       }
+    }
+
+    //Alert dialog for adding an item to a grocery list.
+    showAlertDialog(BuildContext context, Product prod) {
+      // Create AlertDialog
+      AlertDialog alert = AlertDialog(
+        title: const Text("Please confirm"),
+        content: const Text(
+            "Would you like to add this item to your grocery list?"),
+        actions: [
+          // The "Yes" button
+          TextButton(
+              onPressed: () {
+                //Todo: add item to list.
+                //Create new List item object.
+                ListItem newItem = ListItem(
+                    itemName: prod?.productName ?? '',
+                    imageName: prod?.imageFrontSmallUrl ?? '',
+                    expirationDate: '5/13/2023');
+                // Close the dialog
+                Navigator.of(context).pop();
+              },
+              child: const Text('Yes')),
+          TextButton(
+              onPressed: () {
+                // Close the dialog
+                Navigator.of(context).pop();
+              },
+              child: const Text('No'))
+        ],
+      );
+
+      // show the dialog
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return alert;
+        },
+      );
     }
   }
 
