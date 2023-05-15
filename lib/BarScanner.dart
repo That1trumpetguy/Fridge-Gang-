@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_app/style.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
 class BarScanner extends StatefulWidget {
@@ -60,6 +61,8 @@ class _BarScannerState extends State<BarScanner> {
 
   @override
   Widget build(BuildContext context) {
+    final ButtonStyle style =
+        ElevatedButton.styleFrom(foregroundColor: ColorConstant.blueGray100);
     return MaterialApp(
         home: Scaffold(
             appBar: AppBar(title: const Text('Barcode Scan Util')),
@@ -72,10 +75,12 @@ class _BarScannerState extends State<BarScanner> {
                       children: <Widget>[
                         ElevatedButton(
                             onPressed: () => ScanNormal(),
-                            child: Text('Start Barcode Scan')),
+                            child: Text('Start Barcode Scan'),
+                            style: style),
                         ElevatedButton(
                             onPressed: () => startStream(),
-                            child: Text('Start Barcode Stream')),
+                            child: Text('Start Barcode Stream'),
+                            style: style),
                         Text('Scan Result: $CodeScan\n',
                             style: TextStyle(fontSize: 20))
                       ]));
