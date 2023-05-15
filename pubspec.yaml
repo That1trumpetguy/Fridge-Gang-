@@ -30,7 +30,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-    sizer: ^2.0.0
   fluttertoast: ^8.2.1
   firebase_database: ^10.1.1
   firebase_auth: ^4.2.2
