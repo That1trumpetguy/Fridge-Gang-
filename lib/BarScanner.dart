@@ -2,7 +2,10 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_app/pages/SearchBarPopUpPage.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:openfoodfacts/openfoodfacts.dart';
+import 'package:flutter_app/helpers/ListItemHelper.dart';
 
 class BarScanner extends StatefulWidget {
   const BarScanner({Key? key}) : super(key: key);
@@ -41,12 +44,16 @@ class _BarScannerState extends State<BarScanner> {
     });
   }
 
-  Future<void> ScanNormal() async {
+  Future ScanNormal() async {
     String BarScanN;
     try {
       BarScanN = await FlutterBarcodeScanner.scanBarcode(
           '#ff6666', 'Cancel', true, ScanMode.BARCODE);
+      String BarScan = BarScanN;
       print(BarScanN);
+
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => SearchMe(barcode: BarScan)));
     } on PlatformException {
       BarScanN = 'Failed to get platform version';
     }
@@ -55,6 +62,7 @@ class _BarScannerState extends State<BarScanner> {
 
     setState(() {
       CodeScan = BarScanN;
+      String Code = CodeScan;
     });
   }
 
@@ -73,12 +81,36 @@ class _BarScannerState extends State<BarScanner> {
                         ElevatedButton(
                             onPressed: () => ScanNormal(),
                             child: Text('Start Barcode Scan')),
-                        ElevatedButton(
-                            onPressed: () => startStream(),
-                            child: Text('Start Barcode Stream')),
+                        //ElevatedButton(
+                        //onPressed: () => startStream(),
+                        //child: Text('Search for this barcode')),
                         Text('Scan Result: $CodeScan\n',
-                            style: TextStyle(fontSize: 20))
+                            style: TextStyle(fontSize: 20)),
                       ]));
             })));
+  }
+}
+
+class SearchMe extends SearchBarPopUpPage {
+  final String barcode;
+
+  SearchMe({required this.barcode});
+
+  Future<Product?> getProduct(String barcode) async {
+    final ProductQueryConfiguration configuration = ProductQueryConfiguration(
+      barcode,
+      language: OpenFoodFactsLanguage.ENGLISH,
+      fields: [ProductField.ALL],
+      version: ProductQueryVersion.v3,
+    );
+    final ProductResultV3 result =
+        await OpenFoodAPIClient.getProductV3(configuration);
+
+    if (result.status == ProductResultV3.statusSuccess &&
+        result.product != null) {
+      return result.product;
+    } else {
+      throw Exception('product not found, please insert data for $barcode');
+    }
   }
 }
