@@ -2,8 +2,12 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_app/pages/SearchBarPopUpPage.dart';
 import 'package:flutter_app/style.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:openfoodfacts/openfoodfacts.dart';
+import 'package:flutter_app/helpers/ListItemHelper.dart';
+import 'package:flutter_app/models/ListItem.dart';
 
 class BarScanner extends StatefulWidget {
   const BarScanner({Key? key}) : super(key: key);
@@ -47,6 +51,8 @@ class _BarScannerState extends State<BarScanner> {
     try {
       BarScanN = await FlutterBarcodeScanner.scanBarcode(
           '#ff6666', 'Cancel', true, ScanMode.BARCODE);
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => SearchMe(barcode: BarScanN)));
       print(BarScanN);
     } on PlatformException {
       BarScanN = 'Failed to get platform version';
@@ -79,13 +85,82 @@ class _BarScannerState extends State<BarScanner> {
                             onPressed: () => ScanNormal(),
                             child: const Text('Start Barcode Scan'),
                             style: style),
-                        //ElevatedButton(
-                        //onPressed: () => startStream(),
-                        //child: const Text('Start Barcode Stream'),
-                        //style: style),
                         Text('Scan Result: $CodeScan\n',
                             style: const TextStyle(fontSize: 20)),
                       ]));
             })));
+  }
+}
+
+class SearchMe extends SearchBarPopUpPage {
+  final String barcode;
+
+  SearchMe({required this.barcode});
+
+  Future<Product?> getProduct(String barcode) async {
+    //var barcode = '0048151623426';
+    print('THIS IS THE BARCODE:');
+    print(barcode);
+    final ProductQueryConfiguration configuration = ProductQueryConfiguration(
+      barcode,
+      language: OpenFoodFactsLanguage.ENGLISH,
+      fields: [ProductField.ALL],
+      version: ProductQueryVersion.v3,
+    );
+    final ProductResultV3 result =
+        await OpenFoodAPIClient.getProductV3(configuration);
+
+    if (result.status == ProductResultV3.statusSuccess &&
+        result.product != null) {
+      return result.product;
+    } else {
+      throw Exception('product not found, please insert data for $barcode');
+    }
+  }
+
+  //Alert dialog for adding an item to a grocery list.
+  showAlertDialog(BuildContext context, Product prod) {
+    // Create AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: const Text("Please confirm"),
+      content:
+          const Text("Would you like to add this item to your grocery list?"),
+      actions: [
+        // The "Yes" button
+        TextButton(
+            onPressed: () {
+              //Todo: add item to list.
+              //Create new List item object.
+              ListItem newItem = ListItem(
+                  itemName: prod?.productName ?? '',
+                  imageName: prod?.imageFrontSmallUrl ?? '',
+                  expirationDate: '5/13/2023');
+              ListItemHelper.addItem(
+                  'me',
+                  'Grocery List',
+                  prod?.productName ?? '',
+                  prod?.genericName ?? '',
+                  prod?.imageFrontSmallUrl ?? '',
+                  '5/14/2023');
+              // Close the dialog
+              Navigator.of(context).pop();
+            },
+            child: const Text('Yes')),
+        TextButton(
+            onPressed: () {
+              // Close the dialog
+              Navigator.of(context).pop();
+            },
+            child: const Text('No'))
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 }
