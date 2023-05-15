@@ -70,10 +70,12 @@ class _BarScannerState extends State<BarScanner> {
   @override
   Widget build(BuildContext context) {
     final ButtonStyle style =
-        ElevatedButton.styleFrom(foregroundColor: ColorConstant.blueGray100);
+        ElevatedButton.styleFrom(backgroundColor: ColorConstant.teal300);
     return MaterialApp(
         home: Scaffold(
-            appBar: AppBar(title: const Text('Barcode Scan Util')),
+            appBar: AppBar(
+                title: const Text('Barcode Scan Util'),
+                backgroundColor: ColorConstant.teal300),
             body: Builder(builder: (BuildContext context) {
               return Container(
                   alignment: Alignment.center,
@@ -83,14 +85,14 @@ class _BarScannerState extends State<BarScanner> {
                       children: <Widget>[
                         ElevatedButton(
                             onPressed: () => ScanNormal(),
-                            child: Text('Start Barcode Scan'),
+                            child: const Text('Start Barcode Scan'),
                             style: style),
                         ElevatedButton(
                             onPressed: () => startStream(),
-                            child: Text('Start Barcode Stream'),
+                            child: const Text('Start Barcode Stream'),
                             style: style),
                         Text('Scan Result: $CodeScan\n',
-                            style: TextStyle(fontSize: 20)),
+                            style: const TextStyle(fontSize: 20)),
                       ]));
             })));
   }
