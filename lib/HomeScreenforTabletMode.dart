@@ -41,6 +41,7 @@ class _SceneState extends State<Scene> {
     double ffem = fem * 0.97;
 
     return Scaffold(
+
       body: FutureBuilder(
           future: _fetchRecipe(),
           builder: (BuildContext context, AsyncSnapshot<Map<String, dynamic>> snapshot){
@@ -56,6 +57,21 @@ class _SceneState extends State<Scene> {
               return Container(
                 padding: EdgeInsets.only(top: 20),
                 width: double.infinity,
+      body: Container(
+        padding: EdgeInsets.only(top: 20),
+        width: double.infinity,
+        child: Container(
+          // ipadpro111Eks (1:2)
+          width: double.infinity,
+          height: 1194 * fem,
+          decoration: const BoxDecoration(
+            color: Color(0xffffffff),
+          ),
+          child: Stack(
+            children: [
+              SizedBox(
+                width: double.maxFinite,
+
                 child: Container(
                   // ipadpro111Eks (1:2)
                   width: double.infinity,

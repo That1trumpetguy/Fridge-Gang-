@@ -8,6 +8,9 @@ import 'package:flutter_app/pages/NewUserPage.dart';
 import 'package:flutter_app/main.dart';
 import 'package:flutter_app/style.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+
+import 'HomeScreenforTabletModeV2.dart';
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
@@ -122,40 +125,40 @@ class _SignupState extends State<LoginScreen> {
                         ),
                         textInputAction: TextInputAction.done,
                       ),
-                  GestureDetector(
-                    onTap: (){
-                      loginUser();
-                      /*Navigator.push(
+                      GestureDetector(
+                        onTap: () {
+                          loginUser();
+                          /*Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => Scene()
                           ),
                       );*/
-                    },
-                      child : Container(
-                        width: getHorizontalSize(
-                          295,
-                        ),
-                        margin: getMargin(
-                          left: 5,
-                          top: 31,
-                        ),
-                        padding: getPadding(
-                          left: 30,
-                          top: 12,
-                          right: 114,
-                          bottom: 12,
-                        ),
-                        decoration: AppDecoration.txtFillTeal300.copyWith(
-                          borderRadius: BorderRadiusStyle.txtRoundedBorder10,
-                        ),
-                        child: Text(
-                          "Login",
-                          overflow: TextOverflow.ellipsis,
-                          textAlign: TextAlign.left,
-                          style: AppStyle.txtRobotoBold20,
+                        },
+                        child: Container(
+                          width: getHorizontalSize(
+                            295,
+                          ),
+                          margin: getMargin(
+                            left: 5,
+                            top: 31,
+                          ),
+                          padding: getPadding(
+                            left: 30,
+                            top: 12,
+                            right: 114,
+                            bottom: 12,
+                          ),
+                          decoration: AppDecoration.txtFillTeal300.copyWith(
+                            borderRadius: BorderRadiusStyle.txtRoundedBorder10,
+                          ),
+                          child: Text(
+                            "Login",
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.left,
+                            style: AppStyle.txtRobotoBold20,
+                          ),
                         ),
                       ),
-),
                       Align(
                         alignment: Alignment.center,
                         child: Padding(
@@ -164,19 +167,18 @@ class _SignupState extends State<LoginScreen> {
                           ),
                           child: GestureDetector(
                             onTap: () {
-                            Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => ChangePasswordPage()),
-                          );
-                          },
-                          child: Text(
-                            "Forgot Password?",
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ChangePasswordPage()),
+                              );
+                            },
+                            child: Text("Forgot Password?",
                                 overflow: TextOverflow.ellipsis,
                                 textAlign: TextAlign.left,
                                 style: AppStyle.txtInterRegular16.copyWith(
-                                decoration: TextDecoration.underline,
-                            )
-                            ),
+                                  decoration: TextDecoration.underline,
+                                )),
                           ),
                         ),
                       ),
@@ -190,7 +192,8 @@ class _SignupState extends State<LoginScreen> {
                             onTap: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => NewUserScreen()),
+                                MaterialPageRoute(
+                                    builder: (context) => NewUserScreen()),
                               );
                             },
                             child: Text(
@@ -199,11 +202,9 @@ class _SignupState extends State<LoginScreen> {
                               textAlign: TextAlign.left,
                               style: AppStyle.txtInterRegular16.copyWith(
                                 decoration: TextDecoration.underline,
-
                               ),
                             ),
                           ),
-
                         ),
                       ),
                     ],
@@ -222,46 +223,42 @@ class _SignupState extends State<LoginScreen> {
     required String email,
     required String password,
     required BuildContext context,
-  })async {
+  }) async {
     try {
       await _auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
-
-    }on FirebaseAuthException catch(e){
+    } on FirebaseAuthException catch (e) {
       displayToastMsg(context, e.message!);
       //
     }
   }
 
-  void loginUser() async{
-    try{
+  void loginUser() async {
+    try {
       loginWithEmail(
-          email: emailInputController.text,
-          password: passwordInputController.text,
-          context: context,
+        email: emailInputController.text,
+        password: passwordInputController.text,
+        context: context,
       );
-     Navigator.push(
+      Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => Scene()),
+        MaterialPageRoute(builder: (context) => Scene2()),
       );
-    }catch(e){
-
-    }
+    } catch (e) {}
     //print(passwordController.text);
-
   }
+
   //memory leak prevention
   @override
-  void dispose(){
+  void dispose() {
     emailInputController.dispose();
     passwordInputController.dispose();
     super.dispose();
   }
 
-  displayToastMsg(BuildContext context, String msg){
+  displayToastMsg(BuildContext context, String msg) {
     Fluttertoast.showToast(msg: msg);
   }
-
 }

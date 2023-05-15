@@ -11,6 +11,7 @@ class ListItemHelper {
 
     var data = await Future.wait([getList("me", "Grocery List")]);
     List<ListItem> foodList = [];
+    print("hi");
 
     for(var i = 0; i < data[0].length; i++) {
       ListItem temp = ListItem(itemName: data[0][i]["name"], imageName: 'assets/page-1/images/image-1.png', expirationDate: "05/06/2023");
@@ -18,20 +19,10 @@ class ListItemHelper {
     }
 
     return foodList;
-
-    /* data[0]['name']
-    return [
-      ListItem(itemName: data[0]['name'], imageName: 'assets/page-1/images/image-1.png', expirationDate: "05/06/2023"),
-      ListItem(itemName: "Tomatoes", imageName: 'assets/page-1/images/image-1.png', expirationDate: "05/06/2023"),
-      ListItem(itemName: "Tomatoes", imageName: 'assets/page-1/images/image-1.png', expirationDate: "05/06/2023"),
-      ListItem(itemName: "Tomatoes", imageName: 'assets/page-1/images/image-1.png', expirationDate: "05/06/2023"),
-      ListItem(itemName: "Tomatoes", imageName: 'assets/page-1/images/image-1.png', expirationDate: "05/06/2023"),
-      ListItem(itemName: "Tomatoes", imageName: 'assets/page-1/images/image-1.png', expirationDate: "05/06/2023"),
-      ListItem(itemName: "Tomatoes", imageName: 'assets/page-1/images/image-1.png', expirationDate: "05/06/2023"),
-      ListItem(itemName: "Tomatoes", imageName: 'assets/page-1/images/image-1.png', expirationDate: "05/06/2023"),
-    ]; */
   }
 
+
+  // gets the data from a specific list (grocery, fridge, etc.)
   static Future<List> getList(String username, String listName) async {
 
     CollectionReference ref = FirebaseFirestore.instance.collection("users").doc(username).collection(listName);
@@ -42,12 +33,28 @@ class ListItemHelper {
       (querySnapshot) {
         print("Successfully completed");
         for (var docSnapshot in querySnapshot.docs) {
-          final stuff = docSnapshot.data() as Map<String, dynamic>;
+          final stuff = docSnapshot.data();
           allData.add(stuff);
         }
       },
       onError: (e) => print("Error completing: $e"),
     );
     return(allData);
+  }
+
+  static void addItem(String username, String listName, String foodName, String foodType, String imgURL, String expDate) {
+    
+    final foodItem = <String, dynamic> {
+      "name": foodName,
+      "food type": foodType,
+      "expiration date": expDate,
+      "image": imgURL
+    };
+
+    FirebaseFirestore db = FirebaseFirestore.instance;
+
+    final ref = db.collection("users").doc(username).collection(listName).doc(foodName);
+    ref.set(foodItem);
+
   }
 }
