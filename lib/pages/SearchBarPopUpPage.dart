@@ -1,7 +1,8 @@
   import 'package:flutter/cupertino.dart';
   import 'package:flutter/material.dart';
 import 'package:flutter_app/models/ListItem.dart';
-  import 'package:openfoodfacts/openfoodfacts.dart';
+import 'package:openfoodfacts/openfoodfacts.dart';
+  import 'package:flutter_app/helpers/ListItemHelper.dart';
 
   class SearchBarPopUpPage extends StatefulWidget {
     const SearchBarPopUpPage({Key? key}) : super(key: key);
@@ -49,7 +50,7 @@ import 'package:flutter_app/models/ListItem.dart';
                       padding: const EdgeInsets.only(bottom: 8),
                       child: Center(
                         child: GestureDetector(
-                          child: Image.network(result?.imageFrontSmallUrl ?? '',
+                          child: Image.network(result?.imageFrontSmallUrl ?? 'assets/page-1/images/image-1.png',
                           ),
                           behavior: HitTestBehavior.translucent,
                           onTap: () {
@@ -136,6 +137,13 @@ import 'package:flutter_app/models/ListItem.dart';
                     itemName: prod?.productName ?? '',
                     imageName: prod?.imageFrontSmallUrl ?? '',
                     expirationDate: '5/13/2023');
+                    ListItemHelper.addItem(
+                        'me',
+                        'Grocery List',
+                        prod?.productName ?? '',
+                        prod?.genericName ?? '',
+                        prod?.imageFrontSmallUrl ?? '',
+                        '5/14/2023');
                 // Close the dialog
                 Navigator.of(context).pop();
               },
