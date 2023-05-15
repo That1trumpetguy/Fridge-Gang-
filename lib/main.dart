@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/pages/HomeScreenforTabletModeV2.dart';
 import 'package:flutter_app/style.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'pages/HomeScreenforTabletMode.dart';
@@ -30,26 +31,23 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return Sizer(
-        builder: (context, orientation, deviceType) {
-          return MaterialApp(
-            title: 'Flutter Demo',
-            theme: ThemeData(
 
-              primarySwatch: Colors.blue,
-            ),
-            routes: {
-              '/': (_) => LoginScreen(),
-              '/NewUser': (_) => NewUserScreen(),
-              '/home': (_) => Scene(),
-            },
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
 
-            //home: const MyHomePage(title: 'Flutter Demo Home Page'),
-          );
-        }
-      );
+        primarySwatch: Colors.blue,
+      ),
+      routes: {
+        '/': (_) => LoginScreen(),
+        '/NewUser': (_) => NewUserScreen(),
+        '/home': (_) => Scene2(),
+      },
+      //home: const MyHomePage(title: 'Flutter Demo Home Page'),
+    );
   }
 }
+
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
