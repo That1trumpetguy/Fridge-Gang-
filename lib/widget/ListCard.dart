@@ -31,6 +31,8 @@ class _ListCardState extends State<ListCard> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
     return Slidable(
       startActionPane: ActionPane(
         motion: const StretchMotion(),
@@ -60,7 +62,7 @@ class _ListCardState extends State<ListCard> {
       ),
       child: Container(
         //margin: EdgeInsets.all(20),
-        height: 150,
+        height: screenHeight * 0.15,
         child: Stack(
           children: [
             Positioned.fill(
@@ -77,58 +79,82 @@ class _ListCardState extends State<ListCard> {
               children: [
                 //Image.asset(item.imageName),
                 ClipRRect(
-                  borderRadius: BorderRadius.circular(150),
+                  borderRadius: BorderRadius.circular(screenWidth * 0.150),
                   child: CachedNetworkImage(
                     cacheManager: ListCard.customCacheManager,
-                    height: 140,
-                    width: 140,
+                    height: screenHeight * .140,
+                    width: screenWidth* .140,
                     key: UniqueKey(),
                     imageUrl: widget.item.imageName,
                     placeholder: (context,url) => Container(color: Colors.black12,),
                     errorWidget: (context,url,error) => Container(
-                      child: const Icon(Icons.error, color: Colors.red,size: 80),
+                      child:
+                      Icon(
+                          Icons.error,
+                          color: Colors.red,
+                          size: screenHeight * 0.080
+                      ),
                   ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(widget.item.itemName, style: const TextStyle(fontSize: 25), textAlign: TextAlign.left),
-                      Row(
-                        children: [
-                          const Text("Quantity:", style: TextStyle(fontSize: 25),textAlign: TextAlign.left),
-                          counter !=0 ? IconButton(
-                            icon: Icon(
-                              Icons.remove,
-                              color: Theme.of(context).primaryColor,
-                            ), onPressed: () {
-                            setState(() {
-                              counter--;
-                            });
-                          },
-                          ): Padding(
-                            padding: const EdgeInsets.only(left: 20.0),
-                            child: Container(),
-                          ),
-                          Text("$counter", style: TextStyle(fontSize: 20),),
-                          IconButton(
-                            icon: Icon(
-                              Icons.add,
-                              color: Theme.of(context).primaryColor,
-                            ), onPressed: () {
-                            setState(() {
-                              counter++;
-                            });
-                          },
-                          ),
-                        ],
-                      )
 
-                    ],
+                   Flexible(
+                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+
+                      children: [
+                        Text(
+
+                            widget.item.itemName,
+                            style: TextStyle(fontSize: screenWidth * 0.04),
+                            textAlign: TextAlign.left,
+                            overflow: TextOverflow.visible,
+                        ),
+                        Column(
+                          children: [
+                             Text(
+                                "Quantity:",
+                                style: TextStyle(fontSize: screenWidth * 0.04),
+                                textAlign: TextAlign.left
+                            ),
+                            Row(
+                              children: [
+                                counter !=0 ? IconButton(
+                                  icon: Icon(
+                                    Icons.remove,
+                                    color: Theme.of(context).primaryColor,
+                                  ), onPressed: () {
+                                  setState(() {
+                                    counter--;
+                                  });
+                                },
+                                ): Padding(
+                                  padding: EdgeInsets.only(left: screenWidth * 0.15),
+                                  child: Container(),
+                                ),
+                                Text(
+                                  "$counter",
+                                  style: TextStyle(fontSize: screenWidth * 0.04),
+                                ),
+                                IconButton(
+                                  icon: Icon(
+                                    Icons.add,
+                                    color: Theme.of(context).primaryColor,
+                                  ), onPressed: () {
+                                  setState(() {
+                                    counter++;
+                                  });
+                                },
+                                ),
+                              ],
+                            ),
+                          ],
+                        )
+
+                      ],
                   ),
-                )
+                   ),
+
               ],
             )
           ],

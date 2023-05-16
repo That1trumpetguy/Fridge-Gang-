@@ -24,7 +24,8 @@ class _GroceryListPageState extends State<GroceryListPage> {
 
   @override
   Widget build(BuildContext context) {
-    
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       drawer: Drawer(),
       appBar: AppBar(
@@ -44,15 +45,20 @@ class _GroceryListPageState extends State<GroceryListPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children:  [
-            const Padding(
-              padding: EdgeInsets.only(left: 15, top: 15, bottom: 10),
+             Padding(
+              padding: EdgeInsets.only(
+                  left: screenWidth * .015,
+                  top: screenHeight * .015,
+                  bottom: screenHeight * .010),
               child: Text('Grocery List',
               textAlign: TextAlign.left,
               style: TextStyle(
-                fontSize: 36
+                  fontSize: screenHeight * 0.05
               ),),
             ),
-            Expanded(
+            SizedBox(
+              height: screenHeight * 0.65,
+              width: screenWidth * 0.8,
               child: FutureBuilder(
               future: something(),
               builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
@@ -61,13 +67,11 @@ class _GroceryListPageState extends State<GroceryListPage> {
                   return Center(child: CircularProgressIndicator());
                 } else {
                   print("there");
-                  return Container(
-                    child: ListView.builder(
-                    itemCount: groceryList.length, //Todo: add grocery list size here.
-                    itemBuilder: (BuildContext context, int index){
-                      return ListCard(item: groceryList[index]);
-                    },
-                  )
+                  return ListView.builder(
+                  itemCount: groceryList.length, //Todo: add grocery list size here.
+                  itemBuilder: (BuildContext context, int index){
+                    return ListCard(item: groceryList[index]);
+                  },
                   );
                 }
                 }
