@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/pages/ChangePasswordPage.dart';
@@ -6,7 +5,7 @@ import 'package:flutter_app/pages/EditProfilePage.dart';
 import 'package:flutter_app/style.dart';
 
 class SettingsPage extends StatefulWidget {
-  const SettingsPage({Key? key}) : super(key: key);
+  SettingsPage({Key? key}) : super(key: key);
 
   @override
   State<SettingsPage> createState() => _SettingsPageState();
@@ -15,6 +14,8 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
+    var screenSize = MediaQuery.of(context).size;
+    var largeScreen = screenSize.width > 480 ? true : false;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -23,133 +24,157 @@ class _SettingsPageState extends State<SettingsPage> {
             Navigator.of(context).pop();
           },
           icon: const Icon(
-              Icons.arrow_back,
+            Icons.arrow_back,
             color: Colors.black,
           ),
         ),
       ),
       body: Container(
-        padding: const EdgeInsets.only(left: 16, top: 25, right: 16),
-        child: ListView(
-          children: [
-            const Text(
-              "Settings",
-              style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
-            ),
-            const SizedBox(height: 40,),
-            Row(
-              children: const [
-                Icon(Icons.person, color: Colors.black),
-                SizedBox(width: 8,),
-                Text(
-                  "Account",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-            const Divider(
-                height: 15,
-                thickness: 2
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-
-            buildAccountOption(context, "Edit Profile", const EditProfilePage()),
-            buildAccountOption(context, "Change Password", const ChangePasswordPage()),
-            //buildAccountOption(context, "Edit Profile"),
-            //buildAccountOption(context, "Edit Profile"),
-
-            const SizedBox(height: 40,),
-            Row(
-              children: const [
-                Icon(Icons.volume_up_outlined, color: Colors.black),
-                SizedBox(width: 8,),
-                Text(
-                  "Notifications",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-
-              ],
-            ),
-            const Divider(
-                height: 15,
-                thickness: 2
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            buildNotificationRow("About to expire", true),
-            buildNotificationRow("Adding to grocery list", true),
-            buildNotificationRow("Account activity", true),
-            const SizedBox(height: 100,),
-            Center(
-              child: OutlinedButton(
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(ColorConstant.teal300),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0),
-                        )
-                    )
-                  ),
-                  onPressed: (){},
-                  child: Text(
-                    "Sign Out",
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.left,
-                    style: AppStyle.txtRobotoBold20,
-                  )
+          padding: const EdgeInsets.only(left: 16, top: 25, right: 16),
+          child: ListView(
+            children: [
+              Text(
+                "Settings",
+                style: TextStyle(
+                    fontSize: (largeScreen ? 55 : 30),
+                    fontWeight: FontWeight.w500),
               ),
-            )
-          ],
+              SizedBox(height: (largeScreen ? 40 : 20)),
+              Row(
+                children: [
+                  Icon(Icons.person,
+                      color: Colors.black, size: (largeScreen ? 40 : 20)),
+                  SizedBox(width: 8),
+                  Text(
+                    "Account",
+                    style: TextStyle(
+                        fontSize: (largeScreen ? 39 : 29),
+                        fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+              const Divider(height: 15, thickness: 2),
+              SizedBox(
+                height: (largeScreen ? 40 : 30),
+              ),
 
-        )
-      ),
+              buildAccountOption(
+                  context, "Edit Profile", const EditProfilePage()),
+              buildAccountOption(
+                  context, "Change Password", const ChangePasswordPage()),
+              //buildAccountOption(context, "Edit Profile"),
+              //buildAccountOption(context, "Edit Profile"),
+              //
+              const SizedBox(
+                height: 90,
+              ),
+              Row(
+                children: [
+                  Icon(Icons.volume_up_outlined,
+                      color: Colors.black, size: (largeScreen ? 40 : 20)),
+                  //
+                  SizedBox(
+                    width: 16,
+                  ),
+                  Text(
+                    "Notifications",
+                    //
+                    //style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        fontSize: (largeScreen ? 39 : 29),
+                        fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+              const Divider(
+                  //
+                  height: 30,
+                  thickness: 4),
+              const SizedBox(
+                //
+                height: 20,
+              ),
+              buildNotificationRow(
+                "About to expire",
+                true,
+              ),
+              buildNotificationRow("Adding to grocery list", true),
+              buildNotificationRow("Account activity", true),
+              SizedBox(height: (largeScreen ? 40 : 20)),
+              Center(
+                child: OutlinedButton(
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                            ColorConstant.teal300),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ))),
+                    onPressed: () {},
+                    child: Text(
+                      "Sign Out",
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.left,
+                      style: AppStyle.txtRobotoBold20,
+                    )),
+              )
+            ],
+          )),
     );
   }
 
   Row buildNotificationRow(String text, bool isActive) {
     return Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-            Text(text, style: TextStyle(
-              fontSize: 18, fontWeight: FontWeight.w500, color: Colors.grey[600]
-            ),),
-            Transform.scale(
-                scale: 0.7,
-                child: CupertinoSwitch(value: true, onChanged: (bool val) {},))
-          ],
-          );
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          text,
+          style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
+              color: Colors.grey[600]),
+        ),
+        Transform.scale(
+            scale: 0.7,
+            child: CupertinoSwitch(
+              value: true,
+              onChanged: (bool val) {},
+            ))
+      ],
+    );
   }
 
-  GestureDetector buildAccountOption(BuildContext context, String title, Widget myWidget) {
+  GestureDetector buildAccountOption(
+      BuildContext context, String title, Widget myWidget) {
     return GestureDetector(
-            onTap: (){
-              Navigator.of(context).push(
-                MaterialPageRoute (
-                  builder: (BuildContext context) => myWidget,
-                ),
-              );
-
-            },
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                Text(title, style: TextStyle(
-                  fontSize: 18, fontWeight: FontWeight.w500, color: Colors.grey[600],
-                ),
-                ),
-                const Icon(
-                  Icons.arrow_forward_ios,
-                  color: Colors.grey,
-                ),
-              ],
+      onTap: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (BuildContext context) => myWidget,
+          ),
+        );
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              title,
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+                color: Colors.grey[600],
               ),
             ),
-          );
+            const Icon(
+              Icons.arrow_forward_ios,
+              color: Colors.grey,
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
-
