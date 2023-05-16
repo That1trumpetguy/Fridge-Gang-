@@ -1,4 +1,7 @@
-  import 'package:flutter/cupertino.dart';
+  import 'dart:async';
+import 'dart:async';
+
+import 'package:flutter/cupertino.dart';
   import 'package:flutter/material.dart';
 import 'package:flutter_app/models/ListItem.dart';
 import 'package:openfoodfacts/openfoodfacts.dart';
@@ -119,7 +122,7 @@ import 'package:openfoodfacts/openfoodfacts.dart';
         throw Exception('product not found, please insert data for $barcode');
       }
     }
-
+    
     //Alert dialog for adding an item to a grocery list.
     showAlertDialog(BuildContext context, Product prod) {
       // Create AlertDialog
@@ -141,7 +144,7 @@ import 'package:openfoodfacts/openfoodfacts.dart';
                         'me',
                         'Grocery List',
                         prod?.productName ?? '',
-                        prod?.genericName ?? '',
+                        prod?.categories ?? '',
                         prod?.imageFrontSmallUrl ?? '',
                         '5/14/2023');
                 // Close the dialog

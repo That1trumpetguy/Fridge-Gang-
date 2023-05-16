@@ -14,7 +14,24 @@ class ListItemHelper {
     print("hi");
 
     for(var i = 0; i < data[0].length; i++) {
-      ListItem temp = ListItem(itemName: data[0][i]["name"], imageName: 'assets/page-1/images/image-1.png', expirationDate: "05/06/2023");
+      print(data[0][i]["image"]);
+      ListItem temp = ListItem(itemName: data[0][i]["name"], imageName: data[0][i]["image"], expirationDate: "05/06/2023");
+      foodList.add(temp);
+    }
+
+    return foodList;
+  }
+
+  //Derives a list of grocery items from database. This is static for now....
+  static Future<List<ListItem>> getItems(String username, String listName) async {
+
+    var data = await Future.wait([getList(username, listName)]);
+    List<ListItem> foodList = [];
+    print("hi");
+
+    for(var i = 0; i < data[0].length; i++) {
+      print(data[0][i]["image"]);
+      ListItem temp = ListItem(itemName: data[0][i]["name"], imageName: data[0][i]["image"], expirationDate: "05/06/2023");
       foodList.add(temp);
     }
 

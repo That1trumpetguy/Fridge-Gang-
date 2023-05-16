@@ -17,7 +17,7 @@ class _GroceryListPageState extends State<GroceryListPage> {
   List<ListItem> groceryList = [];
 
   Future<int> something() async {
-    groceryList = await ListItemHelper.getGroceryListItems();
+    groceryList = await ListItemHelper.getItems('me', 'Grocery List');
     print(groceryList);
     return 1;
   }

@@ -5,29 +5,30 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter/material.dart';
 
 import '../models/ListItem.dart';
+import 'ListCard.dart';
 
-class ListCard extends StatefulWidget {
+class ExpiryListCard extends StatefulWidget {
 
   static final customCacheManager = CacheManager(
-     Config(
-       'customCacheKey',
-       stalePeriod: const Duration(days: 15),
-       maxNrOfCacheObjects: 100,
-     )
+      Config(
+        'customCacheKey',
+        stalePeriod: const Duration(days: 15),
+        maxNrOfCacheObjects: 100,
+      )
   );
-   ListCard({
+  ExpiryListCard({
     Key? key, required this.item,
   }) : super(key: key);
 
   //Reference for the current list item.
- final ListItem item;
+  final ListItem item;
 
   @override
-  State<ListCard> createState() => _ListCardState();
+  State<ExpiryListCard> createState() => _ExpiryListCardState();
 }
 
-class _ListCardState extends State<ListCard> {
- int counter = 1;
+class _ExpiryListCardState extends State<ExpiryListCard> {
+  int counter = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +74,7 @@ class _ListCardState extends State<ListCard> {
               ),
             ),
             Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 //Image.asset(item.imageName),
                 ClipRRect(
@@ -87,45 +88,16 @@ class _ListCardState extends State<ListCard> {
                     placeholder: (context,url) => Container(color: Colors.black12,),
                     errorWidget: (context,url,error) => Container(
                       child: const Icon(Icons.error, color: Colors.red,size: 80),
-                  ),
+                    ),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(widget.item.itemName, style: const TextStyle(fontSize: 25), textAlign: TextAlign.left),
-                      Row(
-                        children: [
-                          const Text("Quantity:", style: TextStyle(fontSize: 25),textAlign: TextAlign.left),
-                          counter !=0 ? IconButton(
-                            icon: Icon(
-                              Icons.remove,
-                              color: Theme.of(context).primaryColor,
-                            ), onPressed: () {
-                            setState(() {
-                              counter--;
-                            });
-                          },
-                          ): Padding(
-                            padding: const EdgeInsets.only(left: 20.0),
-                            child: Container(),
-                          ),
-                          Text("$counter", style: TextStyle(fontSize: 20),),
-                          IconButton(
-                            icon: Icon(
-                              Icons.add,
-                              color: Theme.of(context).primaryColor,
-                            ), onPressed: () {
-                            setState(() {
-                              counter++;
-                            });
-                          },
-                          ),
-                        ],
-                      )
-
+                      Text("Expires On: " + widget.item.expirationDate, style: const TextStyle(fontSize: 25), textAlign: TextAlign.left),
                     ],
                   ),
                 )
