@@ -15,7 +15,7 @@ Future<Map<String, dynamic>> fetchRecipeData( int recipeId) async {
 
 Future<Map<String, dynamic>> fetchBreakfastRecipe() async {
   final response = await http.get(Uri.parse(
-      'https://api.spoonacular.com/recipes/random?apiKey=2050d2039ea145d2bace74820055e741&tags=breakfast'));
+      'https://api.spoonacular.com/recipes/random?apiKey=c6ffa181d6d044d59f1076d9e79bf391&tags=breakfast'));
 
   if (response.statusCode == 200) {
     final recipe = json.decode(response.body)['recipes'][0];
@@ -27,10 +27,10 @@ Future<Map<String, dynamic>> fetchBreakfastRecipe() async {
 }
 Future<Map<String, dynamic>> fetchLunchRecipes() async {
   final response = await http.get(Uri.parse(
-      'https://api.spoonacular.com/recipes/random?apiKey=2050d2039ea145d2bace74820055e741&tags=lunch'));
+      'https://api.spoonacular.com/recipes/random?apiKey=c6ffa181d6d044d59f1076d9e79bf391&tags=lunch'));
 
   if (response.statusCode == 200) {
-    final recipes = json.decode(response.body)['recipes'];
+    final recipes = json.decode(response.body)['recipes'][0];
     print(recipes);
     return recipes;
   } else {
@@ -40,10 +40,10 @@ Future<Map<String, dynamic>> fetchLunchRecipes() async {
 
 Future<Map<String, dynamic>> fetchDinnerRecipes() async {
   final response = await http.get(Uri.parse(
-      'https://api.spoonacular.com/recipes/random?apiKey=2050d2039ea145d2bace74820055e741&tags=dinner'));
+      'https://api.spoonacular.com/recipes/random?apiKey=c6ffa181d6d044d59f1076d9e79bf391&tags=dinner'));
 
   if (response.statusCode == 200) {
-    final recipes = json.decode(response.body)['recipes'];
+    final recipes = json.decode(response.body)['recipes'][0];
     print(recipes);
     return recipes;
   } else {

@@ -9,7 +9,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'pages/NewUserPage.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:openfoodfacts/openfoodfacts.dart';
-
+//import 'package:sizer/sizer.dart';
 const String COLOR_CODE = "#F44336"; // color code for the scanner
 const String CANCEL_BUTTON_TEXT = "Cancel"; // text for the cancel button
 const bool isShowFlashIcon = true; // whether to show the flash icon or not

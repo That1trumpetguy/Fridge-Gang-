@@ -113,7 +113,7 @@ class _SceneState extends State<Scene2> {
                   onPressed: () {
                     Navigator.of(context).push(
                       MaterialPageRoute (
-                        builder: (BuildContext context) => const SettingsPage(),
+                        builder: (BuildContext context) =>  SettingsPage(),
                       ),
                     );
                   },
