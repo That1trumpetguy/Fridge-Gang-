@@ -32,6 +32,8 @@ class _ExpiryListCardState extends State<ExpiryListCard> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
     return Slidable(
       startActionPane: ActionPane(
         motion: const StretchMotion(),
@@ -61,7 +63,7 @@ class _ExpiryListCardState extends State<ExpiryListCard> {
       ),
       child: Container(
         //margin: EdgeInsets.all(20),
-        height: 150,
+        height: screenHeight * 0.16,
         child: Stack(
           children: [
             Positioned.fill(
@@ -78,29 +80,32 @@ class _ExpiryListCardState extends State<ExpiryListCard> {
               children: [
                 //Image.asset(item.imageName),
                 ClipRRect(
-                  borderRadius: BorderRadius.circular(150),
+                  borderRadius: BorderRadius.circular(screenWidth * 0.150),
                   child: CachedNetworkImage(
                     cacheManager: ListCard.customCacheManager,
-                    height: 140,
-                    width: 140,
+                    height: screenHeight * .140,
+                    width: screenWidth* .140,
                     key: UniqueKey(),
                     imageUrl: widget.item.imageName,
                     placeholder: (context,url) => Container(color: Colors.black12,),
                     errorWidget: (context,url,error) => Container(
-                      child: const Icon(Icons.error, color: Colors.red,size: 80),
+                      child: Icon(Icons.error, color: Colors.red,size: screenHeight * 0.080),
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
+
+                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(widget.item.itemName, style: const TextStyle(fontSize: 25), textAlign: TextAlign.left),
-                      Text("Expires On: " + widget.item.expirationDate, style: const TextStyle(fontSize: 25), textAlign: TextAlign.left),
+                      Text(widget.item.itemName,
+                          style: TextStyle(fontSize: screenWidth * 0.05),
+                          textAlign: TextAlign.left),
+                      Text("Expires On: " + widget.item.expirationDate,
+                          style: TextStyle(fontSize: screenWidth * 0.05),
+                          textAlign: TextAlign.left),
                     ],
                   ),
-                )
+
               ],
             )
           ],

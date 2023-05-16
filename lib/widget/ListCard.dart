@@ -62,7 +62,7 @@ class _ListCardState extends State<ListCard> {
       ),
       child: Container(
         //margin: EdgeInsets.all(20),
-        height: screenHeight * 0.15,
+        height: screenHeight * 0.16,
         child: Stack(
           children: [
             Positioned.fill(
@@ -104,13 +104,13 @@ class _ListCardState extends State<ListCard> {
 
                       children: [
                         Text(
-
                             widget.item.itemName,
                             style: TextStyle(fontSize: screenWidth * 0.04),
                             textAlign: TextAlign.left,
                             overflow: TextOverflow.visible,
                         ),
                         Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                              Text(
                                 "Quantity:",

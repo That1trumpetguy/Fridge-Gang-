@@ -63,6 +63,7 @@ class _SceneState extends State<Scene2> {
                     child: Center(
                       child: Text(
                         'About to Expire!',
+                        textAlign: TextAlign.center,
                         style: SafeGoogleFont(
                           'Inter',
                           fontSize: screenWidth * 0.05,
@@ -98,6 +99,7 @@ class _SceneState extends State<Scene2> {
                     child: Center(
                       child: Text(
                         'My grocery list',
+                        textAlign: TextAlign.center,
                         style: SafeGoogleFont(
                           'Inter',
                           fontSize: screenWidth * 0.05,
