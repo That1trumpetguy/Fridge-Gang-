@@ -13,7 +13,7 @@ class Scene extends StatefulWidget {
   State<Scene> createState() => _SceneState();
 }
 class _SceneState extends State<Scene> {
-  //Map<String, dynamic> _breakfast = {}; // Initialize with an empty Map
+
   Map<String, dynamic> _allRecipes = {};
   @override
   void initState() {
@@ -24,20 +24,11 @@ class _SceneState extends State<Scene> {
         //print(_allRecipes);
       });
     });
-    /*_fetchRecipe().then((breakfast) {
-      setState(() {
-        _breakfast = breakfast;
-        print(_breakfast); // Move the print statement here
-      });
-    });*/
+
   }
 
 
-  /*Future<Map<String, dynamic>> _fetchRecipe() async {
-    final breakfast = await fetchBreakfastRecipe();
-    //print(breakfast);
-    return breakfast;
-  }*/
+
 Future<Map<String, dynamic>> _fetchAllRecipes() async {
   final breakfast = await fetchBreakfastRecipe();
   final lunch = await fetchLunchRecipes();
@@ -61,7 +52,7 @@ Future<Map<String, dynamic>> _fetchAllRecipes() async {
     return Scaffold(
 
       body: FutureBuilder(
-          future: /*_fetchRecipe(),*/ _fetchAllRecipes(),
+          future:  _fetchAllRecipes(),
           builder: (BuildContext context, AsyncSnapshot<Map<String, dynamic>> snapshot){
             if(snapshot.connectionState == ConnectionState.waiting){
               return Center(child: CircularProgressIndicator());
