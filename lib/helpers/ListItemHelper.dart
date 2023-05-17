@@ -74,4 +74,18 @@ class ListItemHelper {
     ref.set(foodItem);
 
   }
+
+
+  // deletes item from database based on name/doc title
+  static void deleteItem(String username, String listName, String foodName) {
+
+    FirebaseFirestore db = FirebaseFirestore.instance;
+
+    final ref = db.collection("users").doc(username).collection(listName).doc(foodName);
+    ref.delete().then(
+      (doc) => print("Document deleted"),
+      onError: (e) => print("Error updating document $e")
+    );
+
+  }
 }
