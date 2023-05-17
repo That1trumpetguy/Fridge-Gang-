@@ -631,7 +631,7 @@ Future<Map<String, dynamic>> _fetchAllRecipes() async {
                                           ],
                                         ),
                                       ),
-                                      //LUNCH STARTS HERE, WHY IS THIS SHIT SO HARD TO FIND
+                                      //LUNCH STARTS HERE
                                       Container(
                                         // lunchGbV (4:10)
                                         margin: EdgeInsets.fromLTRB(
@@ -672,6 +672,13 @@ Future<Map<String, dynamic>> _fetchAllRecipes() async {
                                                 CrossAxisAlignment.center,
                                                 children: [
                                                   Container(
+                                                    /*child: GestureDetector (
+                                                    *   onTap: () {
+                                                    * Navigator.of(context).push(
+                                                          MaterialPageRoute (
+                                                              builder: (BuildContext context) => placeholder(),
+                                                    *   }
+                                                    * )*/
                                                     // rectangle10S27 (6:35)
                                                     margin: EdgeInsets.fromLTRB(0 * fem,
                                                         0 * fem, 36 * fem, 0 * fem),
@@ -771,6 +778,13 @@ Future<Map<String, dynamic>> _fetchAllRecipes() async {
                                                     ),
                                                   ),
                                                   Positioned(
+                                                    /*child: GestureDetector (
+                                                    *   onTap: () {
+                                                    * Navigator.of(context).push(
+                                                          MaterialPageRoute (
+                                                              builder: (BuildContext context) => placeholder(),
+                                                    *   }
+                                                    * )*/
                                                     // rectangle111YP (6:39)
                                                     left: 1 * fem,
                                                     top: 1 * fem,
@@ -894,6 +908,18 @@ Future<Map<String, dynamic>> _fetchAllRecipes() async {
                           // circleleftHpf (4:6)
                           left: 703 * fem,
                           top: 125 * fem,
+                          //to refresh recipes
+                          child: GestureDetector(
+                           onTap: () {
+                             setState(() {
+                               _allRecipes = {};
+                               });
+                             _fetchAllRecipes().then((recipes) {
+                               setState((){
+                                 _allRecipes = recipes;
+                               });
+                             });
+                           },
                           child: Align(
                             child: SizedBox(
                               width: 53 * fem,
@@ -904,6 +930,7 @@ Future<Map<String, dynamic>> _fetchAllRecipes() async {
                                 height: 65 * fem,
                               ),
                             ),
+                          ),
                           ),
                         ),
                         Positioned(
