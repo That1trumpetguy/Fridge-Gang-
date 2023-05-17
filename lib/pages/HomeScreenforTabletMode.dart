@@ -8,6 +8,9 @@ import 'package:flutter_app/utils.dart';
 import 'dart:ui';
 import 'package:http/http.dart' as http;
 import 'package:flutter_app/api_services.dart';
+
+import 'RecipePage.dart';
+
 class Scene extends StatefulWidget {
   @override
   State<Scene> createState() => _SceneState();
@@ -552,23 +555,31 @@ Future<Map<String, dynamic>> _fetchAllRecipes() async {
                                         height: 221 * fem,
                                         child: Stack(
                                           children: [
-                                            Positioned(
-                                              // rectangle12QCb (6:31)
-                                              left: 9 * fem,
-                                              top: 0 * fem,
-                                              child: Align(
-                                                child: SizedBox(
-                                                  width: 473 * fem,
-                                                  height: 221 * fem,
-                                                  child: Container(
-                                                    decoration: BoxDecoration(
-                                                      borderRadius:
-                                                      BorderRadius.circular(25 * fem),
-                                                      color: const Color(0xffdbdfd1),
+                                            GestureDetector(
+                                              child: Positioned(
+                                                // rectangle12QCb (6:31)
+                                                left: 9 * fem,
+                                                top: 0 * fem,
+                                                child: Align(
+                                                  child: SizedBox(
+                                                    width: 473 * fem,
+                                                    height: 221 * fem,
+                                                    child: Container(
+                                                      decoration: BoxDecoration(
+                                                        borderRadius:
+                                                        BorderRadius.circular(25 * fem),
+                                                        color: const Color(0xffdbdfd1),
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
                                               ),
+                                              onTap: () {
+                                                Navigator.of(context).push(
+                                                    MaterialPageRoute (
+                                                      builder: (BuildContext context) => RecipePage(recipe: breakfast),
+                                                    ));
+                                              },
                                             ),
                                             Positioned(
                                               // rectangle9dr3 (6:32)
