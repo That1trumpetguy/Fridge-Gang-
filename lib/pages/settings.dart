@@ -94,12 +94,9 @@ class _SettingsPageState extends State<SettingsPage> {
                 //
                 height: 20,
               ),
-              buildNotificationRow(
-                "About to expire",
-                true,
-              ),
-              buildNotificationRow("Adding to grocery list", true),
-              buildNotificationRow("Account activity", true),
+              buildNotificationRow("About to expire", true, height),
+              buildNotificationRow("Adding to grocery list", true, height),
+              buildNotificationRow("Account activity", true, height),
               SizedBox(height: (largeScreen ? 40 : 20)),
               Center(
                 child: OutlinedButton(
@@ -124,7 +121,7 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  Row buildNotificationRow(String text, bool isActive) {
+  Row buildNotificationRow(String text, bool isActive, bool largeScreen) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -133,10 +130,11 @@ class _SettingsPageState extends State<SettingsPage> {
           style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w500,
+              //height: (largeScreen ? 29 : 19),
               color: Colors.grey[600]),
         ),
         Transform.scale(
-            scale: 0.7,
+            scale: largeScreen ? 0.7 : 0.5,
             child: CupertinoSwitch(
               value: true,
               onChanged: (bool val) {},

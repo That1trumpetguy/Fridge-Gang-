@@ -245,7 +245,7 @@ class _SignupState extends State<LoginScreen> {
       );
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => Scene()),
+        MaterialPageRoute(builder: (context) => Scene2()),
       );
     } catch (e) {}
     //print(passwordController.text);
