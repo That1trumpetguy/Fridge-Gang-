@@ -54,9 +54,7 @@ class _GroceryListPageState extends State<GroceryListPage> {
                 style: TextStyle(fontSize: screenHeight * 0.05),
               ),
             ),
-            SizedBox(
-              height: screenHeight * 0.65,
-              width: screenWidth * 0.8,
+            Expanded(
               child: FutureBuilder(
                   future: something(),
                   builder: (BuildContext context, AsyncSnapshot<int> snapshot) {

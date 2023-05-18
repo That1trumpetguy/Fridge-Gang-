@@ -16,7 +16,11 @@ Future<Map<String, dynamic>> fetchRecipeData( int recipeId) async {
 
 Future<Map<String, dynamic>> fetchBreakfastRecipe() async {
   final response = await http.get(Uri.parse(
+<<<<<<< Updated upstream
   'https://api.spoonacular.com/recipes/random?apiKey=a19b3583bd8b4ea7ba1723a29be17c63&tags=breakfast'));
+=======
+      'https://api.spoonacular.com/recipes/random?apiKey=8b24430758cb4bbc919702bd1db0fef1&tags=breakfast'));
+>>>>>>> Stashed changes
 
   final list = await ListItemHelper.getList('me','Fridge');
   print(list);
@@ -31,7 +35,11 @@ Future<Map<String, dynamic>> fetchBreakfastRecipe() async {
 
 Future<Map<String, dynamic>> fetchLunchRecipes() async {
   final response = await http.get(Uri.parse(
+<<<<<<< Updated upstream
       'https://api.spoonacular.com/recipes/random?apiKey=a19b3583bd8b4ea7ba1723a29be17c63&tags=lunch'));
+=======
+      'https://api.spoonacular.com/recipes/random?apiKey=8b24430758cb4bbc919702bd1db0fef1&tags=lunch'));
+>>>>>>> Stashed changes
 
   if (response.statusCode == 200) {
     final recipes = json.decode(response.body)['recipes'][0];
@@ -44,7 +52,11 @@ Future<Map<String, dynamic>> fetchLunchRecipes() async {
 
 Future<Map<String, dynamic>> fetchDinnerRecipes() async {
   final response = await http.get(Uri.parse(
+<<<<<<< Updated upstream
       'https://api.spoonacular.com/recipes/random?apiKey=a19b3583bd8b4ea7ba1723a29be17c63&tags=dinner'));
+=======
+      'https://api.spoonacular.com/recipes/random?apiKey=8b24430758cb4bbc919702bd1db0fef1&tags=dinner'));
+>>>>>>> Stashed changes
 
   if (response.statusCode == 200) {
     final recipes = json.decode(response.body)['recipes'][0];

@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (_) => LoginScreen(),
         '/NewUser': (_) => NewUserScreen(),
-        '/home': (_) => Scene(),
+        '/home': (_) => Scene2(),
       },
       //home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );

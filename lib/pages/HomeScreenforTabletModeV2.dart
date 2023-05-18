@@ -17,15 +17,24 @@ import '../widget/ListCard.dart';
 //import 'package:myapp/utils.dart';
 
 class Scene2 extends StatefulWidget {
+  const Scene2({Key? key}) : super(key: key);
+
   @override
   State<Scene2> createState() => _SceneState();
 }
 
 class _SceneState extends State<Scene2> {
+  late Future future;
   List<ListItem> WhatIHaveList = [];
+  List<String> _listNames = ['Grocery List', 'Pantry List', 'Fridge List', 'Expiration'];
+  final String defaultList = 'Grocery List';
+  late String _selectedList;
+  List<DropdownMenuItem<String>> dropdownItems = [];
+  String? value;
 
-  Future<int> whatIHaveListItem() async {
-    WhatIHaveList = await ListItemHelper.getItems('me', 'Grocery List');
+
+  Future<int> whatIHaveListItem(String userName, String listName) async {
+    WhatIHaveList = await ListItemHelper.getItems(userName, listName);
     if (kDebugMode) {
       print(WhatIHaveList);
     }
@@ -197,7 +206,7 @@ class _SceneState extends State<Scene2> {
                 child: Column(
                   children: [
                     Text(
-                      'What I have',
+                      'What I have in',
                       style: SafeGoogleFont(
                         'Inter',
                         fontSize: screenWidth * 0.045,
@@ -205,12 +214,38 @@ class _SceneState extends State<Scene2> {
                         color: const Color(0xff000000),
                       ),
                     ),
-                    SizedBox(height: screenHeight * 0.008,),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 8.0),
+                      child: Container(
+                        alignment: Alignment.center,
+                        color: Color(0xffdbdfd1),
+                        height: screenHeight * 0.05,
+                        width: screenWidth * 0.8,
+                      child: DropdownButton<String>( //Dropdown menu.
+                        value: value,
+                        items: _listNames.map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
+                          );
+                        }).toList(),
+                        onChanged: (value) {
+
+                          setState(() {
+                            this.value = value;
+                            whatIHaveListItem('me', this?.value ?? defaultList);
+                          });
+
+                        },
+                      ),),
+                    ),
+
+
                     SizedBox(
                       height: screenHeight * 0.65,
                       width: screenWidth * 0.8,
                       child: FutureBuilder(
-                          future: whatIHaveListItem(),
+                          future: whatIHaveListItem('me', value.toString()),
                           builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
                             if (!snapshot.hasData) {
                               print("here");
@@ -219,7 +254,7 @@ class _SceneState extends State<Scene2> {
                               print("there");
                               return ListView.builder(
                                 shrinkWrap: true,
-                                itemCount: WhatIHaveList.length, //Todo: add grocery list size here.
+                                itemCount: WhatIHaveList.length,
                                 itemBuilder: (BuildContext context, int index){
                                   return ListCard(item: WhatIHaveList[index]);
                                 },
@@ -551,5 +586,13 @@ class _SceneState extends State<Scene2> {
         ),
       ),
     );
+  }
+
+  buildMenuItem(String item) {
+    return DropdownMenuItem(
+        value: item,
+        child: Text(item,
+        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+        ),);
   }
 }
