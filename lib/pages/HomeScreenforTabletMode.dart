@@ -624,7 +624,7 @@ Future<Map<String, dynamic>> _fetchAllRecipes() async {
                                                             text:   breakfast['title'] +'\n\n'
                                                         ),
                                                         TextSpan(
-                                                          text:  'Total prep time: ' + breakfast['preparationMinutes'].toString() + ' mins',
+                                                          text:  'Vegetarian: ' + breakfast['vegetarian'].toString() + '\n gluten free: ' + breakfast['glutenFree'].toString(),
                                                           style: SafeGoogleFont(
                                                             'Inter',
                                                             fontSize: 20 * ffem,
@@ -728,7 +728,7 @@ Future<Map<String, dynamic>> _fetchAllRecipes() async {
                                                             /*'Turkey Club Sandwich\n\n\n'*/lunch['title']+'\n\n',
                                                           ),
                                                           TextSpan(
-                                                            text: /*'\nPrep time: 10 mins\n'*/ 'Total prep time:' + lunch['preperationMinutes'].toString() + 'mins',
+                                                            text: 'Vegetarian: ' + lunch['vegetarian'].toString() + '\n gluten free: ' + lunch['glutenFree'].toString(),
                                                             style: SafeGoogleFont(
                                                               'Inter',
                                                               fontSize: 20 * ffem,
@@ -844,7 +844,7 @@ Future<Map<String, dynamic>> _fetchAllRecipes() async {
                                                                 dinner['title']+'\n\n',
                                                               ),
                                                               TextSpan(
-                                                                text: /*'Prep time: 25 mins'*/'Total prep time:' + lunch['preperationMinutes'].toString() + 'mins',
+                                                                text: 'Vegetarian: ' + dinner['vegetarian'].toString() + '\n gluten free: ' + dinner['glutenFree'].toString(),
                                                                 style: SafeGoogleFont(
                                                                   'Inter',
                                                                   fontSize: 20 * ffem,

@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'package:flutter_app/helpers/ListItemHelper.dart';
 import 'package:flutter_app/pages/SearchBarPopUpPage.dart';
 import 'package:flutter_app/widget/ExpiryListCard.dart';
@@ -83,4 +85,39 @@ class _AboutToExpireListState extends State<AboutToExpireList> {
       ),
     );
   }
+}
+Future<List<DateTime>> getExpiryDate(String username, String listName) async {
+  final list = await ListItemHelper.getList(username, listName);
+  final expirationDates = <DateTime>[];
+  print(list);
+  for (final item in list) {
+    final expirationDate = await fetchExpirationDate(item.name);
+    expirationDates.add(expirationDate);
+  }
+
+  print(expirationDates);
+
+  return expirationDates;
+}
+
+Future<DateTime> fetchExpirationDate(String itemName) async {
+  final apiUrl = 'https://world.openfoodfacts.org/api/v0/product/$itemName.json';
+  final response = await http.get(Uri.parse(apiUrl));
+
+  if (response.statusCode == 200) {
+    final jsonData = json.decode(response.body);
+    final expirationDateString = jsonData['product']['expiration_date'];
+    final expirationDate = DateTime.tryParse(expirationDateString);
+
+    if (expirationDate != null) {
+      return expirationDate;
+    }
+  }
+
+  // Return a default value if the expiration date cannot be fetched
+  return DateTime.now().add(Duration(days: 7));
+}
+void main() {
+   getExpiryDate('me', 'Fridge');
+
 }

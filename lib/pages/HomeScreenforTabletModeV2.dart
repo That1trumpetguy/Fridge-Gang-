@@ -351,9 +351,7 @@ class _SceneState extends State<Scene2> {
                                                               '\n\n'
                                                       ),
                                                       TextSpan(
-                                                        text: 'Total prep time: ' +
-                                                            breakfast['preparationMinutes']
-                                                                .toString() + ' mins',
+                                                        text: 'Vegetarian: ' + breakfast['vegetarian'].toString() + '\nGluten free: ' + breakfast['glutenFree'].toString(),
                                                         style: SafeGoogleFont(
                                                           'Inter',
                                                           fontSize: screenWidth *
@@ -436,9 +434,7 @@ class _SceneState extends State<Scene2> {
                                                             '\n\n'
                                                     ),
                                                     TextSpan(
-                                                      text: 'Total prep time: ' +
-                                                          lunch['preparationMinutes']
-                                                              .toString() + ' mins',
+                                                      text:'Vegetarian: ' + lunch['vegetarian'].toString() + '\nGluten free: ' + lunch['glutenFree'].toString(),
                                                       style: SafeGoogleFont(
                                                         'Inter',
                                                         fontSize: screenWidth *
@@ -521,9 +517,7 @@ class _SceneState extends State<Scene2> {
                                                             '\n\n'
                                                     ),
                                                     TextSpan(
-                                                      text: 'Total prep time: ' +
-                                                          dinner['preparationMinutes']
-                                                              .toString() + ' mins',
+                                                      text: 'Vegetarian: ' + dinner['vegetarian'].toString() + '\nGluten free: ' + dinner['glutenFree'].toString(),
                                                       style: SafeGoogleFont(
                                                         'Inter',
                                                         fontSize: screenWidth *
