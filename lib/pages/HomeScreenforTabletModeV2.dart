@@ -35,6 +35,7 @@ class _SceneState extends State<Scene2> {
 
   Future<int> whatIHaveListItem(String userName, String listName) async {
     WhatIHaveList = await ListItemHelper.getItems(userName, listName);
+
     if (kDebugMode) {
       print(WhatIHaveList);
     }

@@ -11,7 +11,6 @@ class ListItemHelper {
 
     var data = await Future.wait([getList("me", "Grocery List")]);
     List<ListItem> foodList = [];
-    print("hi");
 
     for(var i = 0; i < data[0].length; i++) {
       print(data[0][i]["image"]);
@@ -27,7 +26,6 @@ class ListItemHelper {
 
     var data = await Future.wait([getList(username, listName)]);
     List<ListItem> foodList = [];
-    print("hi");
 
     for(var i = 0; i < data[0].length; i++) {
       print(data[0][i]["image"]);
@@ -95,13 +93,13 @@ class ListItemHelper {
     var listFridge = await Future.wait([getList(username, "Fridge")]);
     var listPantry = await Future.wait([getList(username, "Pantry")]);
 
-    for (int i = 0; listFridge[0][i]; i++) {
+    for (int i = 0; i < listFridge[0].length; i++) {
       full += listFridge[0][i]['name'];
       full += ", ";
     }
 
-    for (int i = 0; listPantry[0][i]; i++) {
-      full += listFridge[0][i]['name'];
+    for (int i = 0; i < listPantry[0].length; i++) {
+      full += listPantry[0][i]['name'];
       full += ", ";
     }
 
