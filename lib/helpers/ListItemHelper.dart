@@ -88,4 +88,25 @@ class ListItemHelper {
     );
 
   }
+
+  static Future<String> getAllItems(String username) async {
+    String full = "";
+
+    var listFridge = await Future.wait([getList(username, "Fridge")]);
+    var listPantry = await Future.wait([getList(username, "Pantry")]);
+
+    for (int i = 0; listFridge[0][i]; i++) {
+      full += listFridge[0][i]['name'];
+      full += ", ";
+    }
+
+    for (int i = 0; listPantry[0][i]; i++) {
+      full += listFridge[0][i]['name'];
+      full += ", ";
+    }
+
+    full = full.substring(0, full.length - 2);
+
+    return full;
+  }
 }
