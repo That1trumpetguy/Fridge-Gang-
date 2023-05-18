@@ -1,52 +1,74 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/AboutToExpireList.dart';
 import 'package:flutter_app/BarScanner.dart';
-import 'package:flutter_app/api_services.dart';
 import 'package:flutter_app/pages/GroceryListPage.dart';
+import 'package:flutter_app/AboutToExpireList.dart';
 import 'package:flutter_app/pages/settings.dart';
+import 'package:flutter_app/style.dart';
 import 'package:flutter_app/utils.dart';
+import 'dart:ui';
+import 'package:http/http.dart' as http;
+import 'package:flutter_app/api_services.dart';
+
+import 'RecipePage.dart';
 
 class Scene extends StatefulWidget {
   @override
   State<Scene> createState() => _SceneState();
 }
-
 class _SceneState extends State<Scene> {
-  Map<String, dynamic> _breakfast = {}; // Initialize with an empty Map
 
+  Map<String, dynamic> _allRecipes = {};
   @override
   void initState() {
     super.initState();
-    _fetchRecipe().then((breakfast) {
+    _fetchAllRecipes().then((recipes) {
       setState(() {
-        _breakfast = breakfast;
-        print(_breakfast); // Move the print statement here
+        _allRecipes = recipes;
+        //print(_allRecipes);
       });
     });
+
   }
 
-  Future<Map<String, dynamic>> _fetchRecipe() async {
-    final breakfast = await fetchBreakfastRecipe();
-    print(breakfast);
-    return breakfast;
-  }
 
-  Widget build(BuildContext context) {
+
+Future<Map<String, dynamic>> _fetchAllRecipes() async {
+  final breakfast = await fetchBreakfastRecipe();
+  final lunch = await fetchLunchRecipes();
+  final dinner = await fetchDinnerRecipes();
+  return{
+    'breakfast':breakfast,
+    'lunch':lunch,
+    'dinner':dinner,
+  };
+}
+
+
+  Widget build  (BuildContext context)      {
     double baseWidth = 834;
-    double fem = MediaQuery.of(context).size.width / baseWidth;
+    double fem = MediaQuery
+        .of(context)
+        .size
+        .width / baseWidth;
     double ffem = fem * 0.97;
 
     return Scaffold(
+
       body: FutureBuilder(
-          future: _fetchRecipe(),
-          builder: (BuildContext context,
-              AsyncSnapshot<Map<String, dynamic>> snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
+          future:  _fetchAllRecipes(),
+          builder: (BuildContext context, AsyncSnapshot<Map<String, dynamic>> snapshot){
+            if(snapshot.connectionState == ConnectionState.waiting){
               return Center(child: CircularProgressIndicator());
-            } else if (snapshot.hasError) {
-              return Center(child: Text('Error: $snapshot.error}'));
-            } else {
-              Map<String, dynamic> breakfast = snapshot.data!;
+            }
+            else if (snapshot.hasError){
+              return Center(child:Text('Error: $snapshot.error}'));
+            }
+            else {
+              //Map<String, dynamic> breakfast = snapshot.data!;
+              Map<String, dynamic> recipes = snapshot.data!;
+              Map<String, dynamic> breakfast = recipes['breakfast'];
+              Map<String, dynamic> lunch = recipes['lunch'];
+              Map<String, dynamic> dinner = recipes['dinner'];
 
               return Container(
                 padding: EdgeInsets.only(top: 20),
@@ -115,31 +137,26 @@ class _SceneState extends State<Scene> {
                                       0 * fem, 0 * fem, 19 * fem, 0 * fem),
                                   width: 290 * fem,
                                   child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
                                       Container(
                                         // autogroupd8xdUW7 (NYL2FzLqhZJ2LnEzDhD8Xd)
-                                        margin: EdgeInsets.fromLTRB(13 * fem,
-                                            0 * fem, 14 * fem, 39 * fem),
-                                        padding: EdgeInsets.fromLTRB(27 * fem,
-                                            23 * fem, 17 * fem, 0 * fem),
+                                        margin: EdgeInsets.fromLTRB(
+                                            13 * fem, 0 * fem, 14 * fem, 39 * fem),
+                                        padding: EdgeInsets.fromLTRB(
+                                            27 * fem, 23 * fem, 17 * fem, 0 * fem),
                                         width: double.infinity,
                                         height: 84 * fem,
                                         decoration: const BoxDecoration(
                                           color: Color(0xffffffff),
                                         ),
                                         child: Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.end,
+                                          crossAxisAlignment: CrossAxisAlignment.end,
                                           children: [
                                             Container(
                                               // autogroupf2n7q7h (NYL2Rz4Bkd7wYKg8zzF2N7)
                                               margin: EdgeInsets.fromLTRB(
-                                                  0 * fem,
-                                                  0 * fem,
-                                                  5 * fem,
-                                                  0 * fem),
+                                                  0 * fem, 0 * fem, 5 * fem, 0 * fem),
                                               width: 107 * fem,
                                               height: double.infinity,
                                               decoration: const BoxDecoration(
@@ -158,8 +175,7 @@ class _SceneState extends State<Scene> {
                                                     fontSize: 20 * ffem,
                                                     fontWeight: FontWeight.w600,
                                                     height: 1.2125 * ffem / fem,
-                                                    color:
-                                                        const Color(0xff000000),
+                                                    color: const Color(0xff000000),
                                                   ),
                                                 ),
                                               ),
@@ -167,10 +183,7 @@ class _SceneState extends State<Scene> {
                                             Container(
                                               // autogroupq9sjiKu (NYL2ZKBJj1G1kerrEsQ9Sj)
                                               padding: EdgeInsets.fromLTRB(
-                                                  10 * fem,
-                                                  17 * fem,
-                                                  10 * fem,
-                                                  19 * fem),
+                                                  10 * fem, 17 * fem, 10 * fem, 19 * fem),
                                               width: 107 * fem,
                                               height: double.infinity,
                                               decoration: const BoxDecoration(
@@ -188,8 +201,7 @@ class _SceneState extends State<Scene> {
                                                   fontSize: 20 * ffem,
                                                   fontWeight: FontWeight.w600,
                                                   height: 1.2125 * ffem / fem,
-                                                  color:
-                                                      const Color(0xff000000),
+                                                  color: const Color(0xff000000),
                                                 ),
                                               ),
                                             ),
@@ -200,16 +212,12 @@ class _SceneState extends State<Scene> {
                                         // frame1qoq (3:5)
                                         width: double.infinity,
                                         child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.end,
+                                          crossAxisAlignment: CrossAxisAlignment.end,
                                           children: [
                                             Container(
                                               // autogroupvzrfkA7 (NYL383jmFM3HvuMa3hvzrf)
                                               margin: EdgeInsets.fromLTRB(
-                                                  0 * fem,
-                                                  0 * fem,
-                                                  3 * fem,
-                                                  63 * fem),
+                                                  0 * fem, 0 * fem, 3 * fem, 63 * fem),
                                               width: 287 * fem,
                                               height: 93 * fem,
                                               child: Stack(
@@ -258,13 +266,9 @@ class _SceneState extends State<Scene> {
                                                           style: SafeGoogleFont(
                                                             'Inter',
                                                             fontSize: 24 * ffem,
-                                                            fontWeight:
-                                                                FontWeight.w600,
-                                                            height: 1.2125 *
-                                                                ffem /
-                                                                fem,
-                                                            color: const Color(
-                                                                0xff000000),
+                                                            fontWeight: FontWeight.w600,
+                                                            height: 1.2125 * ffem / fem,
+                                                            color: const Color(0xff000000),
                                                           ),
                                                         ),
                                                       ),
@@ -276,10 +280,7 @@ class _SceneState extends State<Scene> {
                                             Container(
                                               // autogrouprptosAB (NYL3T82KERvcoSpnTJrPto)
                                               margin: EdgeInsets.fromLTRB(
-                                                  0 * fem,
-                                                  0 * fem,
-                                                  3 * fem,
-                                                  43 * fem),
+                                                  0 * fem, 0 * fem, 3 * fem, 43 * fem),
                                               width: 276 * fem,
                                               height: 95 * fem,
                                               child: Stack(
@@ -328,13 +329,9 @@ class _SceneState extends State<Scene> {
                                                           style: SafeGoogleFont(
                                                             'Inter',
                                                             fontSize: 24 * ffem,
-                                                            fontWeight:
-                                                                FontWeight.w600,
-                                                            height: 1.2125 *
-                                                                ffem /
-                                                                fem,
-                                                            color: const Color(
-                                                                0xff000000),
+                                                            fontWeight: FontWeight.w600,
+                                                            height: 1.2125 * ffem / fem,
+                                                            color: const Color(0xff000000),
                                                           ),
                                                         ),
                                                       ),
@@ -346,10 +343,7 @@ class _SceneState extends State<Scene> {
                                             Container(
                                               // autogroupwbzs6qZ (NYL3m7WLXYp4xd1FrqWbzs)
                                               margin: EdgeInsets.fromLTRB(
-                                                  0 * fem,
-                                                  0 * fem,
-                                                  3 * fem,
-                                                  42 * fem),
+                                                  0 * fem, 0 * fem, 3 * fem, 42 * fem),
                                               width: 276 * fem,
                                               height: 96 * fem,
                                               child: Stack(
@@ -398,13 +392,9 @@ class _SceneState extends State<Scene> {
                                                           style: SafeGoogleFont(
                                                             'Inter',
                                                             fontSize: 24 * ffem,
-                                                            fontWeight:
-                                                                FontWeight.w600,
-                                                            height: 1.2125 *
-                                                                ffem /
-                                                                fem,
-                                                            color: const Color(
-                                                                0xff000000),
+                                                            fontWeight: FontWeight.w600,
+                                                            height: 1.2125 * ffem / fem,
+                                                            color: const Color(0xff000000),
                                                           ),
                                                         ),
                                                       ),
@@ -416,10 +406,7 @@ class _SceneState extends State<Scene> {
                                             Container(
                                               // autogroup6u35uyM (NYL3z2JVWgAsvcXKxB6U35)
                                               margin: EdgeInsets.fromLTRB(
-                                                  0 * fem,
-                                                  0 * fem,
-                                                  3 * fem,
-                                                  42 * fem),
+                                                  0 * fem, 0 * fem, 3 * fem, 42 * fem),
                                               width: 276 * fem,
                                               height: 103 * fem,
                                               child: Stack(
@@ -468,13 +455,9 @@ class _SceneState extends State<Scene> {
                                                           style: SafeGoogleFont(
                                                             'Inter',
                                                             fontSize: 24 * ffem,
-                                                            fontWeight:
-                                                                FontWeight.w600,
-                                                            height: 1.2125 *
-                                                                ffem /
-                                                                fem,
-                                                            color: const Color(
-                                                                0xff000000),
+                                                            fontWeight: FontWeight.w600,
+                                                            height: 1.2125 * ffem / fem,
+                                                            color: const Color(0xff000000),
                                                           ),
                                                         ),
                                                       ),
@@ -486,15 +469,9 @@ class _SceneState extends State<Scene> {
                                             Container(
                                               // autogroupgkwpqR5 (NYL4Aw9ygnmJehMZtTGkWP)
                                               margin: EdgeInsets.fromLTRB(
-                                                  14 * fem,
-                                                  0 * fem,
-                                                  0 * fem,
-                                                  0 * fem),
+                                                  14 * fem, 0 * fem, 0 * fem, 0 * fem),
                                               padding: EdgeInsets.fromLTRB(
-                                                  1 * fem,
-                                                  0 * fem,
-                                                  74 * fem,
-                                                  0 * fem),
+                                                  1 * fem, 0 * fem, 74 * fem, 0 * fem),
                                               width: double.infinity,
                                               height: 93 * fem,
                                               decoration: const BoxDecoration(
@@ -507,15 +484,12 @@ class _SceneState extends State<Scene> {
                                               ),
                                               child: Row(
                                                 crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
+                                                CrossAxisAlignment.center,
                                                 children: [
                                                   Container(
                                                     // image594P (5:23)
                                                     margin: EdgeInsets.fromLTRB(
-                                                        0 * fem,
-                                                        0 * fem,
-                                                        3 * fem,
-                                                        5 * fem),
+                                                        0 * fem, 0 * fem, 3 * fem, 5 * fem),
                                                     width: 109 * fem,
                                                     height: 88 * fem,
                                                     child: Image.asset(
@@ -525,11 +499,8 @@ class _SceneState extends State<Scene> {
                                                   ),
                                                   Container(
                                                     // iceberglettuceAkB (6:7)
-                                                    margin: EdgeInsets.fromLTRB(
-                                                        0 * fem,
-                                                        14 * fem,
-                                                        0 * fem,
-                                                        0 * fem),
+                                                    margin: EdgeInsets.fromLTRB(0 * fem,
+                                                        14 * fem, 0 * fem, 0 * fem),
                                                     constraints: BoxConstraints(
                                                       maxWidth: 89 * fem,
                                                     ),
@@ -538,12 +509,9 @@ class _SceneState extends State<Scene> {
                                                       style: SafeGoogleFont(
                                                         'Inter',
                                                         fontSize: 24 * ffem,
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        height:
-                                                            1.2125 * ffem / fem,
-                                                        color: const Color(
-                                                            0xff000000),
+                                                        fontWeight: FontWeight.w600,
+                                                        height: 1.2125 * ffem / fem,
+                                                        color: const Color(0xff000000),
                                                       ),
                                                     ),
                                                   ),
@@ -562,8 +530,7 @@ class _SceneState extends State<Scene> {
                                       0 * fem, 16 * fem, 0 * fem, 0 * fem),
                                   width: 482 * fem,
                                   child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Container(
                                         // breakfastWjV (4:9)
@@ -588,25 +555,31 @@ class _SceneState extends State<Scene> {
                                         height: 221 * fem,
                                         child: Stack(
                                           children: [
-                                            Positioned(
-                                              // rectangle12QCb (6:31)
-                                              left: 9 * fem,
-                                              top: 0 * fem,
-                                              child: Align(
-                                                child: SizedBox(
-                                                  width: 473 * fem,
-                                                  height: 221 * fem,
-                                                  child: Container(
-                                                    decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              25 * fem),
-                                                      color: const Color(
-                                                          0xffdbdfd1),
+                                            GestureDetector(
+                                              child: Positioned(
+                                                // rectangle12QCb (6:31)
+                                                left: 9 * fem,
+                                                top: 0 * fem,
+                                                child: Align(
+                                                  child: SizedBox(
+                                                    width: 473 * fem,
+                                                    height: 221 * fem,
+                                                    child: Container(
+                                                      decoration: BoxDecoration(
+                                                        borderRadius:
+                                                        BorderRadius.circular(25 * fem),
+                                                        color: const Color(0xffdbdfd1),
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
                                               ),
+                                              onTap: () {
+                                                Navigator.of(context).push(
+                                                    MaterialPageRoute (
+                                                      builder: (BuildContext context) => RecipePage(recipe: breakfast),
+                                                    ));
+                                              },
                                             ),
                                             Positioned(
                                               // rectangle9dr3 (6:32)
@@ -619,13 +592,10 @@ class _SceneState extends State<Scene> {
                                                   child: Container(
                                                     decoration: BoxDecoration(
                                                       borderRadius:
-                                                          BorderRadius.circular(
-                                                              25 * fem),
+                                                      BorderRadius.circular(25 * fem),
                                                       image: DecorationImage(
                                                         fit: BoxFit.cover,
-                                                        image: NetworkImage(
-                                                            _breakfast[
-                                                                'image']),
+                                                        image: NetworkImage(breakfast['image']),
                                                       ),
                                                     ),
                                                   ),
@@ -645,34 +615,22 @@ class _SceneState extends State<Scene> {
                                                       style: SafeGoogleFont(
                                                         'Inter',
                                                         fontSize: 24 * ffem,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        height:
-                                                            1.2125 * ffem / fem,
-                                                        color: const Color(
-                                                            0xff000000),
+                                                        fontWeight: FontWeight.w500,
+                                                        height: 1.2125 * ffem / fem,
+                                                        color: const Color(0xff000000),
                                                       ),
                                                       children: [
                                                         TextSpan(
-                                                            text: _breakfast[
-                                                                    'title'] +
-                                                                '\n\n'),
+                                                            text:   breakfast['title'] +'\n\n'
+                                                        ),
                                                         TextSpan(
-                                                          text: 'Total prep time: ' +
-                                                              _breakfast[
-                                                                      'preparationMinutes']
-                                                                  .toString() +
-                                                              ' mins',
+                                                          text:  'Total prep time: ' + breakfast['preparationMinutes'].toString() + ' mins',
                                                           style: SafeGoogleFont(
                                                             'Inter',
                                                             fontSize: 20 * ffem,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                            height: 1.2125 *
-                                                                ffem /
-                                                                fem,
-                                                            color: const Color(
-                                                                0xff000000),
+                                                            fontWeight: FontWeight.w500,
+                                                            height: 1.2125 * ffem / fem,
+                                                            color: const Color(0xff000000),
                                                           ),
                                                         ),
                                                       ],
@@ -684,6 +642,7 @@ class _SceneState extends State<Scene> {
                                           ],
                                         ),
                                       ),
+                                      //LUNCH STARTS HERE
                                       Container(
                                         // lunchGbV (4:10)
                                         margin: EdgeInsets.fromLTRB(
@@ -701,65 +660,56 @@ class _SceneState extends State<Scene> {
                                       ),
                                       Container(
                                         // autogroup3lkv7s1 (NYL6UCfFj17XyFoay33LKV)
-                                        padding: EdgeInsets.fromLTRB(0 * fem,
-                                            15 * fem, 0 * fem, 0 * fem),
+                                        padding: EdgeInsets.fromLTRB(
+                                            0 * fem, 15 * fem, 0 * fem, 0 * fem),
                                         width: double.infinity,
                                         child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             Container(
                                               // autogroupa61qQ5R (NYL5ty7dVueAEXducwA61q)
                                               margin: EdgeInsets.fromLTRB(
-                                                  0 * fem,
-                                                  0 * fem,
-                                                  9 * fem,
-                                                  25 * fem),
+                                                  0 * fem, 0 * fem, 9 * fem, 25 * fem),
                                               padding: EdgeInsets.fromLTRB(
-                                                  0 * fem,
-                                                  0 * fem,
-                                                  29 * fem,
-                                                  0 * fem),
+                                                  0 * fem, 0 * fem, 29 * fem, 0 * fem),
                                               width: double.infinity,
                                               decoration: BoxDecoration(
                                                 color: const Color(0xffdbdfd1),
                                                 borderRadius:
-                                                    BorderRadius.circular(
-                                                        25 * fem),
+                                                BorderRadius.circular(25 * fem),
                                               ),
                                               child: Row(
                                                 crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
+                                                CrossAxisAlignment.center,
                                                 children: [
                                                   Container(
+                                                    /*child: GestureDetector (
+                                                    *   onTap: () {
+                                                    * Navigator.of(context).push(
+                                                          MaterialPageRoute (
+                                                              builder: (BuildContext context) => placeholder(),
+                                                    *   }
+                                                    * )*/
                                                     // rectangle10S27 (6:35)
-                                                    margin: EdgeInsets.fromLTRB(
-                                                        0 * fem,
-                                                        0 * fem,
-                                                        36 * fem,
-                                                        0 * fem),
+                                                    margin: EdgeInsets.fromLTRB(0 * fem,
+                                                        0 * fem, 36 * fem, 0 * fem),
                                                     width: 264 * fem,
                                                     height: 221 * fem,
                                                     decoration: BoxDecoration(
                                                       borderRadius:
-                                                          BorderRadius.circular(
-                                                              25 * fem),
-                                                      image:
-                                                          const DecorationImage(
+                                                      BorderRadius.circular(25 * fem),
+                                                      image: /*const*/DecorationImage(
                                                         fit: BoxFit.cover,
-                                                        image: AssetImage(
-                                                          'assets/page-1/images/rectangle-10-bg.png',
-                                                        ),
+                                                        image: NetworkImage(lunch['image']),/*AssetImage(
+                                                          'assets/page-1/images/rectangle-10-bg.png',*/
+                                                        //),
                                                       ),
                                                     ),
                                                   ),
                                                   Container(
                                                     // turkeyclubsandwichpreptime10mi (6:36)
-                                                    margin: EdgeInsets.fromLTRB(
-                                                        0 * fem,
-                                                        11 * fem,
-                                                        0 * fem,
-                                                        0 * fem),
+                                                    margin: EdgeInsets.fromLTRB(0 * fem,
+                                                        11 * fem, 0 * fem, 0 * fem),
                                                     constraints: BoxConstraints(
                                                       maxWidth: 144 * fem,
                                                     ),
@@ -768,35 +718,24 @@ class _SceneState extends State<Scene> {
                                                         style: SafeGoogleFont(
                                                           'Inter',
                                                           fontSize: 24 * ffem,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          height: 1.2125 *
-                                                              ffem /
-                                                              fem,
-                                                          color: const Color(
-                                                              0xff000000),
+                                                          fontWeight: FontWeight.w500,
+                                                          height: 1.2125 * ffem / fem,
+                                                          color: const Color(0xff000000),
                                                         ),
                                                         children: [
-                                                          const TextSpan(
-                                                            text:
-                                                                'Turkey Club Sandwich\n\n\n',
-                                                          ),
                                                           TextSpan(
                                                             text:
-                                                                '\nPrep time: 10 mins\n',
-                                                            style:
-                                                                SafeGoogleFont(
+                                                            /*'Turkey Club Sandwich\n\n\n'*/lunch['title']+'\n\n',
+                                                          ),
+                                                          TextSpan(
+                                                            text: /*'\nPrep time: 10 mins\n'*/ 'Total prep time:' + lunch['preperationMinutes'].toString() + 'mins',
+                                                            style: SafeGoogleFont(
                                                               'Inter',
-                                                              fontSize:
-                                                                  20 * ffem,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
-                                                              height: 1.2125 *
-                                                                  ffem /
-                                                                  fem,
-                                                              color: const Color(
-                                                                  0xff000000),
+                                                              fontSize: 20 * ffem,
+                                                              fontWeight: FontWeight.w500,
+                                                              height: 1.2125 * ffem / fem,
+                                                              color:
+                                                              const Color(0xff000000),
                                                             ),
                                                           ),
                                                         ],
@@ -806,13 +745,11 @@ class _SceneState extends State<Scene> {
                                                 ],
                                               ),
                                             ),
+                                            //DINNER STARTS HERE
                                             Container(
                                               // dinnerSiF (4:11)
                                               margin: EdgeInsets.fromLTRB(
-                                                  17 * fem,
-                                                  0 * fem,
-                                                  0 * fem,
-                                                  17 * fem),
+                                                  17 * fem, 0 * fem, 0 * fem, 17 * fem),
                                               child: Text(
                                                 'Dinner',
                                                 style: SafeGoogleFont(
@@ -820,18 +757,14 @@ class _SceneState extends State<Scene> {
                                                   fontSize: 32 * ffem,
                                                   fontWeight: FontWeight.w600,
                                                   height: 1.2125 * ffem / fem,
-                                                  color:
-                                                      const Color(0xff000000),
+                                                  color: const Color(0xff000000),
                                                 ),
                                               ),
                                             ),
                                             Container(
                                               // autogroupbyurKGF (NYL67o5bCaPHc7D9njBYuR)
                                               margin: EdgeInsets.fromLTRB(
-                                                  9 * fem,
-                                                  0 * fem,
-                                                  0 * fem,
-                                                  0 * fem),
+                                                  9 * fem, 0 * fem, 0 * fem, 0 * fem),
                                               width: 473 * fem,
                                               height: 223 * fem,
                                               child: Stack(
@@ -845,21 +778,24 @@ class _SceneState extends State<Scene> {
                                                         width: 473 * fem,
                                                         height: 221 * fem,
                                                         child: Container(
-                                                          decoration:
-                                                              BoxDecoration(
+                                                          decoration: BoxDecoration(
                                                             borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        25 *
-                                                                            fem),
-                                                            color: const Color(
-                                                                0xffdbdfd1),
+                                                            BorderRadius.circular(
+                                                                25 * fem),
+                                                            color: const Color(0xffdbdfd1),
                                                           ),
                                                         ),
                                                       ),
                                                     ),
                                                   ),
                                                   Positioned(
+                                                    /*child: GestureDetector (
+                                                    *   onTap: () {
+                                                    * Navigator.of(context).push(
+                                                          MaterialPageRoute (
+                                                              builder: (BuildContext context) => placeholder(),
+                                                    *   }
+                                                    * )*/
                                                     // rectangle111YP (6:39)
                                                     left: 1 * fem,
                                                     top: 1 * fem,
@@ -868,19 +804,15 @@ class _SceneState extends State<Scene> {
                                                         width: 254 * fem,
                                                         height: 222 * fem,
                                                         child: Container(
-                                                          decoration:
-                                                              BoxDecoration(
+                                                          decoration: BoxDecoration(
                                                             borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        25 *
-                                                                            fem),
-                                                            image:
-                                                                const DecorationImage(
+                                                            BorderRadius.circular(
+                                                                25 * fem),
+                                                            image: DecorationImage(
                                                               fit: BoxFit.cover,
-                                                              image: AssetImage(
+                                                              image: /*AssetImage(
                                                                 'assets/page-1/images/rectangle-11-bg.png',
-                                                              ),
+                                                              ),*/ NetworkImage(dinner['image']),
                                                             ),
                                                           ),
                                                         ),
@@ -897,40 +829,29 @@ class _SceneState extends State<Scene> {
                                                         height: 170 * fem,
                                                         child: RichText(
                                                           text: TextSpan(
-                                                            style:
-                                                                SafeGoogleFont(
+                                                            style: SafeGoogleFont(
                                                               'Inter',
-                                                              fontSize:
-                                                                  24 * ffem,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
-                                                              height: 1.2125 *
-                                                                  ffem /
-                                                                  fem,
-                                                              color: const Color(
-                                                                  0xff000000),
+                                                              fontSize: 24 * ffem,
+                                                              fontWeight: FontWeight.w500,
+                                                              height: 1.2125 * ffem / fem,
+                                                              color:
+                                                              const Color(0xff000000),
                                                             ),
                                                             children: [
-                                                              const TextSpan(
-                                                                text:
-                                                                    'Spaghetti and meatballs\n\n\n\n',
-                                                              ),
                                                               TextSpan(
                                                                 text:
-                                                                    'Prep time: 25 mins',
-                                                                style:
-                                                                    SafeGoogleFont(
+                                                                /*'Spaghetti and meatballs\n\n\n\n'*/
+                                                                dinner['title']+'\n\n',
+                                                              ),
+                                                              TextSpan(
+                                                                text: /*'Prep time: 25 mins'*/'Total prep time:' + lunch['preperationMinutes'].toString() + 'mins',
+                                                                style: SafeGoogleFont(
                                                                   'Inter',
-                                                                  fontSize:
-                                                                      20 * ffem,
+                                                                  fontSize: 20 * ffem,
                                                                   fontWeight:
-                                                                      FontWeight
-                                                                          .w500,
+                                                                  FontWeight.w500,
                                                                   height:
-                                                                      1.2125 *
-                                                                          ffem /
-                                                                          fem,
+                                                                  1.2125 * ffem / fem,
                                                                   color: const Color(
                                                                       0xff000000),
                                                                 ),
@@ -998,6 +919,18 @@ class _SceneState extends State<Scene> {
                           // circleleftHpf (4:6)
                           left: 703 * fem,
                           top: 125 * fem,
+                          //to refresh recipes
+                          child: GestureDetector(
+                           onTap: () {
+                             setState(() {
+                               _allRecipes = {};
+                               });
+                             _fetchAllRecipes().then((recipes) {
+                               setState((){
+                                 _allRecipes = recipes;
+                               });
+                             });
+                           },
                           child: Align(
                             child: SizedBox(
                               width: 53 * fem,
@@ -1008,6 +941,7 @@ class _SceneState extends State<Scene> {
                                 height: 65 * fem,
                               ),
                             ),
+                          ),
                           ),
                         ),
                         Positioned(
@@ -1030,8 +964,7 @@ class _SceneState extends State<Scene> {
                                   height: double.infinity,
                                   decoration: BoxDecoration(
                                     color: const Color(0xffdbdfd1),
-                                    borderRadius:
-                                        BorderRadius.circular(25 * fem),
+                                    borderRadius: BorderRadius.circular(25 * fem),
                                   ),
                                   child: Align(
                                     // abouttoexpiredvT (6:12)
@@ -1039,11 +972,9 @@ class _SceneState extends State<Scene> {
                                     child: SizedBox(
                                       child: GestureDetector(
                                         onTap: () {
-                                          Navigator.of(context).push(
-                                              MaterialPageRoute(
-                                                  builder: (BuildContext
-                                                          context) =>
-                                                      const AboutToExpireList()));
+                                          Navigator.of(context).push(MaterialPageRoute(
+                                              builder: (BuildContext context) =>
+                                              const AboutToExpireList()));
                                         },
                                         child: Container(
                                           constraints: BoxConstraints(
@@ -1072,20 +1003,17 @@ class _SceneState extends State<Scene> {
                                   height: double.infinity,
                                   decoration: BoxDecoration(
                                     color: const Color(0xffdbdfd1),
-                                    borderRadius:
-                                        BorderRadius.circular(25 * fem),
+                                    borderRadius: BorderRadius.circular(25 * fem),
                                   ),
                                   child: Center(
                                     // mygrocerylistfkf (6:13)
                                     child: SizedBox(
                                       child: GestureDetector(
-                                        onTap: () {
+                                        onTap: (){
                                           Navigator.of(context).push(
-                                              MaterialPageRoute(
-                                                  builder: (BuildContext
-                                                          context) =>
-                                                      const GroceryListPage()));
-                                        },
+                                              MaterialPageRoute (
+                                                  builder: (BuildContext context) => const GroceryListPage()
+                                              ));},
                                         child: Container(
                                           constraints: BoxConstraints(
                                             maxWidth: 132 * fem,
@@ -1126,9 +1054,8 @@ class _SceneState extends State<Scene> {
                                 padding: const EdgeInsets.all(0.0),
                                 onPressed: () {
                                   Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (BuildContext context) =>
-                                          SettingsPage(),
+                                    MaterialPageRoute (
+                                      builder: (BuildContext context) => SettingsPage(),
                                     ),
                                   );
                                 },
@@ -1142,7 +1069,8 @@ class _SceneState extends State<Scene> {
                 ),
               );
             }
-          }),
+          }
+      ),
     );
   }
 }
