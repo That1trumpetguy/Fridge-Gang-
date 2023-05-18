@@ -94,9 +94,9 @@ class _SettingsPageState extends State<SettingsPage> {
                 //
                 height: 20,
               ),
-              buildNotificationRow("About to expire", true, height),
-              buildNotificationRow("Adding to grocery list", true, height),
-              buildNotificationRow("Account activity", true, height),
+              buildNotificationRow("About to expire", true, largeScreen),
+              buildNotificationRow("Adding to grocery list", true, largeScreen),
+              buildNotificationRow("Account activity", true, largeScreen),
               SizedBox(height: (largeScreen ? 40 : 20)),
               Center(
                 child: OutlinedButton(
