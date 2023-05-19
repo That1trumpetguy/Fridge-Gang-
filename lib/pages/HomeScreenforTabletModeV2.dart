@@ -407,8 +407,7 @@ class _SceneState extends State<Scene2> {
                                                       TextSpan(
                                                         text: /*'Vegetarian: ' + breakfast['vegetarian'].toString() + '\nGluten free: ' + breakfast['glutenFree'].toString()
                                                             + *//*'\n'+getMissingIngredients(breakfast)*/
-                                                        '\nYou are missing: \n' + breakfast['missedIngredientCount'].toString() + ' Ingredients'
-                                                        + '\nYou have: \n' + breakfast['usedIngredientCount'].toString()  + ' Ingredients',
+                                                        '\nYou are missing: \n' + breakfast['missedIngredientCount'].toString() + ' Ingredients',
                                                         style: SafeGoogleFont(
                                                           'Inter',
                                                           fontSize: screenWidth *
@@ -492,8 +491,7 @@ class _SceneState extends State<Scene2> {
                                                     ),
                                                     TextSpan(
                                                       text:/*'Vegetarian: ' + lunch['vegetarian'].toString() + '\nGluten free: ' + lunch['glutenFree'].toString()*/
-                                                      '\nYou are missing: \n' + breakfast['missedIngredientCount'].toString() + ' Ingredients'
-                                                        + '\nYou have: \n' + breakfast['usedIngredientCount'].toString()  + ' Ingredients',
+                                                      '\nYou are missing: \n' + breakfast['missedIngredientCount'].toString() + ' Ingredients',
                                                       style: SafeGoogleFont(
                                                         'Inter',
                                                         fontSize: screenWidth *
@@ -577,8 +575,7 @@ class _SceneState extends State<Scene2> {
                                                     ),
                                                     TextSpan(
                                                       text: /*'Vegetarian: ' + dinner['vegetarian'].toString() + '\nGluten free: ' + dinner['glutenFree'].toString()*/
-                                                      '\nYou are missing: \n' + breakfast['missedIngredientCount'].toString() + ' Ingredients'
-                                                      + '\nYou have: \n' + breakfast['usedIngredientCount'].toString()  + ' Ingredients',
+                                                      '\nYou are missing: \n' + breakfast['missedIngredientCount'].toString() + ' Ingredients',
                                                       style: SafeGoogleFont(
                                                         'Inter',
                                                         fontSize: screenWidth *
