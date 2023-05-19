@@ -178,7 +178,7 @@ class _SceneState extends State<Scene2> {
               bottom: 0,
               left: screenWidth/2 - (screenWidth * 0.3 / 2),
               child: SizedBox(
-                width: screenWidth * 0.3,
+                width: screenWidth * 0.2,
                 height: screenHeight * 0.1,
                 child: Align(
                   alignment: Alignment.center,
@@ -193,7 +193,7 @@ class _SceneState extends State<Scene2> {
                     icon: Image.asset(
                       'assets/page-1/images/camera.png',
                       width: screenWidth * 0.3,
-                      height: screenHeight * 0.2,
+                      height: screenHeight * 0.15,
                     ),
                   ),
                 ),
@@ -221,14 +221,14 @@ class _SceneState extends State<Scene2> {
                       child: Container(
                         alignment: Alignment.center,
                         color: Color(0xffdbdfd1),
-                        height: screenHeight * 0.05,
+                        height: screenHeight * 0.035,
                         width: screenWidth * 0.8,
                       child: DropdownButton<String>( //Dropdown menu.
                         value: value,
                         items: _listNames.map((String value) {
                           return DropdownMenuItem<String>(
                             value: value,
-                            child: Text(value, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
+                            child: Text(value, style: TextStyle(fontSize: screenWidth * 0.04, fontWeight: FontWeight.bold),),
                           );
                         }).toList(),
                         onChanged: (value) {
@@ -349,7 +349,10 @@ class _SceneState extends State<Scene2> {
                         // Breakfast Code below:
                         Container(
                           height: screenHeight * (0.65 / 3),
-                          color: const Color(0xffdbdfd1),
+                          decoration: BoxDecoration(
+                            color: const Color(0xffdbdfd1),
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
                           child: Column(
                             children: [
                               Text(
@@ -388,41 +391,43 @@ class _SceneState extends State<Scene2> {
                                     Positioned(
                                       left: screenWidth * 0.21,
                                         child: SizedBox(
-                                          child: Expanded(
+                                          height: screenHeight * 0.5,
+                                          width: screenWidth * 0.4,
                                             child: Column(
                                               children: [
-                                                RichText(
-                                                  text: TextSpan(
-                                                    style: SafeGoogleFont(
-                                                      'Inter',
-                                                      fontSize: screenWidth * 0.03,
-                                                      fontWeight: FontWeight.w500,
-                                                      color: const Color(0xff000000),
-                                                    ),
-                                                    children: [
-                                                      TextSpan(
-                                                          text: breakfast['title'] +
-                                                              '\n\n'
+                                                Flexible(
+                                                  child: RichText(
+                                                    text: TextSpan(
+                                                      style: SafeGoogleFont(
+                                                        'Inter',
+                                                        fontSize: screenWidth * 0.03,
+                                                        fontWeight: FontWeight.w500,
+                                                        color: const Color(0xff000000),
                                                       ),
-                                                      TextSpan(
-                                                        text: /*'Vegetarian: ' + breakfast['vegetarian'].toString() + '\nGluten free: ' + breakfast['glutenFree'].toString()
-                                                            + *//*'\n'+getMissingIngredients(breakfast)*/
-                                                        '\nYou are missing: \n' + breakfast['missedIngredientCount'].toString() + ' Ingredients',
-                                                        style: SafeGoogleFont(
-                                                          'Inter',
-                                                          fontSize: screenWidth *
-                                                              0.03,
-                                                          fontWeight: FontWeight.w500,
-                                                          color: const Color(
-                                                              0xff000000),
+                                                      children: [
+                                                        TextSpan(
+                                                            text: breakfast['title'] +
+                                                                '\n\n'
                                                         ),
-                                                      ),
-                                                    ],
+                                                        TextSpan(
+                                                          text: /*'Vegetarian: ' + breakfast['vegetarian'].toString() + '\nGluten free: ' + breakfast['glutenFree'].toString()
+                                                              + *//*'\n'+getMissingIngredients(breakfast)*/
+                                                          '\nYou are missing: \n' + breakfast['missedIngredientCount'].toString() + ' Ingredients',
+                                                          style: SafeGoogleFont(
+                                                            'Inter',
+                                                            fontSize: screenWidth *
+                                                                0.03,
+                                                            fontWeight: FontWeight.w500,
+                                                            color: const Color(
+                                                                0xff000000),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
                                                 ),
                                               ],
                                             ),
-                                          ),
                                         ),
                                     ),
                                   ],
@@ -431,10 +436,15 @@ class _SceneState extends State<Scene2> {
                             ],
                           ),
                         ),
+                        // Divider
+                        SizedBox(height: screenHeight * 0.02,),
                         // Lunch Code below:
                         Container(
                           height: screenHeight * (0.65 / 3),
-                          color: const Color(0xffdbdfd1),
+                          decoration: BoxDecoration(
+                            color: const Color(0xffdbdfd1),
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
                           child: Column(
                             children: [
                               Text(
@@ -473,40 +483,42 @@ class _SceneState extends State<Scene2> {
                                     Positioned(
                                       left: screenWidth * 0.21,
                                       child: SizedBox(
-                                        child: Expanded(
+                                        height: screenHeight * 0.5,
+                                        width: screenWidth * 0.4,
                                           child: Column(
                                             children: [
-                                              RichText(
-                                                text: TextSpan(
-                                                  style: SafeGoogleFont(
-                                                    'Inter',
-                                                    fontSize: screenWidth * 0.03,
-                                                    fontWeight: FontWeight.w500,
-                                                    color: const Color(0xff000000),
-                                                  ),
-                                                  children: [
-                                                    TextSpan(
-                                                        text: lunch['title'] +
-                                                            '\n\n'
+                                              Flexible(
+                                                child: RichText(
+                                                  text: TextSpan(
+                                                    style: SafeGoogleFont(
+                                                      'Inter',
+                                                      fontSize: screenWidth * 0.03,
+                                                      fontWeight: FontWeight.w500,
+                                                      color: const Color(0xff000000),
                                                     ),
-                                                    TextSpan(
-                                                      text:/*'Vegetarian: ' + lunch['vegetarian'].toString() + '\nGluten free: ' + lunch['glutenFree'].toString()*/
-                                                      '\nYou are missing: \n' + breakfast['missedIngredientCount'].toString() + ' Ingredients',
-                                                      style: SafeGoogleFont(
-                                                        'Inter',
-                                                        fontSize: screenWidth *
-                                                            0.03,
-                                                        fontWeight: FontWeight.w500,
-                                                        color: const Color(
-                                                            0xff000000),
+                                                    children: [
+                                                      TextSpan(
+                                                          text: lunch['title'] +
+                                                              '\n\n'
                                                       ),
-                                                    ),
-                                                  ],
+                                                      TextSpan(
+                                                        text:/*'Vegetarian: ' + lunch['vegetarian'].toString() + '\nGluten free: ' + lunch['glutenFree'].toString()*/
+                                                        '\nYou are missing: \n' + breakfast['missedIngredientCount'].toString() + ' Ingredients',
+                                                        style: SafeGoogleFont(
+                                                          'Inter',
+                                                          fontSize: screenWidth *
+                                                              0.03,
+                                                          fontWeight: FontWeight.w500,
+                                                          color: const Color(
+                                                              0xff000000),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
                                             ],
                                           ),
-                                        ),
                                       ),
                                     ),
                                   ],
@@ -515,10 +527,15 @@ class _SceneState extends State<Scene2> {
                             ],
                           ),
                         ),
+                        // Divider
+                        SizedBox(height: screenHeight * 0.02,),
                         // Dinner Code below:
                         Container(
                           height: screenHeight * (0.65 / 3),
-                          color: const Color(0xffdbdfd1),
+                          decoration: BoxDecoration(
+                            color: const Color(0xffdbdfd1),
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
                           child: Column(
                             children: [
                               Text(
@@ -557,40 +574,42 @@ class _SceneState extends State<Scene2> {
                                     Positioned(
                                       left: screenWidth * 0.21,
                                       child: SizedBox(
-                                        child: Expanded(
+                                        height: screenHeight * 0.5,
+                                        width: screenWidth * 0.4,
                                           child: Column(
                                             children: [
-                                              RichText(
-                                                text: TextSpan(
-                                                  style: SafeGoogleFont(
-                                                    'Inter',
-                                                    fontSize: screenWidth * 0.03,
-                                                    fontWeight: FontWeight.w500,
-                                                    color: const Color(0xff000000),
-                                                  ),
-                                                  children: [
-                                                    TextSpan(
-                                                        text: dinner['title'] +
-                                                            '\n\n'
+                                              Flexible(
+                                                child: RichText(
+                                                  text: TextSpan(
+                                                    style: SafeGoogleFont(
+                                                      'Inter',
+                                                      fontSize: screenWidth * 0.03,
+                                                      fontWeight: FontWeight.w500,
+                                                      color: const Color(0xff000000),
                                                     ),
-                                                    TextSpan(
-                                                      text: /*'Vegetarian: ' + dinner['vegetarian'].toString() + '\nGluten free: ' + dinner['glutenFree'].toString()*/
-                                                      '\nYou are missing: \n' + breakfast['missedIngredientCount'].toString() + ' Ingredients',
-                                                      style: SafeGoogleFont(
-                                                        'Inter',
-                                                        fontSize: screenWidth *
-                                                            0.03,
-                                                        fontWeight: FontWeight.w500,
-                                                        color: const Color(
-                                                            0xff000000),
+                                                    children: [
+                                                      TextSpan(
+                                                          text: dinner['title'] +
+                                                              '\n\n'
                                                       ),
-                                                    ),
-                                                  ],
+                                                      TextSpan(
+                                                        text: /*'Vegetarian: ' + dinner['vegetarian'].toString() + '\nGluten free: ' + dinner['glutenFree'].toString()*/
+                                                        '\nYou are missing: \n' + breakfast['missedIngredientCount'].toString() + ' Ingredients',
+                                                        style: SafeGoogleFont(
+                                                          'Inter',
+                                                          fontSize: screenWidth *
+                                                              0.03,
+                                                          fontWeight: FontWeight.w500,
+                                                          color: const Color(
+                                                              0xff000000),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
                                             ],
                                           ),
-                                        ),
                                       ),
                                     ),
                                   ],
