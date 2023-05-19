@@ -11,7 +11,6 @@ class ListItemHelper {
 
     var data = await Future.wait([getList("me", "Grocery List")]);
     List<ListItem> foodList = [];
-    print("hi");
 
     for(var i = 0; i < data[0].length; i++) {
       print(data[0][i]["image"]);
@@ -27,7 +26,6 @@ class ListItemHelper {
 
     var data = await Future.wait([getList(username, listName)]);
     List<ListItem> foodList = [];
-    print("hi");
 
     for(var i = 0; i < data[0].length; i++) {
       print(data[0][i]["image"]);
@@ -73,5 +71,40 @@ class ListItemHelper {
     final ref = db.collection("users").doc(username).collection(listName).doc(foodName);
     ref.set(foodItem);
 
+  }
+
+
+  // deletes item from database based on name/doc title
+  static void deleteItem(String username, String listName, String foodName) {
+
+    FirebaseFirestore db = FirebaseFirestore.instance;
+
+    final ref = db.collection("users").doc(username).collection(listName).doc(foodName);
+    ref.delete().then(
+      (doc) => print("Document deleted"),
+      onError: (e) => print("Error updating document $e")
+    );
+
+  }
+
+  static Future<String> getAllItems(String username) async {
+    String full = "";
+
+    var listFridge = await Future.wait([getList(username, "Fridge")]);
+    var listPantry = await Future.wait([getList(username, "Pantry")]);
+
+    for (int i = 0; i < listFridge[0].length; i++) {
+      full += listFridge[0][i]['name'];
+      full += ", ";
+    }
+
+    for (int i = 0; i < listPantry[0].length; i++) {
+      full += listPantry[0][i]['name'];
+      full += ", ";
+    }
+
+    full = full.substring(0, full.length - 2);
+
+    return full;
   }
 }

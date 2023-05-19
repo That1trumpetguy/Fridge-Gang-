@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-
-
+import 'package:flutter_app/helpers/ListItemHelper.dart';
+import 'dart:math';
 Future<Map<String, dynamic>> fetchRecipeData( int recipeId) async {
   final response = await http.get(Uri.parse(
-      'https://api.spoonacular.com/recipes/$recipeId/information?apiKey=2050d2039ea145d2bace74820055e741'));
+      'https://api.spoonacular.com/recipes/$recipeId/information?apiKey=ad3b706596fe4906afa0e9c75935188b'));
 
   if (response.statusCode == 200) {
     return jsonDecode(response.body);
@@ -14,41 +14,93 @@ Future<Map<String, dynamic>> fetchRecipeData( int recipeId) async {
 }
 
 Future<Map<String, dynamic>> fetchBreakfastRecipe() async {
-  final response = await http.get(Uri.parse(
-      'https://api.spoonacular.com/recipes/random?apiKey=c6ffa181d6d044d59f1076d9e79bf391&tags=breakfast'));
+  //get the list of everything in fridge and pantry
+  final list = await ListItemHelper.getAllItems('me');
+  print(list);
 
-  if (response.statusCode == 200) {
-    final recipe = json.decode(response.body)['recipes'][0];
-    print(recipe);
-    return recipe;
-  } else {
-    throw Exception('Failed to load recipe');
+  final ingredients = list.split(',');
+  // checks for recipies with ingredients in list,
+  // if none exist then less ingridients are given from list
+  for (int i = ingredients.length; i > 0; i--) {
+    final subList = ingredients.sublist(0, i);
+
+    final response = await http.get(Uri.parse(
+        'https://api.spoonacular.com/recipes/findByIngredients?apiKey=97a3b568b7354f4e928080e59baea073&ingredients=${subList.join(',')}&number=100&tags=breakfast&ranking=2'
+    ));
+    Random random = Random();
+    if (response.statusCode == 200) {
+      final recipes = json.decode(response.body) as List<dynamic>;
+      if (recipes.isNotEmpty) {
+        final recipe = recipes[random.nextInt(100)];
+        print(recipe);
+        return recipe;
+      }
+    } else {
+      throw Exception('Failed to load recipe');
+    }
   }
+  throw Exception('No recipe found using the specified ingredients');
 }
-Future<Map<String, dynamic>> fetchLunchRecipes() async {
-  final response = await http.get(Uri.parse(
-      'https://api.spoonacular.com/recipes/random?apiKey=c6ffa181d6d044d59f1076d9e79bf391&tags=lunch'));
 
-  if (response.statusCode == 200) {
-    final recipes = json.decode(response.body)['recipes'][0];
-    print(recipes);
-    return recipes;
-  } else {
-    throw Exception('Failed to load lunch recipes');
+Future<Map<String, dynamic>> fetchLunchRecipes() async {
+//get the list of everything in fridge and pantry
+  final list = await ListItemHelper.getAllItems('me');
+  print(list);
+
+  final ingredients = list.split(',');
+  // checks for recipies with ingredients in list,
+  // if none exist then less ingridients are given from list
+  for (int i = ingredients.length; i > 0; i--) {
+    final subList = ingredients.sublist(0, i);
+
+    final response = await http.get(Uri.parse(
+        'https://api.spoonacular.com/recipes/findByIngredients?apiKey=97a3b568b7354f4e928080e59baea073&ingredients=${subList.join(',')}&number=100&tags=lunch&ranking=2'
+    ));
+    Random random = Random();
+
+    if (response.statusCode == 200) {
+      final recipes = json.decode(response.body) as List<dynamic>;
+      if (recipes.isNotEmpty) {
+        final recipe = recipes[random.nextInt(100)];
+        print(recipe);
+        return recipe;
+      }
+    } else {
+      throw Exception('Failed to load recipe');
+    }
   }
+  throw Exception('No recipe found using the specified ingredients');
 }
 
 Future<Map<String, dynamic>> fetchDinnerRecipes() async {
-  final response = await http.get(Uri.parse(
-      'https://api.spoonacular.com/recipes/random?apiKey=c6ffa181d6d044d59f1076d9e79bf391&tags=dinner'));
+    //get the list of everything in fridge and pantry
+    final list = await ListItemHelper.getAllItems('me');
+    print(list);
 
-  if (response.statusCode == 200) {
-    final recipes = json.decode(response.body)['recipes'][0];
-    print(recipes);
-    return recipes;
-  } else {
-    throw Exception('Failed to load dinner recipes');
-  }
+    final ingredients = list.split(',');
+    // checks for recipies with ingredients in list,
+    // if none exist then less ingridients are given from list
+    for (int i = ingredients.length; i > 0; i--) {
+      final subList = ingredients.sublist(0, i);
+
+      final response = await http.get(Uri.parse(
+          'https://api.spoonacular.com/recipes/findByIngredients?apiKey=97a3b568b7354f4e928080e59baea073&ingredients=${subList.join(',')}&number=100&tags=dinner&ranking=2'
+      ));
+      Random random = Random();
+      if (response.statusCode == 200) {
+        final recipes = json.decode(response.body) as List<dynamic>;
+        if (recipes.isNotEmpty) {
+          final recipe = recipes[random.nextInt(100)];
+          print(recipe);
+          return recipe;
+        }
+      } else {
+        throw Exception('Failed to load recipe');
+      }
+    }
+    throw Exception('No recipe found using the specified ingredients');
+
+
 }
 
 
@@ -60,6 +112,4 @@ void testFetchRandomRecipe() async {
     print('Error: $e');
   }
 }
-//void main() {
- // testFetchRandomRecipe();
-//}
+

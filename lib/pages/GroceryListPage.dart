@@ -1,8 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/helpers/ListItemHelper.dart';
 import 'package:flutter_app/pages/SearchBarPopUpPage.dart';
 import 'package:flutter_app/widget/ListCard.dart';
+
 import '../models/ListItem.dart';
 
 class GroceryListPage extends StatefulWidget {
@@ -54,9 +54,7 @@ class _GroceryListPageState extends State<GroceryListPage> {
                 style: TextStyle(fontSize: screenHeight * 0.05),
               ),
             ),
-            SizedBox(
-              height: screenHeight * 0.65,
-              width: screenWidth * 0.8,
+            Expanded(
               child: FutureBuilder(
                   future: something(),
                   builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
@@ -66,8 +64,8 @@ class _GroceryListPageState extends State<GroceryListPage> {
                     } else {
                       print("there");
                       return ListView.builder(
-                        itemCount: groceryList
-                            .length, //Todo: add grocery list size here.
+                        itemCount: groceryList.length,
+                        //Todo: add grocery list size here.
                         itemBuilder: (BuildContext context, int index) {
                           return ListCard(item: groceryList[index]);
                         },

@@ -1,7 +1,9 @@
 import 'dart:async';
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_app/helpers/ListItemHelper.dart';
+import 'package:flutter_app/models/ListItem.dart';
 import 'package:flutter_app/pages/SearchBarPopUpPage.dart';
 import 'package:flutter_app/style.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
@@ -19,6 +21,7 @@ class BarScanner extends StatefulWidget {
 
 class _BarScannerState extends State<BarScanner> {
   String CodeScan = 'None';
+
   @override
   void initState() {
     super.initState();
@@ -69,13 +72,24 @@ class _BarScannerState extends State<BarScanner> {
 
   @override
   Widget build(BuildContext context) {
+    var screenSize = MediaQuery.of(context).size;
+    var largeScreen = screenSize.width > 480 ? true : false;
+
     final ButtonStyle style =
         ElevatedButton.styleFrom(backgroundColor: ColorConstant.teal300);
     return MaterialApp(
         home: Scaffold(
             appBar: AppBar(
-                title: const Text('Barcode Scan Util'),
-                backgroundColor: ColorConstant.teal300),
+              leading: BackButton(
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+              title: Text('Barcode Scan Util',
+                  style: TextStyle(
+                    fontSize: (largeScreen ? 30 : 30),
+                  )),
+              toolbarHeight: 100,
+              backgroundColor: ColorConstant.teal300,
+            ),
             body: Builder(builder: (BuildContext context) {
               return Container(
                   alignment: Alignment.center,
@@ -84,11 +98,16 @@ class _BarScannerState extends State<BarScanner> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         ElevatedButton(
-                            onPressed: () => ScanNormal(),
-                            child: const Text('Start Barcode Scan'),
-                            style: style),
+                          onPressed: () => ScanNormal(),
+                          child: const Text('Start Barcode Scan'),
+                          style: ElevatedButton.styleFrom(
+                            textStyle:
+                                TextStyle(fontSize: (largeScreen ? 30 : 20)),
+                          ),
+                        ),
                         Text('Scan Result: $CodeScan\n',
-                            style: const TextStyle(fontSize: 20)),
+                            style:
+                                TextStyle(fontSize: (largeScreen ? 40 : 30))),
                       ]));
             })));
   }
