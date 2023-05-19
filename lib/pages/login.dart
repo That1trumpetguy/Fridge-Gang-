@@ -9,9 +9,6 @@ import 'package:flutter_app/main.dart';
 import 'package:flutter_app/style.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-
-import 'HomeScreenforTabletModeV2.dart';
-
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
