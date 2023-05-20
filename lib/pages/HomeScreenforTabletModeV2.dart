@@ -248,20 +248,8 @@ class _SceneState extends State<Scene2> {
                         color: Color(0xffdbdfd1),
                         height: screenHeight * 0.035,
                         width: screenWidth * 0.8,
-<<<<<<< Updated upstream
-                      child: DropdownButton<String>( //Dropdown menu.
-                        value: value,
-                        items: _listNames.map((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value, style: TextStyle(fontSize: screenWidth * 0.04, fontWeight: FontWeight.bold),),
-                          );
-                        }).toList(),
-                        onChanged: (value) {
-=======
->>>>>>> Stashed changes
 
-                      child: FutureBuilder(
+                        child: FutureBuilder(
                         future: getMyLists('me'),
                         builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
                           if (!snapshot.hasData){

@@ -14,18 +14,15 @@ Future<Map<String, dynamic>> fetchRecipeData( int recipeId) async {
 }
 
 Future<Map<String, dynamic>> fetchBreakfastRecipe() async {
-<<<<<<< Updated upstream
+
   //get the list of everything in fridge and pantry
   final list = await ListItemHelper.getAllItems('me');
-=======
+
   final response = await http.get(Uri.parse(
 
   'https://api.spoonacular.com/recipes/random?apiKey=933f7d17315f4dd9bd09fa5f302affb4&tags=breakfast'));
 
 
-
-  final list = await ListItemHelper.getList('me','Fridge');
->>>>>>> Stashed changes
   print(list);
 
   final ingredients = list.split(',');
@@ -53,17 +50,8 @@ Future<Map<String, dynamic>> fetchBreakfastRecipe() async {
 }
 
 Future<Map<String, dynamic>> fetchLunchRecipes() async {
-<<<<<<< Updated upstream
-//get the list of everything in fridge and pantry
+
   final list = await ListItemHelper.getAllItems('me');
-  print(list);
-=======
-  final response = await http.get(Uri.parse(
-
-      'https://api.spoonacular.com/recipes/random?apiKey=933f7d17315f4dd9bd09fa5f302affb4&tags=lunch'));
-
->>>>>>> Stashed changes
-
   final ingredients = list.split(',');
   // checks for recipies with ingredients in list,
   // if none exist then less ingridients are given from list
@@ -90,7 +78,6 @@ Future<Map<String, dynamic>> fetchLunchRecipes() async {
 }
 
 Future<Map<String, dynamic>> fetchDinnerRecipes() async {
-<<<<<<< Updated upstream
     //get the list of everything in fridge and pantry
     final list = await ListItemHelper.getAllItems('me');
     print(list);
@@ -117,13 +104,6 @@ Future<Map<String, dynamic>> fetchDinnerRecipes() async {
       }
     }
     throw Exception('No recipe found using the specified ingredients');
-=======
-  final response = await http.get(Uri.parse(
-
-      'https://api.spoonacular.com/recipes/random?apiKey=933f7d17315f4dd9bd09fa5f302affb4&tags=dinner'));
->>>>>>> Stashed changes
-
-
 }
 
 

@@ -87,7 +87,6 @@ class ListItemHelper {
     );
 
   }
-<<<<<<< Updated upstream
 
   static Future<String> getAllItems(String username) async {
     String full = "";
@@ -109,7 +108,6 @@ class ListItemHelper {
 
     return full;
   }
-=======
   
   static Future<List<ListType>> fetchListNames(String userName) async {
 
@@ -153,5 +151,4 @@ class ListItemHelper {
     return listNames;
   }
 
->>>>>>> Stashed changes
 }
