@@ -118,6 +118,6 @@ Future<DateTime> fetchExpirationDate(String itemName) async {
   return DateTime.now().add(Duration(days: 7));
 }
 void main() {
-   getExpiryDate('me', 'Fridge');
+   getExpiryDate('me', 'Fridge List');
 
 }

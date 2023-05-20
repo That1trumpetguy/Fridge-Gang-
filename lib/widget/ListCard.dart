@@ -82,8 +82,8 @@ class _ListCardState extends State<ListCard> {
                   borderRadius: BorderRadius.circular(screenWidth * 0.150),
                   child: CachedNetworkImage(
                     cacheManager: ListCard.customCacheManager,
-                    height: screenHeight * .140,
-                    width: screenWidth* .140,
+                    height: screenHeight * .130,
+                    width: screenWidth* .130,
                     key: UniqueKey(),
                     imageUrl: widget.item.imageName,
                     placeholder: (context,url) => Container(color: Colors.black12,),
@@ -105,7 +105,7 @@ class _ListCardState extends State<ListCard> {
                       children: [
                         Text(
                             widget.item.itemName,
-                            style: TextStyle(fontSize: screenWidth * 0.04),
+                            style: TextStyle(fontSize: screenWidth * 0.03),
                             textAlign: TextAlign.left,
                             overflow: TextOverflow.visible,
                         ),
@@ -114,7 +114,7 @@ class _ListCardState extends State<ListCard> {
                           children: [
                              Text(
                                 "Quantity:",
-                                style: TextStyle(fontSize: screenWidth * 0.04),
+                                style: TextStyle(fontSize: screenWidth * 0.03),
                                 textAlign: TextAlign.left
                             ),
                             Row(
@@ -134,7 +134,7 @@ class _ListCardState extends State<ListCard> {
                                 ),
                                 Text(
                                   "$counter",
-                                  style: TextStyle(fontSize: screenWidth * 0.04),
+                                  style: TextStyle(fontSize: screenWidth * 0.03),
                                 ),
                                 IconButton(
                                   icon: Icon(

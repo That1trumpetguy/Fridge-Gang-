@@ -90,8 +90,8 @@ class ListItemHelper {
   static Future<String> getAllItems(String username) async {
     String full = "";
 
-    var listFridge = await Future.wait([getList(username, "Fridge")]);
-    var listPantry = await Future.wait([getList(username, "Pantry")]);
+    var listFridge = await Future.wait([getList(username, "Fridge List")]);
+    var listPantry = await Future.wait([getList(username, "Pantry List")]);
 
     for (int i = 0; i < listFridge[0].length; i++) {
       full += listFridge[0][i]['name'];
