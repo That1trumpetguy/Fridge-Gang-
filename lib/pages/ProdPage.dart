@@ -30,7 +30,7 @@ class ProdPage extends StatelessWidget {
             ),
             SizedBox(height: 8),
             Text(
-              'Generic Name: ${product?.genericName ?? 'N/A'}',
+              'Product Category: ${product?.categories ?? 'N/A'}',
               style: TextStyle(fontSize: 18),
             ),
             SizedBox(height: 8),
@@ -44,6 +44,7 @@ class ProdPage extends StatelessWidget {
                   expirationDate: '5/13/2023',
                 );
                 onAddToList(newItem);
+                Navigator.of(context).pop();
               },
               child: Text('Add to List'),
             ),
