@@ -2,6 +2,7 @@ import 'package:flutter_app/models/ListItem.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import '../firebase_options.dart';
+import '../models/ListType.dart';
 
 //Class to derive lists (grocery, fridge, custom) from the database.
 class ListItemHelper {
@@ -86,6 +87,7 @@ class ListItemHelper {
     );
 
   }
+<<<<<<< Updated upstream
 
   static Future<String> getAllItems(String username) async {
     String full = "";
@@ -107,4 +109,49 @@ class ListItemHelper {
 
     return full;
   }
+=======
+  
+  static Future<List<ListType>> fetchListNames(String userName) async {
+
+    /*
+    CollectionReference ref = FirebaseFirestore.instance.collection("users").doc(userName).collection('Lists');
+
+    List allData = [];
+
+    await ref.get().then(
+          (querySnapshot) {
+        print("Successfully completed");
+        for (var docSnapshot in querySnapshot.docs) {
+          final stuff = docSnapshot.data();
+          allData.add(stuff);
+        }
+      },
+      onError: (e) => print("Error completing: $e"),
+    );
+
+    allData.forEach((element) {print(element); });
+
+    return(allData);
+
+
+     */
+    var data = await Future.wait([getList("me", "Lists")]);
+
+    List<ListType> listNames = [];
+
+    for(var i = 0; i < data[0].length; i++) {
+      print(data[0][i]["image"]);
+      ListType temp = ListType(
+        listName: data[0][i]["name"],
+        isGroceryList: data[0][i]["isGroceryList"],
+        isPantryList:data[0][i]["isPantryList"],
+          isFridgeList: data[0][i]["isFridgeList"],
+      isFreezerList: data[0][i]["isFreezerList"]);
+      listNames.add(temp);
+    }
+
+    return listNames;
+  }
+
+>>>>>>> Stashed changes
 }

@@ -5,7 +5,7 @@ import 'package:flutter_app/pages/EditProfilePage.dart';
 import 'package:flutter_app/style.dart';
 
 class SettingsPage extends StatefulWidget {
-  SettingsPage({Key? key}) : super(key: key);
+  const SettingsPage({Key? key}) : super(key: key);
 
   @override
   State<SettingsPage> createState() => _SettingsPageState();

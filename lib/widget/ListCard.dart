@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_app/helpers/ListItemHelper.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter/material.dart';
@@ -16,11 +17,13 @@ class ListCard extends StatefulWidget {
      )
   );
    ListCard({
-    Key? key, required this.item,
+    Key? key, required this.item, required this.index, required this.foodList,
   }) : super(key: key);
 
   //Reference for the current list item.
  final ListItem item;
+ final int index;
+ final List<ListItem> foodList;
 
   @override
   State<ListCard> createState() => _ListCardState();
@@ -52,6 +55,12 @@ class _ListCardState extends State<ListCard> {
         children: [
           SlidableAction(onPressed: (context){
             //Do action here //todo: add action to remove from list.
+            print(widget.item.itemName);
+            ListItemHelper.deleteItem('me', 'Grocery List', widget.item.itemName);
+
+            setState(() {
+              widget.foodList.removeAt(widget.index);
+            });
           },
             //borderRadius: BorderRadius.circular(20),
             backgroundColor: Colors.red,
@@ -109,6 +118,7 @@ class _ListCardState extends State<ListCard> {
                             textAlign: TextAlign.left,
                             overflow: TextOverflow.visible,
                         ),
+                        /*
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -118,6 +128,7 @@ class _ListCardState extends State<ListCard> {
                                 textAlign: TextAlign.left
                             ),
                             Row(
+
                               children: [
                                 counter !=0 ? IconButton(
                                   icon: Icon(
@@ -150,7 +161,7 @@ class _ListCardState extends State<ListCard> {
                             ),
                           ],
                         )
-
+*/
                       ],
                   ),
                    ),
