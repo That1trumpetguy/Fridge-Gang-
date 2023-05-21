@@ -1,21 +1,21 @@
-import 'package:flutter_app/models/ListItem.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
-import '../firebase_options.dart';
+import 'package:flutter_app/models/ListItem.dart';
+
 import '../models/ListType.dart';
 
 //Class to derive lists (grocery, fridge, custom) from the database.
 class ListItemHelper {
-  
   //Derives a list of grocery items from database. This is static for now....
   static Future<List<ListItem>> getGroceryListItems() async {
-
     var data = await Future.wait([getList("me", "Grocery List")]);
     List<ListItem> foodList = [];
 
-    for(var i = 0; i < data[0].length; i++) {
+    for (var i = 0; i < data[0].length; i++) {
       print(data[0][i]["image"]);
-      ListItem temp = ListItem(itemName: data[0][i]["name"], imageName: data[0][i]["image"], expirationDate: "05/06/2023");
+      ListItem temp = ListItem(
+          itemName: data[0][i]["name"],
+          imageName: data[0][i]["image"],
+          expirationDate: "05/06/2023");
       foodList.add(temp);
     }
 
@@ -23,28 +23,33 @@ class ListItemHelper {
   }
 
   //Derives a list of grocery items from database. This is static for now....
-  static Future<List<ListItem>> getItems(String username, String listName) async {
-
+  static Future<List<ListItem>> getItems(
+      String username, String listName) async {
     var data = await Future.wait([getList(username, listName)]);
     List<ListItem> foodList = [];
 
-    for(var i = 0; i < data[0].length; i++) {
+    for (var i = 0; i < data[0].length; i++) {
       print(data[0][i]["image"]);
-      ListItem temp = ListItem(itemName: data[0][i]["name"], imageName: data[0][i]["image"], expirationDate: "05/06/2023");
+      ListItem temp = ListItem(
+          itemName: data[0][i]["name"],
+          imageName: data[0][i]["image"] ??
+              "https://spoonacular.com/cdn/ingredients_100x100/apple.jpg",
+          expirationDate: "05/06/2023");
       foodList.add(temp);
     }
 
     return foodList;
   }
 
-
   // gets the data from a specific list (grocery, fridge, etc.)
   static Future<List> getList(String username, String listName) async {
-
-    CollectionReference ref = FirebaseFirestore.instance.collection("users").doc(username).collection(listName);
+    CollectionReference ref = FirebaseFirestore.instance
+        .collection("users")
+        .doc(username)
+        .collection(listName);
 
     List allData = [];
-    
+
     await ref.get().then(
       (querySnapshot) {
         print("Successfully completed");
@@ -55,12 +60,12 @@ class ListItemHelper {
       },
       onError: (e) => print("Error completing: $e"),
     );
-    return(allData);
+    return (allData);
   }
 
-  static void addItem(String username, String listName, String foodName, String foodType, String imgURL, String expDate) {
-    
-    final foodItem = <String, dynamic> {
+  static void addItem(String username, String listName, String foodName,
+      String foodType, String imgURL, String expDate) {
+    final foodItem = <String, dynamic>{
       "name": foodName,
       "food type": foodType,
       "expiration date": expDate,
@@ -69,23 +74,19 @@ class ListItemHelper {
 
     FirebaseFirestore db = FirebaseFirestore.instance;
 
-    final ref = db.collection("users").doc(username).collection(listName).doc(foodName);
+    final ref =
+        db.collection("users").doc(username).collection(listName).doc(foodName);
     ref.set(foodItem);
-
   }
-
 
   // deletes item from database based on name/doc title
   static void deleteItem(String username, String listName, String foodName) {
-
     FirebaseFirestore db = FirebaseFirestore.instance;
 
-    final ref = db.collection("users").doc(username).collection(listName).doc(foodName);
-    ref.delete().then(
-      (doc) => print("Document deleted"),
-      onError: (e) => print("Error updating document $e")
-    );
-
+    final ref =
+        db.collection("users").doc(username).collection(listName).doc(foodName);
+    ref.delete().then((doc) => print("Document deleted"),
+        onError: (e) => print("Error updating document $e"));
   }
 
   static Future<String> getAllItems(String username) async {
@@ -108,7 +109,8 @@ class ListItemHelper {
 
     for (var i = 0; i < data[0].length; i++) {
       if (data[0][i]["isGroceryList"] == "false") {
-        var listCustom = await Future.wait([getList(username, data[0][i]["name"])]);
+        var listCustom =
+            await Future.wait([getList(username, data[0][i]["name"])]);
         for (int i = 0; i < listPantry[0].length; i++) {
           full += listCustom[0][i]['name'];
           full += ", ";
@@ -120,9 +122,8 @@ class ListItemHelper {
 
     return full;
   }
-  
-  static Future<List<ListType>> fetchListNames(String userName) async {
 
+  static Future<List<ListType>> fetchListNames(String userName) async {
     /*
     CollectionReference ref = FirebaseFirestore.instance.collection("users").doc(userName).collection('Lists');
 
@@ -149,18 +150,17 @@ class ListItemHelper {
 
     List<ListType> listNames = [];
 
-    for(var i = 0; i < data[0].length; i++) {
+    for (var i = 0; i < data[0].length; i++) {
       print(data[0][i]["image"]);
       ListType temp = ListType(
-        listName: data[0][i]["name"],
-        isGroceryList: data[0][i]["isGroceryList"],
-        isPantryList:data[0][i]["isPantryList"],
-        isFridgeList: data[0][i]["isFridgeList"],
-      isFreezerList: data[0][i]["isFreezerList"]);
+          listName: data[0][i]["name"],
+          isGroceryList: data[0][i]["isGroceryList"],
+          isPantryList: data[0][i]["isPantryList"],
+          isFridgeList: data[0][i]["isFridgeList"],
+          isFreezerList: data[0][i]["isFreezerList"]);
       listNames.add(temp);
     }
 
     return listNames;
   }
-
 }
