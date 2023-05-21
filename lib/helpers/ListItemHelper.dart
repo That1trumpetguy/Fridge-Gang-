@@ -104,6 +104,18 @@ class ListItemHelper {
       full += ", ";
     }
 
+    var data = await Future.wait([getList("me", "Lists")]);
+
+    for (var i = 0; i < data[0].length; i++) {
+      if (data[0][i]["isGroceryList"] == "false") {
+        var listCustom = await Future.wait([getList(username, data[0][i]["name"])]);
+        for (int i = 0; i < listPantry[0].length; i++) {
+          full += listCustom[0][i]['name'];
+          full += ", ";
+        }
+      }
+    }
+
     full = full.substring(0, full.length - 2);
 
     return full;
@@ -143,7 +155,7 @@ class ListItemHelper {
         listName: data[0][i]["name"],
         isGroceryList: data[0][i]["isGroceryList"],
         isPantryList:data[0][i]["isPantryList"],
-          isFridgeList: data[0][i]["isFridgeList"],
+        isFridgeList: data[0][i]["isFridgeList"],
       isFreezerList: data[0][i]["isFreezerList"]);
       listNames.add(temp);
     }
