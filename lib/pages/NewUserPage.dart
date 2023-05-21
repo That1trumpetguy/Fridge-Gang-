@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/pages/HomeScreenforTabletMode.dart';
 import 'package:flutter_app/main.dart';
+import 'package:flutter_app/pages/HomeScreenforPhoneMode.dart';
 import 'package:flutter_app/pages/HomeScreenforTabletModeV2.dart';
 import 'package:flutter_app/style.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:device_info/device_info.dart';
+
 class NewUserScreen extends StatelessWidget {
   TextEditingController emailinputController = TextEditingController();
   TextEditingController nameinputController = TextEditingController();
@@ -155,14 +158,25 @@ class NewUserScreen extends StatelessWidget {
                       GestureDetector(
                         onTap: () {
                           registerNewUser(context);
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => Scene2()
-                            ),
-                          );
+                          // Determine which screen to navigate based on device type
+                          isTablet(context).then((isTablet) {
+                            if (isTablet) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => Scene2(),
+                                ),
+                              );
+                            } else {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => PhoneScene(),
+                                ),
+                              );
+                            }
+                          });
                         },
-
                         child: Container(
                           width: getHorizontalSize(
                             295,
@@ -219,6 +233,19 @@ class NewUserScreen extends StatelessWidget {
   }
   displayToastMsg(String msg, BuildContext context){
     Fluttertoast.showToast(msg: msg);
+  }
+
+  Future<bool> isTablet(BuildContext context) async {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    if (Theme.of(context).platform == TargetPlatform.iOS) {
+      DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+      IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
+      return iosInfo.model.contains('iPad');
+    } else {
+      // Assuming screen width greater than 600dp as a tablet
+      return screenWidth > 600;
+    }
   }
 }
 
