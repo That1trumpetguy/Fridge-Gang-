@@ -145,17 +145,20 @@ class _SearchBarPopUpPageState extends State<SearchBarPopUpPage> {
             onPressed: () {
               //Todo: add item to list.
               //Create new List item object.
+              DateTime expirationDate = DateTime.now().add(Duration(days: 7));
+              String expirationDateString = expirationDate.toString();
               ListItem newItem = ListItem(
                   itemName: prod?.productName ?? '',
                   imageName: prod?.imageFrontSmallUrl ?? '',
-                  expirationDate: '5/13/2023');
+                  expirationDate: expirationDateString
+              );
               ListItemHelper.addItem(
                   'me',
                   'Grocery List',
                   prod?.productName ?? '',
                   prod?.categories ?? '',
                   prod?.imageFrontSmallUrl ?? '',
-                  '5/14/2023');
+                  expirationDateString);
               // Close the dialog
               Navigator.of(context).pop();
             },

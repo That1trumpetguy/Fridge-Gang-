@@ -7,6 +7,7 @@ import 'package:flutter_app/pages/SearchBarPopUpPage.dart';
 import 'package:flutter_app/widget/ExpiryListCard.dart';
 import 'package:flutter_app/widget/ListCard.dart';
 import '../models/ListItem.dart';
+import 'package:openfoodfacts/openfoodfacts.dart';
 
 class AboutToExpireList extends StatefulWidget {
   const AboutToExpireList({Key? key}) : super(key: key);
@@ -108,12 +109,13 @@ Future<List<String>> get_product_codes(String product_name) async {
         }
       }
     }
-    print(product_codes);
+    //print(product_codes);
     return product_codes;
   } else {
     throw Exception('Request failed with status code ${response.statusCode}');
   }
 }
+
 Future<List<DateTime>> getExpiryDate(String username, String listName) async {
   final apiUrl = 'https://world.openfoodfacts.org/api/v0/product/';
   final expirationDates = <DateTime>[];
@@ -122,15 +124,16 @@ Future<List<DateTime>> getExpiryDate(String username, String listName) async {
   print(list);
   for (final item in list) {
     final productCodes = await get_product_codes(item);
-
+    print(productCodes);
     if (productCodes.isNotEmpty) {
-      final response = await http.get(Uri.parse('$apiUrl${productCodes.first}.json'));
+      final code = productCodes.first;
+      final response = await http.get(Uri.parse('$apiUrl$code.json'));
       if (response.statusCode == 200) {
         final jsonResponse = json.decode(response.body);
         print(jsonResponse);
 
         final productData = jsonResponse['product'];
-        if (productData != null && productData.containsKey('expiration_date')) {
+        if (productData != null && productData['expiration_date'] != null) {
           final expirationDateString = productData['expiration_date'];
           final expirationDate = DateTime.tryParse(expirationDateString);
 
@@ -161,6 +164,8 @@ Future<List<DateTime>> getExpiryDate(String username, String listName) async {
 
   return expirationDates;
 }
+
+
 
 void main() async {
   final expiryDates = await getExpiryDate('me', 'Fridge List');
