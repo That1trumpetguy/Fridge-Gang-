@@ -13,6 +13,7 @@ import '../api_services.dart';
 import '../helpers/ListItemHelper.dart';
 import '../models/ListItem.dart';
 import '../widget/ListCard.dart';
+import 'CustomListPage.dart';
 
 //import 'package:myapp/utils.dart';
 
@@ -32,6 +33,16 @@ class _SceneState extends State<Scene2> {
   List<DropdownMenuItem<String>> dropdownItems = [];
   String? value;
 
+<<<<<<< Updated upstream
+=======
+  //For radio buttons.
+  String group = '';
+
+  //Map<String, dynamic>? listNames;
+
+  Future<List> listNames = ListItemHelper.fetchListNames('me');
+
+>>>>>>> Stashed changes
 
   Future<int> whatIHaveListItem(String userName, String listName) async {
     WhatIHaveList = await ListItemHelper.getItems(userName, listName);
@@ -42,6 +53,23 @@ class _SceneState extends State<Scene2> {
     return 1;
   }
 
+<<<<<<< Updated upstream
+=======
+  //Fetches the list names based on username.
+  Future<int> getMyLists(String userName) async {
+
+    _listNames = await ListItemHelper.fetchListNames(userName);
+
+    if (kDebugMode) {
+      print(_listNames);
+    }
+    return 1;
+  }
+
+
+
+
+>>>>>>> Stashed changes
   Map<String, dynamic> _allRecipes = {};
 
   @override
@@ -215,6 +243,21 @@ class _SceneState extends State<Scene2> {
                         fontWeight: FontWeight.w600,
                         color: const Color(0xff000000),
                       ),
+<<<<<<< Updated upstream
+=======
+                        IconButton(
+                            onPressed: () {
+
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => CustomListPage(), //Create a new list on selection.
+                                  )
+                              );
+                              },
+                            icon: Icon(Icons.add)),
+                      ],
+>>>>>>> Stashed changes
                     ),
                     Padding(
                       padding: const EdgeInsets.only(bottom: 8.0),
@@ -223,6 +266,7 @@ class _SceneState extends State<Scene2> {
                         color: Color(0xffdbdfd1),
                         height: screenHeight * 0.035,
                         width: screenWidth * 0.8,
+<<<<<<< Updated upstream
                       child: DropdownButton<String>( //Dropdown menu.
                         value: value,
                         items: _listNames.map((String value) {
@@ -239,6 +283,37 @@ class _SceneState extends State<Scene2> {
                           });
 
                         },
+=======
+                        child: FutureBuilder(
+                        future: getMyLists('me'), //Retrieves the list based on username.
+                        builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
+                          if (!snapshot.hasData){
+                            Center(child: CircularProgressIndicator());
+                          } else {
+                            return DropdownButton<String>( //Dropdown menu for list selection.
+                              value: value,
+                              items: _listNames.map((ListType value) {
+                                return DropdownMenuItem<String>(
+                                  value: value.listName,
+                                  child: Text(value.listName, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
+                                );
+
+                              }).toList(),
+                              onChanged: (value) {
+                                setState(() {
+                                  this.value = value;
+                                  whatIHaveListItem('me', this?.value ?? defaultList);
+                                });
+
+                              },
+                            );
+                          }
+
+                          return Container();
+
+                        },
+
+>>>>>>> Stashed changes
                       ),),
                     ),
 
@@ -637,4 +712,74 @@ class _SceneState extends State<Scene2> {
         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
         ),);
   }
+
+
+  void checkRadio(String value) {
+    setState(() {
+      group = value;
+    });
+  }
+
+
+  //Dialog for creating a custom list.
+  Future openDialog() => showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text("Add a Custom List"),
+        content: StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+          return Column(
+            children:  [
+              TextField(
+              decoration: InputDecoration(hintText: "Enter the list name"),
+            ),
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Text("List Type: "),
+              ),
+              RadioListTile(
+                title: Text('Grocery List'),
+                  value: "Grocery List",
+                  groupValue: group,
+                onChanged: (value) {
+                  checkRadio(value as String);
+                },
+                  ),
+              RadioListTile(
+                title: Text('Pantry List'),
+                value: "Pantry List",
+                groupValue: group,
+                onChanged: (value) {
+                  checkRadio(value as String);
+                },
+              ),
+              RadioListTile(
+                title: Text('Fridge List'),
+                value: "Fridge List",
+                groupValue: group,
+                onChanged: (value) {
+                  checkRadio(value as String);
+                },
+              ),
+              RadioListTile(
+                title: Text('Freezer List'),
+                value: "Freezer List",
+                groupValue: group,
+                onChanged: (value) {
+                  checkRadio(value as String);
+                },
+              ),
+    ]
+          );
+        }
+        ),
+        actions: [
+          TextButton(onPressed: () {
+            Navigator.of(context).pop();
+          },
+              child: Text("Submit"))
+        ],
+      ),
+  );
+
 }
