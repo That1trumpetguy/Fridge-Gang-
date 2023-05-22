@@ -73,7 +73,7 @@ class _SceneState extends State<Scene2> {
 
   void initState() {
     super.initState();
-    _fetchAllRecipes()/*_fetchRecipes()*/.then((recipes) {
+    _fetchAllRecipes().then((recipes) {
       setState(() {
         _allRecipes = recipes;
         //print(_allRecipes);

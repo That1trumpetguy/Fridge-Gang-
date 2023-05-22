@@ -84,7 +84,10 @@ class _SceneState extends State<PhoneScene> {
             child: FutureBuilder(
                 future: whatIHaveListItem('me', value.toString()),
                 builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
-                  if (!snapshot.hasData) {
+                  if (snapshot.hasError){
+                    return Center(child:Text('Error: $snapshot.error}'));
+                  }
+                  else if (!snapshot.hasData) {
                     print("here");
                     return Center(child: CircularProgressIndicator());
                   } else {
