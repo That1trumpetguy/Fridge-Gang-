@@ -130,11 +130,6 @@ class _SignupState extends State<LoginScreen> {
                       GestureDetector(
                         onTap: () {
                           loginUser();
-                          /*Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Scene()
-                          ),
-                      );*/
                         },
                         child: Container(
                           width: getHorizontalSize(
@@ -233,6 +228,8 @@ class _SignupState extends State<LoginScreen> {
       );
     } on FirebaseAuthException catch (e) {
       displayToastMsg(context, e.message!);
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => NewUserScreen()));
       //
     }
   }
