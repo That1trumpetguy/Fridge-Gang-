@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_app/helpers/ListItemHelper.dart';
 import 'package:flutter_app/models/ListItem.dart';
