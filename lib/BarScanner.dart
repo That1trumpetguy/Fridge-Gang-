@@ -11,6 +11,7 @@ import 'package:openfoodfacts/openfoodfacts.dart';
 import 'package:flutter_app/helpers/ListItemHelper.dart';
 import 'package:flutter_app/models/ListItem.dart';
 import 'package:flutter_app/pages/ProdPage.dart';
+import 'package:flutter_app/pages/ManEnter.dart';
 
 class BarScanner extends StatefulWidget {
   const BarScanner({Key? key}) : super(key: key);
@@ -132,30 +133,40 @@ class SearchMe {
         result.product != null) {
       return result.product;
     } else {
-      throw Exception('product not found, please insert data for $barcode');
+      //throw Exception('product not found, please insert data for $barcode');
+      return null;
     }
   }
 
   void navigateToProductDetails(BuildContext context, Product? product) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => ProdPage(
-          product: product,
-          onAddToList: (ListItem newItem) {
-            // Call the method to add the item to the list
-            ListItemHelper.addItem(
-              'me',
-              'Fridge List',
-              newItem.itemName,
-              '', //newItem.categories, somehow there is an error here, it does not want to accept foodType or categories
-              newItem.imageName,
-              newItem.expirationDate,
-            );
-            // You can show a confirmation message or take any other action
-          },
+    if (product != null) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ProdPage(
+            product: product,
+            onAddToList: (ListItem newItem) {
+              // Call the method to add the item to the list
+              ListItemHelper.addItem(
+                'me',
+                'Fridge List',
+                newItem.itemName,
+                '', //newItem.categories, somehow there is an error here, it does not want to accept foodType or categories
+                newItem.imageName,
+                newItem.expirationDate,
+              );
+              // You can show a confirmation message or take any other action
+            },
+          ),
         ),
-      ),
-    );
+      );
+    } else {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ManEnter(barcode: barcode),
+        ),
+      );
+    }
   }
 }
