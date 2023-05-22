@@ -9,6 +9,8 @@ import 'package:flutter_app/main.dart';
 import 'package:flutter_app/style.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_app/pages/HomeScreenforTabletModeV2.dart';
+import 'package:flutter_app/pages/HomeScreenforPhoneMode.dart';
+import 'package:device_info/device_info.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -241,12 +243,26 @@ class _SignupState extends State<LoginScreen> {
         password: passwordInputController.text,
         context: context,
       );
+      final isTabletDevice = await isTablet(context);
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => Scene2()),
+        MaterialPageRoute(builder: (context) => isTabletDevice ? Scene2() : PhoneScene(),),
       );
     } catch (e) {}
     //print(passwordController.text);
+  }
+
+  Future<bool> isTablet(BuildContext context) async {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    if (Theme.of(context).platform == TargetPlatform.iOS) {
+      DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+      IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
+      return iosInfo.model.contains('iPad');
+    } else {
+      // Assuming screen width greater than 600dp as a tablet
+      return screenWidth > 600;
+    }
   }
 
   //memory leak prevention

@@ -51,6 +51,8 @@ dependencies:
 
   cloud_firestore: ^4.7.0
 
+  device_info: ^2.0.2
+
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   #fluttertoast: ^8.2.1
@@ -89,6 +91,7 @@ flutter:
     - assets/page-1/images/ellipse-3.png
     - assets/page-1/images/camera.png
     - assets/page-1/images/rectangle-5.png
+    - assets/page-1/images/searchicon.png
     - assets/page-1/images/settingfill.png
     - assets/page-1/images/rectangle-1.png
     - assets/page-1/images/ellipse-1.png
