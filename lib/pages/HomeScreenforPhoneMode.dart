@@ -37,6 +37,7 @@ class _SceneState extends State<PhoneScene> {
   late String _selectedList;
   List<DropdownMenuItem<String>> dropdownItems = [];
   String? value;
+  String? selectedValue;
 
   //Map<String, dynamic>? listNames;
 
@@ -60,6 +61,47 @@ class _SceneState extends State<PhoneScene> {
         //print(_allRecipes);
       });
     });
+  }
+
+  void _openPopupMenu(String value) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(value), // Show the selected value as the title
+          content: SizedBox(
+            height: MediaQuery.of(context).size.height * 0.65,
+            width: MediaQuery.of(context).size.width * 0.65,
+            child: FutureBuilder(
+                future: whatIHaveListItem('me', value.toString()),
+                builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
+                  if (!snapshot.hasData) {
+                    print("here");
+                    return Center(child: CircularProgressIndicator());
+                  } else {
+                    print("there");
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: WhatIHaveList.length,
+                      itemBuilder: (BuildContext context, int index){
+                        return ListCard(item: WhatIHaveList[index]);
+                      },
+                    );
+                  }
+                }
+            ),
+          ),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the popup menu
+              },
+              child: Text('Exit'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   Future<Map<String, dynamic>> _fetchAllRecipes() async {
@@ -246,12 +288,39 @@ class _SceneState extends State<PhoneScene> {
                       ),
                     );
                   } else {
-                    return Container(
-                      width: screenWidth * 0.6,
-                      height: screenHeight * 0.1,
-                      color: Colors.purple,
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 8.0),
+                      child: Container(
+                        alignment: Alignment.center,
+                        color: Color(0xffdbdfd1),
+                        width: screenWidth * 0.6,
+                        height: screenHeight * 0.1,
+                        child: DropdownButton<String>(
+                          value: selectedValue,
+                          items: _listNames.map((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(
+                                value,
+                                style: TextStyle(
+                                  fontSize: screenWidth * 0.05,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                          onChanged: (value) {
+                            setState(() {
+                              selectedValue = value;
+                              // Open the popup menu here or perform any other desired action
+                              _openPopupMenu(value!);
+                            });
+                          },
+                        ),
+                      ),
                     );
-                  }
+
+                }
                 },
               ),
             ),
