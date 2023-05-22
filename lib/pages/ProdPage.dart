@@ -30,7 +30,7 @@ class ProdPage extends StatelessWidget {
             ),
             SizedBox(height: 8),
             Text(
-              'Generic Name: ${product?.genericName ?? 'N/A'}',
+              'Categories: ${product?.categories ?? 'N/A'}',
               style: TextStyle(fontSize: 18),
             ),
             SizedBox(height: 8),
