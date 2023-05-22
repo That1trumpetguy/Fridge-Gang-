@@ -119,6 +119,7 @@ class _SignupState extends State<LoginScreen> {
                       CustomTextFormField(
                         focusNode: FocusNode(),
                         controller: passwordInputController,
+                        isObscureText: true,
                         margin: getMargin(
                           left: 5,
                           top: 12,
