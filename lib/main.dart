@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/pages/HomeScreenforTabletModeV2.dart';
+import 'package:flutter_app/pages/HomeScreenforPhoneMode.dart';
 import 'package:flutter_app/style.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'pages/HomeScreenforTabletMode.dart';
@@ -8,6 +9,7 @@ import 'pages/login.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'pages/NewUserPage.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:device_info/device_info.dart';
 import 'package:openfoodfacts/openfoodfacts.dart';
 //import 'package:sizer/sizer.dart';
 const String COLOR_CODE = "#F44336"; // color code for the scanner
@@ -40,7 +42,8 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (_) => LoginScreen(),
         '/NewUser': (_) => NewUserScreen(),
-        '/home': (_) => Scene2(),
+        '/tabletHome': (_) => Scene2(),
+        '/phoneHome': (_) => PhoneScene(),
       },
       //home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
