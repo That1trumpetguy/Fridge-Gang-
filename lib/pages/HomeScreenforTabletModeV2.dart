@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter_app/BarScanner.dart';
+import 'package:flutter_app/models/ListType.dart';
 import 'package:flutter_app/pages/GroceryListPage.dart';
 import 'package:flutter_app/AboutToExpireList.dart';
 import 'package:flutter_app/pages/settings.dart';
@@ -13,6 +15,7 @@ import '../api_services.dart';
 import '../helpers/ListItemHelper.dart';
 import '../models/ListItem.dart';
 import '../widget/ListCard.dart';
+import 'CustomListPage.dart';
 
 //import 'package:myapp/utils.dart';
 
@@ -26,11 +29,19 @@ class Scene2 extends StatefulWidget {
 class _SceneState extends State<Scene2> {
   late Future future;
   List<ListItem> WhatIHaveList = [];
-  List<String> _listNames = ['Grocery List', 'Pantry List', 'Fridge List', 'Expiration'];
+  //List<String> _listNames = ['Grocery List', 'Pantry List', 'Fridge List', 'Expiration'];
+  List<ListType> _listNames = [];
   final String defaultList = 'Grocery List';
   late String _selectedList;
   List<DropdownMenuItem<String>> dropdownItems = [];
   String? value;
+
+  //For radio buttons.
+  String group = '';
+
+  //Map<String, dynamic>? listNames;
+
+  Future<List> listNames = ListItemHelper.fetchListNames('me');
 
 
   Future<int> whatIHaveListItem(String userName, String listName) async {
@@ -41,6 +52,19 @@ class _SceneState extends State<Scene2> {
     }
     return 1;
   }
+
+  Future<int> getMyLists(String userName) async {
+
+    _listNames = await ListItemHelper.fetchListNames(userName);
+
+    if (kDebugMode) {
+      print(_listNames);
+    }
+    return 1;
+  }
+
+
+
 
   Map<String, dynamic> _allRecipes = {};
 
@@ -176,7 +200,7 @@ class _SceneState extends State<Scene2> {
             // Bottom Center
             Positioned(
               bottom: 0,
-              left: screenWidth/2 - (screenWidth * 0.2 / 2),
+              left: screenWidth/2 - (screenWidth * 0.3 / 2),
               child: SizedBox(
                 width: screenWidth * 0.2,
                 height: screenHeight * 0.1,
@@ -207,14 +231,31 @@ class _SceneState extends State<Scene2> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    Text(
-                      'What I have in',
-                      style: SafeGoogleFont(
-                        'Inter',
-                        fontSize: screenWidth * 0.045,
-                        fontWeight: FontWeight.w600,
-                        color: const Color(0xff000000),
+                    Row(
+                      children: [
+                        Text(
+                        'What I have in',
+                        style: SafeGoogleFont(
+                          'Inter',
+                          fontSize: screenWidth * 0.045,
+                          fontWeight: FontWeight.w600,
+                          color: const Color(0xff000000),
+                        ),
                       ),
+                        IconButton(
+                            onPressed: () {
+
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => CustomListPage(),
+                                  )
+                              );
+
+                              //openDialog(); //////////////////
+                        },
+                            icon: Icon(Icons.add)),
+                ],
                     ),
                     Padding(
                       padding: const EdgeInsets.only(bottom: 8.0),
@@ -223,26 +264,38 @@ class _SceneState extends State<Scene2> {
                         color: Color(0xffdbdfd1),
                         height: screenHeight * 0.035,
                         width: screenWidth * 0.8,
-                      child: DropdownButton<String>( //Dropdown menu.
-                        value: value,
-                        items: _listNames.map((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value, style: TextStyle(fontSize: screenWidth * 0.04, fontWeight: FontWeight.bold),),
-                          );
-                        }).toList(),
-                        onChanged: (value) {
 
-                          setState(() {
-                            this.value = value;
-                            whatIHaveListItem('me', this?.value ?? defaultList);
-                          });
+                        child: FutureBuilder(
+                        future: getMyLists('me'),
+                        builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
+                          if (!snapshot.hasData){
+                            Center(child: CircularProgressIndicator());
+                          } else {
+                            return DropdownButton<String>( //Dropdown menu.
+                              value: value,
+                              items: _listNames.map((ListType value) {
+                                return DropdownMenuItem<String>(
+                                  value: value.listName,
+                                  child: Text(value.listName, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
+                                );
+
+                              }).toList(),
+                              onChanged: (value) {
+                                setState(() {
+                                  this.value = value;
+                                  whatIHaveListItem('me', this?.value ?? defaultList);
+                                });
+
+                              },
+                            );
+                          }
+
+                          return Container();
 
                         },
+
                       ),),
                     ),
-
-
                     SizedBox(
                       height: screenHeight * 0.65,
                       width: screenWidth * 0.8,
@@ -254,12 +307,18 @@ class _SceneState extends State<Scene2> {
                               return Center(child: CircularProgressIndicator());
                             } else {
                               print("there");
-                              return ListView.builder(
-                                shrinkWrap: true,
-                                itemCount: WhatIHaveList.length,
-                                itemBuilder: (BuildContext context, int index){
-                                  return ListCard(item: WhatIHaveList[index]);
-                                },
+                              return Expanded(
+                                child: ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: WhatIHaveList.length,
+                                  itemBuilder: (BuildContext context, int index){
+                                    return ListCard(
+                                        item: WhatIHaveList[index],
+                                        index: index,
+                                        foodList: WhatIHaveList
+                                    );
+                                  },
+                                ),
                               );
                             }
                           }
@@ -628,13 +687,5 @@ class _SceneState extends State<Scene2> {
         ),
       ),
     );
-  }
-
-  buildMenuItem(String item) {
-    return DropdownMenuItem(
-        value: item,
-        child: Text(item,
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-        ),);
   }
 }

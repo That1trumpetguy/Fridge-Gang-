@@ -2,6 +2,7 @@ import 'package:flutter_app/models/ListItem.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import '../firebase_options.dart';
+import '../models/ListType.dart';
 
 //Class to derive lists (grocery, fridge, custom) from the database.
 class ListItemHelper {
@@ -107,4 +108,84 @@ class ListItemHelper {
 
     return full;
   }
+
+
+    //Retrieves the list names based on username.
+    static Future<List<ListType>> fetchListNames(String userName) async {
+
+      var data = await Future.wait([getList("me", "Lists")]);
+
+      List<ListType> listNames = [];
+
+      for(var i = 0; i < data[0].length; i++) {
+
+        ListType temp = ListType(
+          listName: data[0][i]["name"],
+          isGroceryList: data[0][i]["isGroceryList"],
+          isPantryList:data[0][i]["isPantryList"],
+            isFridgeList: data[0][i]["isFridgeList"],
+            isFreezerList: data[0][i]["isFreezerList"]);
+        listNames.add(temp);
+      }
+
+      return listNames;
+    }
+
+  //Method to add a new custom list to the database.
+  static void addNewList(String userName, String listName, String listType){
+
+    //New list info.
+    var newList = <String, dynamic> {
+      "isFreezerList": false,
+      "isFridgeList": false,
+      "isGroceryList": false,
+      "isPantryList": false,
+      "name": listType
+    };
+
+    //Firebase does not allow for the creation of empty collections, so this is just a default food item for now.
+    //Will require the user to scan an item upon new list creation later....
+    final foodItem = <String, dynamic> {
+      "name": "",
+      "food type": " ",
+      "expiration date": " ",
+      "image": " "
+    };
+
+    //Sets the flag based on list type.
+    switch (listType){
+      case "Grocery List": {
+        newList.update("isGroceryList", (value) => true);
+      }
+      break;
+      case "Fridge List": {
+        newList.update("isFridgeList", (value) => true);
+      }
+      break;
+      case "Pantry List": {
+        newList.update("isPantryList", (value) => true);
+      }
+      break;
+      case "Freezer List": {
+        newList.update("isFreezerList", (value) => true);
+      }
+      break;
+    }
+
+    FirebaseFirestore db = FirebaseFirestore.instance;
+
+    //Creates a new collection given the list name.
+    final ref = db.collection("users").doc(userName).collection('Lists').doc(listName);
+    db.collection("users").doc(userName).collection(listName).doc("American Cheese").set(foodItem);
+
+    final ref2 = db.collection("users").doc(userName).collection(listName).doc("American Cheese");
+    ref2.delete().then(
+            (doc) => print("Document deleted"),
+        onError: (e) => print("Error updating document $e")
+    );
+
+    ref.set(newList);
+
+  }
+
 }

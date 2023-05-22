@@ -135,6 +135,8 @@ class ColorConstant {
 
   static Color gray100 = fromHex('#f2f2f2');
 
+  static Color red300 = fromHex('#E57373');
+
   static Color fromHex(String hexString) {
     final buffer = StringBuffer();
     if (hexString.length == 6 || hexString.length == 7) buffer.write('ff');
