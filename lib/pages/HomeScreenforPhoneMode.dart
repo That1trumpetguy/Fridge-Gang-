@@ -5,6 +5,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter_app/BarScanner.dart';
 import 'package:flutter_app/pages/GroceryListPage.dart';
 import 'package:flutter_app/AboutToExpireList.dart';
+import 'package:flutter_app/pages/RecipePage.dart';
 import 'package:flutter_app/pages/settings.dart';
 import 'package:flutter_app/style.dart';
 import 'package:flutter_app/utils.dart';
@@ -115,6 +116,8 @@ class _SceneState extends State<PhoneScene> {
       },
     );
   }
+
+
 
   Future<Map<String, dynamic>> _fetchAllRecipes() async {
     final breakfast = await fetchBreakfastRecipe();
@@ -446,8 +449,13 @@ class _SceneState extends State<PhoneScene> {
                               itemCount: 3,
                               itemBuilder: (context, index) {
                                 if (index == 0) {
+                                  return GestureDetector(
+                                    onTap: (){
+                                      Navigator.push(context, MaterialPageRoute(builder: (context) => RecipePage(recipe: breakfast)));
+                                    },
+
                                   // Container for Breakfast
-                                  return Container(
+                                  child: Container(
                                     height: screenHeight * 0.3,
                                     decoration: BoxDecoration(
                                       color: const Color(0xffdbdfd1),
@@ -490,6 +498,7 @@ class _SceneState extends State<PhoneScene> {
                                                   ),
                                                 ),
                                               ),
+
                                               Positioned(
                                                 left: screenWidth * 0.4,
                                                 child: SizedBox(
@@ -551,10 +560,19 @@ class _SceneState extends State<PhoneScene> {
                                         ),
                                       ],
                                     ),
+                                  ),
                                   );
                                 } else if (index == 1) {
                                   // Container for Lunch
-                                  return Container(
+                                  return GestureDetector(
+                                    onTap: (){
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(builder: (context) => RecipePage(recipe: lunch)),
+                                      );
+                                    },
+
+                                  child:  Container(
                                     height: screenHeight * 0.3,
                                     decoration: BoxDecoration(
                                       color: const Color(0xffdbdfd1),
@@ -657,10 +675,20 @@ class _SceneState extends State<PhoneScene> {
                                         ),
                                       ],
                                     ),
+                                  ),
                                   );
+
                                 } else if (index == 2) {
                                   // Container for Dinner
-                                  return Container(
+                                  return GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(builder: (context) => RecipePage(recipe: dinner)),
+                                      );
+                                    },
+
+                                  child: Container(
                                     height: screenHeight * 0.3,
                                     decoration: BoxDecoration(
                                       color: const Color(0xffdbdfd1),
@@ -763,6 +791,7 @@ class _SceneState extends State<PhoneScene> {
                                         ),
                                       ],
                                     ),
+                                  ),
                                   );
                                 }
                               },
