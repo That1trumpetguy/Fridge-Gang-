@@ -66,17 +66,28 @@ class _AboutToExpireListState extends State<AboutToExpireList> {
               child: FutureBuilder(
                   future: something(),
                   builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
-                    if (!snapshot.hasData) {
+                    if (snapshot.hasError) {
+                      return Center(child: Text('Error: $snapshot.error}'));
+                    }
+                    else if (!snapshot.hasData) {
                       print("here");
                       return Center(child: CircularProgressIndicator());
-                    } else {
+                      //here
+                    }
+                    else {
                       print("there");
-                      return ListView.builder(
-                        itemCount: expiryList.length, //Todo: add grocery list size here.
-                        itemBuilder: (BuildContext context, int index){
-                          return ExpiryListCard(item: expiryList[index]);
-                        },
-                      );
+                      if(expiryList.isEmpty){
+                        return Center(child: Text('No items found'));
+                      }else {
+                        print("there again");
+                        return ListView.builder(
+                          itemCount: expiryList.length,
+                          //Todo: add grocery list size here.
+                          itemBuilder: (BuildContext context, int index) {
+                            return ExpiryListCard(item: expiryList[index]);
+                          },
+                        );
+                      }
                     }
                   }
               ),
@@ -119,7 +130,7 @@ Future<List<String>> get_product_codes(String product_name) async {
 Future<List<DateTime>> getExpiryDate(String username, String listName) async {
   final apiUrl = 'https://world.openfoodfacts.org/api/v0/product/';
   final expirationDates = <DateTime>[];
-  final list = ['eggs', 'milk', 'cheese', 'chicken'];
+  final list = ['organic eggs', 'organic valley whole milk', 'swiss cheese', 'rotisserie chicken'];
 
   print(list);
   for (final item in list) {

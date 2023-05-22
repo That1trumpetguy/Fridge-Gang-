@@ -17,6 +17,7 @@ class GroceryListPage extends StatefulWidget {
 class _GroceryListPageState extends State<GroceryListPage> {
   List<ListItem> groceryList = [];
 
+
   Future<int> something() async {
     groceryList = await ListItemHelper.getItems('me', 'Grocery List');
     print(groceryList);
@@ -60,10 +61,15 @@ class _GroceryListPageState extends State<GroceryListPage> {
               child: FutureBuilder(
                   future: something(),
                   builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
-                    if (!snapshot.hasData) {
+                    if (snapshot.hasError) {
+                      return Center(child: Text('Error: $snapshot.error}'));
+                    }
+                    else if (!snapshot.hasData) {
                       print("here");
                       return Center(child: CircularProgressIndicator());
-                    } else {
+                      //here
+                    }
+                    else {
                       print("there");
                       return ListView.builder(
                         itemCount: groceryList.length,
@@ -153,6 +159,36 @@ class _GroceryListPageState extends State<GroceryListPage> {
                                               textAlign: TextAlign.left,
                                               overflow: TextOverflow.visible,
                                             ),
+                                            SizedBox(height: 8),
+                                            TextField(
+                                              decoration: InputDecoration(
+                                                labelText: 'Expiration Date',
+                                              ),
+                                                /*controller: TextEditingController(
+                                                  text: groceryList[index].expirationDate,
+                                                ),*/
+                                                onChanged: (value) async{
+                                                  setState(() {
+                                                    groceryList[index].expirationDate = value;
+                                                  });
+                                                  await ListItemHelper.updateExpiry('me', 'Grocery List', groceryList[index].itemName, value);
+                                                  print(groceryList[index].itemName);
+                                                  print(groceryList[index].expirationDate);
+                                                },
+                                                //
+                                               /*onEditingComplete: () async {
+                                                  String newExpirationDate = groceryList[index].expirationDate;
+                                                  setState(() {
+                                                    //String newExpirationDate = groceryList[index].expirationDate;
+                                                    groceryList[index].expirationDate = newExpirationDate;
+                                                  });
+                                                  await ListItemHelper.updateExpiry('me', 'Grocery List', groceryList[index].itemName, /*groceryList[index].expirationDate*/newExpirationDate);
+                                                  print(groceryList[index].itemName);
+                                                  print(groceryList[index].expirationDate);
+                                                  //print(newExpirationDate);
+                                                }
+                                              ),*/
+
                                             /*
                                             Column(
                                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -196,6 +232,7 @@ class _GroceryListPageState extends State<GroceryListPage> {
                                               ],
                                             )
                                             */
+                                            ),
 
                                           ],
                                         ),

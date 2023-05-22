@@ -188,4 +188,16 @@ class ListItemHelper {
 
   }
 
+  static Future<void> updateExpiry(String userName, String listName, String foodName, String expirationDate) async{
+    FirebaseFirestore db = FirebaseFirestore.instance;
+
+    final ref = db.collection("users").doc(userName).collection(listName).doc(foodName);
+
+    await ref.update({
+      'expiration date': expirationDate,
+    });
+
+    print('Updated expiration date: $expirationDate');
+  }
+
 }
