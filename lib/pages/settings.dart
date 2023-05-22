@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/pages/ChangePasswordPage.dart';
 import 'package:flutter_app/pages/EditProfilePage.dart';
+import 'package:flutter_app/pages/login.dart';
 import 'package:flutter_app/style.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -99,23 +100,34 @@ class _SettingsPageState extends State<SettingsPage> {
               buildNotificationRow("Account activity", true, largeScreen),
               SizedBox(height: (largeScreen ? 40 : 20)),
               Center(
-                child: OutlinedButton(
-                    style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                            ColorConstant.teal300),
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                        ))),
-                    onPressed: () {},
-                    child: Text(
-                      "Sign Out",
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.left,
-                      style: AppStyle.txtRobotoBold20,
-                    )),
-              )
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => LoginScreen()),
+                    );
+                  },
+
+                  child: Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.symmetric(vertical: 12),
+                    decoration: BoxDecoration(
+                      color: ColorConstant.teal300,
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                    child: Center(
+                      child: Text(
+                        "Sign Out",
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.left,
+                        style: AppStyle.txtRobotoBold20.copyWith(
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
             ],
           )),
     );
