@@ -1,7 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/helpers/ListItemHelper.dart';
 import 'package:flutter_app/pages/SearchBarPopUpPage.dart';
 import 'package:flutter_app/widget/ListCard.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 import '../models/ListItem.dart';
 
@@ -67,9 +69,7 @@ class _GroceryListPageState extends State<GroceryListPage> {
                         itemCount: groceryList.length,
                         //Todo: add grocery list size here.
                         itemBuilder: (BuildContext context, int index) {
-<<<<<<< Updated upstream
-                          return ListCard(item: groceryList[index]);
-=======
+                          //return ListCard(item: groceryList[index]);
                           //return ListCard(item: groceryList[index]);
                           return Slidable(
                             startActionPane: ActionPane(
@@ -207,7 +207,6 @@ class _GroceryListPageState extends State<GroceryListPage> {
                               ),
                             ),
                           );
->>>>>>> Stashed changes
                         },
                       );
                     }

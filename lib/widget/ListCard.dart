@@ -16,7 +16,7 @@ class ListCard extends StatefulWidget {
      )
   );
    ListCard({
-    Key? key, required this.item,
+    Key? key, required this.item, required int index, required List<ListItem> foodList,
   }) : super(key: key);
 
   //Reference for the current list item.
@@ -109,6 +109,7 @@ class _ListCardState extends State<ListCard> {
                             textAlign: TextAlign.left,
                             overflow: TextOverflow.visible,
                         ),
+                        /*
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -149,12 +150,12 @@ class _ListCardState extends State<ListCard> {
                               ],
                             ),
                           ],
-                        )
+                        ),
+                        */
 
                       ],
                   ),
                    ),
-
               ],
             )
           ],

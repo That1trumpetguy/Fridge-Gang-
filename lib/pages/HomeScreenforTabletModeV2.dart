@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter_app/BarScanner.dart';
+import 'package:flutter_app/models/ListType.dart';
 import 'package:flutter_app/pages/GroceryListPage.dart';
 import 'package:flutter_app/AboutToExpireList.dart';
 import 'package:flutter_app/pages/settings.dart';
@@ -27,14 +29,13 @@ class Scene2 extends StatefulWidget {
 class _SceneState extends State<Scene2> {
   late Future future;
   List<ListItem> WhatIHaveList = [];
-  List<String> _listNames = ['Grocery List', 'Pantry List', 'Fridge List', 'Expiration'];
+  //List<String> _listNames = ['Grocery List', 'Pantry List', 'Fridge List', 'Expiration'];
+  List<ListType> _listNames = [];
   final String defaultList = 'Grocery List';
   late String _selectedList;
   List<DropdownMenuItem<String>> dropdownItems = [];
   String? value;
 
-<<<<<<< Updated upstream
-=======
   //For radio buttons.
   String group = '';
 
@@ -42,7 +43,6 @@ class _SceneState extends State<Scene2> {
 
   Future<List> listNames = ListItemHelper.fetchListNames('me');
 
->>>>>>> Stashed changes
 
   Future<int> whatIHaveListItem(String userName, String listName) async {
     WhatIHaveList = await ListItemHelper.getItems(userName, listName);
@@ -53,9 +53,6 @@ class _SceneState extends State<Scene2> {
     return 1;
   }
 
-<<<<<<< Updated upstream
-=======
-  //Fetches the list names based on username.
   Future<int> getMyLists(String userName) async {
 
     _listNames = await ListItemHelper.fetchListNames(userName);
@@ -69,7 +66,6 @@ class _SceneState extends State<Scene2> {
 
 
 
->>>>>>> Stashed changes
   Map<String, dynamic> _allRecipes = {};
 
   @override
@@ -204,7 +200,7 @@ class _SceneState extends State<Scene2> {
             // Bottom Center
             Positioned(
               bottom: 0,
-              left: screenWidth/2 - (screenWidth * 0.2 / 2),
+              left: screenWidth/2 - (screenWidth * 0.3 / 2),
               child: SizedBox(
                 width: screenWidth * 0.2,
                 height: screenHeight * 0.1,
@@ -235,29 +231,31 @@ class _SceneState extends State<Scene2> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    Text(
-                      'What I have in',
-                      style: SafeGoogleFont(
-                        'Inter',
-                        fontSize: screenWidth * 0.045,
-                        fontWeight: FontWeight.w600,
-                        color: const Color(0xff000000),
+                    Row(
+                      children: [
+                        Text(
+                        'What I have in',
+                        style: SafeGoogleFont(
+                          'Inter',
+                          fontSize: screenWidth * 0.045,
+                          fontWeight: FontWeight.w600,
+                          color: const Color(0xff000000),
+                        ),
                       ),
-<<<<<<< Updated upstream
-=======
                         IconButton(
                             onPressed: () {
 
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => CustomListPage(), //Create a new list on selection.
+                                      builder: (context) => CustomListPage(),
                                   )
                               );
-                              },
+
+                              //openDialog(); //////////////////
+                        },
                             icon: Icon(Icons.add)),
-                      ],
->>>>>>> Stashed changes
+                ],
                     ),
                     Padding(
                       padding: const EdgeInsets.only(bottom: 8.0),
@@ -266,31 +264,14 @@ class _SceneState extends State<Scene2> {
                         color: Color(0xffdbdfd1),
                         height: screenHeight * 0.035,
                         width: screenWidth * 0.8,
-<<<<<<< Updated upstream
-                      child: DropdownButton<String>( //Dropdown menu.
-                        value: value,
-                        items: _listNames.map((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value, style: TextStyle(fontSize: screenWidth * 0.04, fontWeight: FontWeight.bold),),
-                          );
-                        }).toList(),
-                        onChanged: (value) {
 
-                          setState(() {
-                            this.value = value;
-                            whatIHaveListItem('me', this?.value ?? defaultList);
-                          });
-
-                        },
-=======
                         child: FutureBuilder(
-                        future: getMyLists('me'), //Retrieves the list based on username.
+                        future: getMyLists('me'),
                         builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
                           if (!snapshot.hasData){
                             Center(child: CircularProgressIndicator());
                           } else {
-                            return DropdownButton<String>( //Dropdown menu for list selection.
+                            return DropdownButton<String>( //Dropdown menu.
                               value: value,
                               items: _listNames.map((ListType value) {
                                 return DropdownMenuItem<String>(
@@ -313,11 +294,8 @@ class _SceneState extends State<Scene2> {
 
                         },
 
->>>>>>> Stashed changes
                       ),),
                     ),
-
-
                     SizedBox(
                       height: screenHeight * 0.65,
                       width: screenWidth * 0.8,
@@ -329,12 +307,18 @@ class _SceneState extends State<Scene2> {
                               return Center(child: CircularProgressIndicator());
                             } else {
                               print("there");
-                              return ListView.builder(
-                                shrinkWrap: true,
-                                itemCount: WhatIHaveList.length,
-                                itemBuilder: (BuildContext context, int index){
-                                  return ListCard(item: WhatIHaveList[index]);
-                                },
+                              return Expanded(
+                                child: ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: WhatIHaveList.length,
+                                  itemBuilder: (BuildContext context, int index){
+                                    return ListCard(
+                                        item: WhatIHaveList[index],
+                                        index: index,
+                                        foodList: WhatIHaveList
+                                    );
+                                  },
+                                ),
                               );
                             }
                           }
@@ -704,82 +688,4 @@ class _SceneState extends State<Scene2> {
       ),
     );
   }
-
-  buildMenuItem(String item) {
-    return DropdownMenuItem(
-        value: item,
-        child: Text(item,
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-        ),);
-  }
-
-
-  void checkRadio(String value) {
-    setState(() {
-      group = value;
-    });
-  }
-
-
-  //Dialog for creating a custom list.
-  Future openDialog() => showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text("Add a Custom List"),
-        content: StatefulBuilder(
-          builder: (BuildContext context, StateSetter setState) {
-          return Column(
-            children:  [
-              TextField(
-              decoration: InputDecoration(hintText: "Enter the list name"),
-            ),
-              Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: Text("List Type: "),
-              ),
-              RadioListTile(
-                title: Text('Grocery List'),
-                  value: "Grocery List",
-                  groupValue: group,
-                onChanged: (value) {
-                  checkRadio(value as String);
-                },
-                  ),
-              RadioListTile(
-                title: Text('Pantry List'),
-                value: "Pantry List",
-                groupValue: group,
-                onChanged: (value) {
-                  checkRadio(value as String);
-                },
-              ),
-              RadioListTile(
-                title: Text('Fridge List'),
-                value: "Fridge List",
-                groupValue: group,
-                onChanged: (value) {
-                  checkRadio(value as String);
-                },
-              ),
-              RadioListTile(
-                title: Text('Freezer List'),
-                value: "Freezer List",
-                groupValue: group,
-                onChanged: (value) {
-                  checkRadio(value as String);
-                },
-              ),
-    ]
-          );
-        }
-        ),
-        actions: [
-          TextButton(onPressed: () {
-            Navigator.of(context).pop();
-          },
-              child: Text("Submit"))
-        ],
-      ),
-  );
-
 }

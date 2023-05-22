@@ -16,16 +16,11 @@ Future<Map<String, dynamic>> fetchRecipeData( int recipeId) async {
 Future<Map<String, dynamic>> fetchBreakfastRecipe() async {
   //get the list of everything in fridge and pantry
   final list = await ListItemHelper.getAllItems('me');
-<<<<<<< Updated upstream
-=======
+
 
   final response = await http.get(Uri.parse(
 
   'https://api.spoonacular.com/recipes/random?apiKey=2d6f252163ae49dfa8887978d63c2073&tags=breakfast'));
-
-
->>>>>>> Stashed changes
-  print(list);
 
   final ingredients = list.split(',');
   // checks for recipies with ingredients in list,
@@ -34,11 +29,9 @@ Future<Map<String, dynamic>> fetchBreakfastRecipe() async {
     final subList = ingredients.sublist(0, i);
 
     final response = await http.get(Uri.parse(
-<<<<<<< Updated upstream
+
         'https://api.spoonacular.com/recipes/findByIngredients?apiKey=31cc0bc3084b441a91fc7d51f68a2758&ingredients=${subList.join(',')}&number=100&tags=breakfast&ranking=2'
-=======
-        'https://api.spoonacular.com/recipes/findByIngredients?apiKey=2d6f252163ae49dfa8887978d63c2073&ingredients=${subList.join(',')}&number=100&tags=breakfast&ranking=2'
->>>>>>> Stashed changes
+
     ));
     Random random = Random();
     if (response.statusCode == 200) {
@@ -67,11 +60,9 @@ Future<Map<String, dynamic>> fetchLunchRecipes() async {
     final subList = ingredients.sublist(0, i);
 
     final response = await http.get(Uri.parse(
-<<<<<<< Updated upstream
+
         'https://api.spoonacular.com/recipes/findByIngredients?apiKey=31cc0bc3084b441a91fc7d51f68a2758&ingredients=${subList.join(',')}&number=100&tags=lunch&ranking=2'
-=======
-        'https://api.spoonacular.com/recipes/findByIngredients?apiKey=2d6f252163ae49dfa8887978d63c2073&ingredients=${subList.join(',')}&number=100&tags=lunch&ranking=2'
->>>>>>> Stashed changes
+
     ));
     Random random = Random();
 
@@ -101,11 +92,10 @@ Future<Map<String, dynamic>> fetchDinnerRecipes() async {
       final subList = ingredients.sublist(0, i);
 
       final response = await http.get(Uri.parse(
-<<<<<<< Updated upstream
+
           'https://api.spoonacular.com/recipes/findByIngredients?apiKey=31cc0bc3084b441a91fc7d51f68a2758&ingredients=${subList.join(',')}&number=100&tags=dinner&ranking=2'
-=======
-          'https://api.spoonacular.com/recipes/findByIngredients?apiKey=2d6f252163ae49dfa8887978d63c2073&ingredients=${subList.join(',')}&number=100&tags=dinner&ranking=2'
->>>>>>> Stashed changes
+
+
       ));
       Random random = Random();
       if (response.statusCode == 200) {

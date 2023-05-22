@@ -2,6 +2,7 @@ import 'package:flutter_app/models/ListItem.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import '../firebase_options.dart';
+import '../models/ListType.dart';
 
 //Class to derive lists (grocery, fridge, custom) from the database.
 class ListItemHelper {
@@ -107,8 +108,7 @@ class ListItemHelper {
 
     return full;
   }
-<<<<<<< Updated upstream
-=======
+
 
     //Retrieves the list names based on username.
     static Future<List<ListType>> fetchListNames(String userName) async {
@@ -188,5 +188,4 @@ class ListItemHelper {
 
   }
 
->>>>>>> Stashed changes
 }
