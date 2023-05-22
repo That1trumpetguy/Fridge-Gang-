@@ -6,6 +6,7 @@ import 'package:flutter_app/BarScanner.dart';
 import 'package:flutter_app/models/ListType.dart';
 import 'package:flutter_app/pages/GroceryListPage.dart';
 import 'package:flutter_app/AboutToExpireList.dart';
+import 'package:flutter_app/pages/RecipePage.dart';
 import 'package:flutter_app/pages/settings.dart';
 import 'package:flutter_app/style.dart';
 import 'package:flutter_app/utils.dart';
@@ -406,7 +407,15 @@ class _SceneState extends State<Scene2> {
                           ],
                         ),
                         // Breakfast Code below:
-                        Container(
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => RecipePage(recipe: breakfast)),
+                            );
+                          },
+
+                        child: Container(
                           height: screenHeight * (0.65 / 3),
                           decoration: BoxDecoration(
                             color: const Color(0xffdbdfd1),
@@ -495,10 +504,19 @@ class _SceneState extends State<Scene2> {
                             ],
                           ),
                         ),
+                        ),
                         // Divider
                         SizedBox(height: screenHeight * 0.02,),
                         // Lunch Code below:
-                        Container(
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => RecipePage(recipe: lunch)),
+                            );
+                          },
+
+                        child: Container(
                           height: screenHeight * (0.65 / 3),
                           decoration: BoxDecoration(
                             color: const Color(0xffdbdfd1),
@@ -586,10 +604,20 @@ class _SceneState extends State<Scene2> {
                             ],
                           ),
                         ),
+                        ),
                         // Divider
                         SizedBox(height: screenHeight * 0.02,),
                         // Dinner Code below:
-                        Container(
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => RecipePage(recipe: dinner)),
+
+                            );
+                          },
+
+                        child: Container(
                           height: screenHeight * (0.65 / 3),
                           decoration: BoxDecoration(
                             color: const Color(0xffdbdfd1),
@@ -670,12 +698,15 @@ class _SceneState extends State<Scene2> {
                                             ],
                                           ),
                                       ),
-                                    ),
+                ),
+
+
                                   ],
                                 ),
                               ),
                             ],
                           ),
+                        ),
                         ),
                       ],
                     ),
