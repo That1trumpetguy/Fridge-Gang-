@@ -307,7 +307,7 @@ class _SceneState extends State<PhoneScene> {
                     );
                   } else {
                     return Padding(
-                      padding: const EdgeInsets.only(bottom: 8.0),
+                      padding: EdgeInsets.only(bottom: screenHeight * 0.08),
                       child: Container(
                         alignment: Alignment.center,
                         color: Color(0xffdbdfd1),
@@ -402,7 +402,7 @@ class _SceneState extends State<PhoneScene> {
                     }
 
                     return Positioned(
-                      top: screenHeight * 0.5,
+                      top: screenHeight * 0.45,
                       left: 0,
                       right: 0,
                       child: Column(
@@ -423,12 +423,6 @@ class _SceneState extends State<PhoneScene> {
                                 onTap: () {
                                   setState(() {
                                     _allRecipes = {};
-                                  });
-                                  _fetchAllRecipes() /*_fetchRecipes()*/
-                                      .then((recipes) {
-                                    setState(() {
-                                      _allRecipes = recipes;
-                                    });
                                   });
                                 },
                                 child: Align(
@@ -508,6 +502,7 @@ class _SceneState extends State<PhoneScene> {
                                                   height: screenHeight * 0.5,
                                                   width: screenWidth * 0.6,
                                                   child: Column(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
                                                     children: [
                                                       Flexible(
                                                         child: RichText(
@@ -623,6 +618,7 @@ class _SceneState extends State<PhoneScene> {
                                                   height: screenHeight * 0.5,
                                                   width: screenWidth * 0.6,
                                                   child: Column(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
                                                     children: [
                                                       Flexible(
                                                         child: RichText(
@@ -680,7 +676,6 @@ class _SceneState extends State<PhoneScene> {
                                     ),
                                   ),
                                   );
-
                                 } else if (index == 2) {
                                   // Container for Dinner
                                   return GestureDetector(
@@ -739,6 +734,7 @@ class _SceneState extends State<PhoneScene> {
                                                   height: screenHeight * 0.5,
                                                   width: screenWidth * 0.6,
                                                   child: Column(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
                                                     children: [
                                                       Flexible(
                                                         child: RichText(

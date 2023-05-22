@@ -4,7 +4,7 @@ import 'package:flutter_app/helpers/ListItemHelper.dart';
 import 'dart:math';
 Future<Map<String, dynamic>> fetchRecipeData( int recipeId) async {
   final response = await http.get(Uri.parse(
-      'https://api.spoonacular.com/recipes/$recipeId/information?apiKey=ad3b706596fe4906afa0e9c75935188b'));
+      'https://api.spoonacular.com/recipes/$recipeId/information?apiKey=2d6f252163ae49dfa8887978d63c2073'));
 
   if (response.statusCode == 200) {
     return jsonDecode(response.body);
@@ -29,7 +29,7 @@ Future<Map<String, dynamic>> fetchBreakfastRecipe() async {
     final subList = ingredients.sublist(0, i);
 
     final response = await http.get(Uri.parse(
-        'https://api.spoonacular.com/recipes/findByIngredients?apiKey=70e019e65fcf400a8155759bf6396c82&ingredients=${subList.join(',')}&number=100&tags=breakfast&ranking=2'
+        'https://api.spoonacular.com/recipes/findByIngredients?apiKey=2d6f252163ae49dfa8887978d63c2073&ingredients=${subList.join(',')}&number=100&tags=breakfast&ranking=2'
     ));
     Random random = Random();
     if (response.statusCode == 200) {
@@ -58,7 +58,7 @@ Future<Map<String, dynamic>> fetchLunchRecipes() async {
     final subList = ingredients.sublist(0, i);
 
     final response = await http.get(Uri.parse(
-        'https://api.spoonacular.com/recipes/findByIngredients?apiKey=70e019e65fcf400a8155759bf6396c82&ingredients=${subList.join(',')}&number=100&tags=lunch&ranking=2'
+        'https://api.spoonacular.com/recipes/findByIngredients?apiKey=2d6f252163ae49dfa8887978d63c2073&ingredients=${subList.join(',')}&number=100&tags=lunch&ranking=2'
     ));
     Random random = Random();
 
@@ -88,7 +88,7 @@ Future<Map<String, dynamic>> fetchDinnerRecipes() async {
       final subList = ingredients.sublist(0, i);
 
       final response = await http.get(Uri.parse(
-          'https://api.spoonacular.com/recipes/findByIngredients?apiKey=70e019e65fcf400a8155759bf6396c82&ingredients=${subList.join(',')}&number=100&tags=dinner&ranking=2'
+          'https://api.spoonacular.com/recipes/findByIngredients?apiKey=2d6f252163ae49dfa8887978d63c2073&ingredients=${subList.join(',')}&number=100&tags=dinner&ranking=2'
       ));
       Random random = Random();
       if (response.statusCode == 200) {
