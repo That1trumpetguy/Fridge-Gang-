@@ -200,7 +200,7 @@ class _SceneState extends State<Scene2> {
             // Bottom Center
             Positioned(
               bottom: 0,
-              left: screenWidth/2 - (screenWidth * 0.3 / 2),
+              left: screenWidth/2 - (screenWidth * 0.2 / 2),
               child: SizedBox(
                 width: screenWidth * 0.2,
                 height: screenHeight * 0.1,
@@ -283,7 +283,7 @@ class _SceneState extends State<Scene2> {
                               onChanged: (value) {
                                 setState(() {
                                   this.value = value;
-                                  whatIHaveListItem('me', this?.value ?? defaultList);
+                                  whatIHaveListItem('me', this.value ?? defaultList);
                                 });
 
                               },
@@ -450,7 +450,7 @@ class _SceneState extends State<Scene2> {
                                     Positioned(
                                       left: screenWidth * 0.21,
                                         child: SizedBox(
-                                          height: screenHeight * 0.5,
+                                          height: screenHeight * 0.4,
                                           width: screenWidth * 0.4,
                                             child: Column(
                                               children: [
@@ -542,7 +542,7 @@ class _SceneState extends State<Scene2> {
                                     Positioned(
                                       left: screenWidth * 0.21,
                                       child: SizedBox(
-                                        height: screenHeight * 0.5,
+                                        height: screenHeight * 0.4,
                                         width: screenWidth * 0.4,
                                           child: Column(
                                             children: [
@@ -633,7 +633,7 @@ class _SceneState extends State<Scene2> {
                                     Positioned(
                                       left: screenWidth * 0.21,
                                       child: SizedBox(
-                                        height: screenHeight * 0.5,
+                                        height: screenHeight * 0.4,
                                         width: screenWidth * 0.4,
                                           child: Column(
                                             children: [

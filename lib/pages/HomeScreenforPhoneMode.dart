@@ -13,7 +13,9 @@ import 'package:google_fonts/google_fonts.dart';
 import '../api_services.dart';
 import '../helpers/ListItemHelper.dart';
 import '../models/ListItem.dart';
+import '../models/ListType.dart';
 import '../widget/ListCard.dart';
+import 'CustomListPage.dart';
 
 //import 'package:myapp/utils.dart';
 
@@ -27,25 +29,31 @@ class PhoneScene extends StatefulWidget {
 class _SceneState extends State<PhoneScene> {
   late Future future;
   List<ListItem> WhatIHaveList = [];
-  List<String> _listNames = [
-    'Grocery List',
-    'Pantry List',
-    'Fridge List',
-    'Expiration'
-  ];
+  List<ListType> _listNames = [];
   final String defaultList = 'Grocery List';
   late String _selectedList;
   List<DropdownMenuItem<String>> dropdownItems = [];
   String? value;
-  String? selectedValue;
 
-  //Map<String, dynamic>? listNames;
+  String group = '';
+
+  Future<List> listNames = ListItemHelper.fetchListNames('me');
 
   Future<int> whatIHaveListItem(String userName, String listName) async {
     WhatIHaveList = await ListItemHelper.getItems(userName, listName);
 
     if (kDebugMode) {
       print(WhatIHaveList);
+    }
+    return 1;
+  }
+
+  Future<int> getMyLists(String userName) async {
+
+    _listNames = await ListItemHelper.fetchListNames(userName);
+
+    if (kDebugMode) {
+      print(_listNames);
     }
     return 1;
   }
@@ -70,8 +78,8 @@ class _SceneState extends State<PhoneScene> {
         return AlertDialog(
           title: Text(value), // Show the selected value as the title
           content: SizedBox(
-            height: MediaQuery.of(context).size.height * 0.65,
-            width: MediaQuery.of(context).size.width * 0.65,
+            height: MediaQuery.of(context).size.height * 0.8,
+            width: MediaQuery.of(context).size.width * 0.8,
             child: FutureBuilder(
                 future: whatIHaveListItem('me', value.toString()),
                 builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
@@ -84,7 +92,11 @@ class _SceneState extends State<PhoneScene> {
                       shrinkWrap: true,
                       itemCount: WhatIHaveList.length,
                       itemBuilder: (BuildContext context, int index){
-                        return ListCard(item: WhatIHaveList[index]);
+                        return ListCard(
+                            item: WhatIHaveList[index],
+                            index: index,
+                            foodList: WhatIHaveList
+                        );
                       },
                     );
                   }
@@ -295,32 +307,53 @@ class _SceneState extends State<PhoneScene> {
                         color: Color(0xffdbdfd1),
                         width: screenWidth * 0.6,
                         height: screenHeight * 0.1,
-                        child: DropdownButton<String>(
-                          value: selectedValue,
-                          items: _listNames.map((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(
-                                value,
-                                style: TextStyle(
-                                  fontSize: screenWidth * 0.05,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            );
-                          }).toList(),
-                          onChanged: (value) {
-                            setState(() {
-                              selectedValue = value;
-                              // Open the popup menu here or perform any other desired action
-                              _openPopupMenu(value!);
-                            });
-                          },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            FutureBuilder(
+                                future: getMyLists('me'),
+                                builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
+                                  return DropdownButton<String>(
+                                    value: value,
+                                    items: _listNames.map((ListType value) {
+                                      return DropdownMenuItem<String>(
+                                        value: value.listName,
+                                        child: Text(
+                                          value.listName,
+                                          style: TextStyle(
+                                            fontSize: screenWidth * 0.05,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      );
+                                    }).toList(),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        this.value = value;
+                                        whatIHaveListItem('me', this.value ?? defaultList);
+                                        // Open the popup menu here or perform any other desired action
+                                        _openPopupMenu(value!);
+                                      });
+                                    },
+                                  );
+                              }
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => CustomListPage(),
+                                  ),
+                                );
+                              },
+                              icon: Icon(Icons.add),
+                            ),
+                          ],
                         ),
                       ),
                     );
-
-                }
+                  }
                 },
               ),
             ),
@@ -410,7 +443,7 @@ class _SceneState extends State<PhoneScene> {
                           SizedBox(
                             height: screenHeight * 0.3,
                             child: PageView.builder(
-                              itemCount: 2,
+                              itemCount: 3,
                               itemBuilder: (context, index) {
                                 if (index == 0) {
                                   // Container for Breakfast

@@ -246,7 +246,7 @@ class _SignupState extends State<LoginScreen> {
       final isTabletDevice = await isTablet(context);
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => Scene2()),
+        MaterialPageRoute(builder: (context) => isTabletDevice ? Scene2() : PhoneScene(),),
       );
     } catch (e) {}
     //print(passwordController.text);
