@@ -102,9 +102,31 @@ class _SettingsPageState extends State<SettingsPage> {
               Center(
                 child: GestureDetector(
                   onTap: () {
-                    Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => LoginScreen()),
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text('Sign Out'),
+                          content: Text('Are you sure you want to sign out?'),
+                          actions: [
+                            TextButton(
+                              child: Text('Cancel'),
+                              onPressed: () {
+                                Navigator.of(context).pop(); // Close the dialog
+                              },
+                            ),
+                            TextButton(
+                              child: Text('Sign Out'),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => LoginScreen()),
+                                );
+                              },
+                            ),
+                          ],
+                        );
+                      },
                     );
                   },
 
