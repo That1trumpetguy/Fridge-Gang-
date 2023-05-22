@@ -25,7 +25,7 @@ Future<Map<String, dynamic>> fetchBreakfastRecipe() async {
     final subList = ingredients.sublist(0, i);
 
     final response = await http.get(Uri.parse(
-        'https://api.spoonacular.com/recipes/findByIngredients?apiKey=97a3b568b7354f4e928080e59baea073&ingredients=${subList.join(',')}&number=100&tags=breakfast&ranking=2'
+        'https://api.spoonacular.com/recipes/findByIngredients?apiKey=31cc0bc3084b441a91fc7d51f68a2758&ingredients=${subList.join(',')}&number=100&tags=breakfast&ranking=2'
     ));
     Random random = Random();
     if (response.statusCode == 200) {
@@ -54,7 +54,7 @@ Future<Map<String, dynamic>> fetchLunchRecipes() async {
     final subList = ingredients.sublist(0, i);
 
     final response = await http.get(Uri.parse(
-        'https://api.spoonacular.com/recipes/findByIngredients?apiKey=97a3b568b7354f4e928080e59baea073&ingredients=${subList.join(',')}&number=100&tags=lunch&ranking=2'
+        'https://api.spoonacular.com/recipes/findByIngredients?apiKey=31cc0bc3084b441a91fc7d51f68a2758&ingredients=${subList.join(',')}&number=100&tags=lunch&ranking=2'
     ));
     Random random = Random();
 
@@ -84,7 +84,7 @@ Future<Map<String, dynamic>> fetchDinnerRecipes() async {
       final subList = ingredients.sublist(0, i);
 
       final response = await http.get(Uri.parse(
-          'https://api.spoonacular.com/recipes/findByIngredients?apiKey=97a3b568b7354f4e928080e59baea073&ingredients=${subList.join(',')}&number=100&tags=dinner&ranking=2'
+          'https://api.spoonacular.com/recipes/findByIngredients?apiKey=31cc0bc3084b441a91fc7d51f68a2758&ingredients=${subList.join(',')}&number=100&tags=dinner&ranking=2'
       ));
       Random random = Random();
       if (response.statusCode == 200) {

@@ -86,13 +86,75 @@ class _AboutToExpireListState extends State<AboutToExpireList> {
     );
   }
 }
+Future<List<String>> get_product_codes(String product_name) async {
+  final base_url = 'https://world.openfoodfacts.org/cgi/search.pl';
+  final params = {
+    'search_terms': product_name,
+    'search_simple': '1',
+    'json': '1',
+  };
+
+  final uri = Uri.parse(base_url).replace(queryParameters: params);
+  final response = await http.get(uri);
+
+  if (response.statusCode == 200) {
+    final data = json.decode(response.body);
+
+    final product_codes = <String>[];
+    if (data['products'] != null) {
+      for (final product in data['products']) {
+        if (product.containsKey('code')) {
+          product_codes.add(product['code']);
+        }
+      }
+    }
+    print(product_codes);
+    return product_codes;
+  } else {
+    throw Exception('Request failed with status code ${response.statusCode}');
+  }
+}
 Future<List<DateTime>> getExpiryDate(String username, String listName) async {
-  final list = await ListItemHelper.getList(username, listName);
+  final apiUrl = 'https://world.openfoodfacts.org/api/v0/product/';
   final expirationDates = <DateTime>[];
+  final list = ['eggs', 'milk', 'cheese', 'chicken'];
+
   print(list);
   for (final item in list) {
-    final expirationDate = await fetchExpirationDate(item.name);
-    expirationDates.add(expirationDate);
+    final productCodes = await get_product_codes(item);
+
+    if (productCodes.isNotEmpty) {
+      final response = await http.get(Uri.parse('$apiUrl${productCodes.first}.json'));
+      if (response.statusCode == 200) {
+        final jsonResponse = json.decode(response.body);
+        print(jsonResponse);
+
+        final productData = jsonResponse['product'];
+        if (productData != null && productData.containsKey('expiration_date')) {
+          final expirationDateString = productData['expiration_date'];
+          final expirationDate = DateTime.tryParse(expirationDateString);
+
+          if (expirationDate != null) {
+            expirationDates.add(expirationDate);
+          }
+        } else {
+          print('Error: Invalid JSON structure or missing "expiration_date" property');
+          // Handle the case when the JSON structure is invalid or missing required property
+          // You can add error handling or provide a default expiration date
+          expirationDates.add(DateTime.now().add(Duration(days: 7)));
+        }
+      } else {
+        print('Error: Request failed with status code ${response.statusCode}');
+        // Handle the case when the request fails
+        // You can add error handling or provide a default expiration date
+        expirationDates.add(DateTime.now().add(Duration(days: 7)));
+      }
+    } else {
+      print('Error: Product code not found for $item');
+      // Handle the case when the product code is not found
+      // You can add error handling or provide a default expiration date
+      expirationDates.add(DateTime.now().add(Duration(days: 7)));
+    }
   }
 
   print(expirationDates);
@@ -100,24 +162,7 @@ Future<List<DateTime>> getExpiryDate(String username, String listName) async {
   return expirationDates;
 }
 
-Future<DateTime> fetchExpirationDate(String itemName) async {
-  final apiUrl = 'https://world.openfoodfacts.org/api/v0/product/$itemName.json';
-  final response = await http.get(Uri.parse(apiUrl));
-
-  if (response.statusCode == 200) {
-    final jsonData = json.decode(response.body);
-    final expirationDateString = jsonData['product']['expiration_date'];
-    final expirationDate = DateTime.tryParse(expirationDateString);
-
-    if (expirationDate != null) {
-      return expirationDate;
-    }
-  }
-
-  // Return a default value if the expiration date cannot be fetched
-  return DateTime.now().add(Duration(days: 7));
-}
-void main() {
-   getExpiryDate('me', 'Fridge List');
-
+void main() async {
+  final expiryDates = await getExpiryDate('me', 'Fridge List');
+  print(expiryDates);
 }
