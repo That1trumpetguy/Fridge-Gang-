@@ -188,7 +188,7 @@ class NewUserScreen extends StatelessWidget {
                             bottom: 12,
                           ),
                           padding: getPadding(
-                            left: 30,
+                            left: 70,
                             top: 11,
                             right: 70,
                             bottom: 11,
@@ -199,7 +199,7 @@ class NewUserScreen extends StatelessWidget {
                           child: Text(
                             "Create Account",
                             overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.left,
+                            textAlign: TextAlign.center,
                             style: AppStyle.txtRobotoBold20,
                           ),
                         ),

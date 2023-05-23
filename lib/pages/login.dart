@@ -140,7 +140,7 @@ class _SignupState extends State<LoginScreen> {
                             top: 31,
                           ),
                           padding: getPadding(
-                            left: 30,
+                            left: 114,
                             top: 12,
                             right: 114,
                             bottom: 12,
@@ -151,7 +151,7 @@ class _SignupState extends State<LoginScreen> {
                           child: Text(
                             "Login",
                             overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.left,
+                            textAlign: TextAlign.center,
                             style: AppStyle.txtRobotoBold20,
                           ),
                         ),

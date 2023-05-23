@@ -462,6 +462,7 @@ class _SceneState extends State<Scene2> {
                                           height: screenHeight * 0.4,
                                           width: screenWidth * 0.4,
                                             child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
                                                 Flexible(
                                                   child: RichText(
@@ -475,7 +476,7 @@ class _SceneState extends State<Scene2> {
                                                       children: [
                                                         TextSpan(
                                                             text: breakfast['title'] +
-                                                                '\n\n'
+                                                                '\n'
                                                         ),
                                                         TextSpan(
                                                           text: /*'Vegetarian: ' + breakfast['vegetarian'].toString() + '\nGluten free: ' + breakfast['glutenFree'].toString()
@@ -563,6 +564,7 @@ class _SceneState extends State<Scene2> {
                                         height: screenHeight * 0.4,
                                         width: screenWidth * 0.4,
                                           child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
                                               Flexible(
                                                 child: RichText(
@@ -576,7 +578,7 @@ class _SceneState extends State<Scene2> {
                                                     children: [
                                                       TextSpan(
                                                           text: lunch['title'] +
-                                                              '\n\n'
+                                                              '\n'
                                                       ),
                                                       TextSpan(
                                                         text:/*'Vegetarian: ' + lunch['vegetarian'].toString() + '\nGluten free: ' + lunch['glutenFree'].toString()*/
@@ -664,6 +666,7 @@ class _SceneState extends State<Scene2> {
                                         height: screenHeight * 0.4,
                                         width: screenWidth * 0.4,
                                           child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
                                               Flexible(
                                                 child: RichText(
@@ -677,7 +680,7 @@ class _SceneState extends State<Scene2> {
                                                     children: [
                                                       TextSpan(
                                                           text: dinner['title'] +
-                                                              '\n\n'
+                                                              '\n'
                                                       ),
                                                       TextSpan(
                                                         text: /*'Vegetarian: ' + dinner['vegetarian'].toString() + '\nGluten free: ' + dinner['glutenFree'].toString()*/
@@ -698,9 +701,7 @@ class _SceneState extends State<Scene2> {
                                             ],
                                           ),
                                       ),
-                ),
-
-
+                                    ),
                                   ],
                                 ),
                               ),
