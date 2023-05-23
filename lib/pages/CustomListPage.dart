@@ -1,7 +1,11 @@
+
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/helpers/ListItemHelper.dart';
 
+//import '../models/Alert.dart';
+import '../models/Alert.dart';
 import '../style.dart';
 
 class CustomListPage extends StatefulWidget {
@@ -146,18 +150,40 @@ class _CustomListPageState extends State<CustomListPage> {
                                 RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(20.0),
                                 ))),
-                        onPressed: () {
+                        onPressed: () async {
+
+                          //Set parameters.
                           listName = _textController.text;
-                          print(listName);
                           listType = group;
 
-                          ListItemHelper.addNewList('me', listName, listType);
+                          if (listName.length >= 20){
+                             showAlertDialog(context, "Alert", "List name must not exceed 20 characters!");
 
-                          Navigator.of(context).pop();
+                            }
 
+                          /*
+                          else if(await ListItemHelper.listAlreadyExists('me', listName)){
+                            showAlertDialog(context, "Alert", "List already exists!");
+                          }
 
+                          */
 
-                        },
+                          else if(listName.isEmpty){
+                            showAlertDialog(context, "Alert", "Please enter a list name!");
+                          }
+
+                          else if(listType == ''){
+                            showAlertDialog(context, "Alert", "Please select a List type!");
+                          }
+
+                          else{
+                            ListItemHelper.addNewList('me', listName, listType);
+                            Navigator.of(context).pop();
+                          }
+
+                          _textController.clear();
+
+                          },
                         child: Text(
                           "Submit",
                           overflow: TextOverflow.ellipsis,
@@ -170,6 +196,28 @@ class _CustomListPageState extends State<CustomListPage> {
             )
           ]
       ),
+    );
+  }
+  static void showAlertDialog(BuildContext context, String title, String content){
+    var alert = AlertDialog(
+      alignment: Alignment.center,
+      title: Text(title),
+      content: Text(content),
+      actions: [
+        TextButton(
+            onPressed: (){
+              Navigator.of(context).pop();
+            },
+            child: const Text("ok")),
+      ],
+
+    );
+
+    showDialog(
+        context: context,
+        builder: (BuildContext context){
+          return alert;
+        }
     );
   }
 }

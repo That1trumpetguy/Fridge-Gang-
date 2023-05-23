@@ -139,7 +139,7 @@ class ListItemHelper {
       "isFridgeList": false,
       "isGroceryList": false,
       "isPantryList": false,
-      "name": listType
+      "name": listName
     };
 
     //Firebase does not allow for the creation of empty collections, so this is just a default food item for now.
