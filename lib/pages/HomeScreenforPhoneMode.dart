@@ -365,19 +365,31 @@ class _SceneState extends State<PhoneScene> {
             ),
             // Widget Between Center and Bottom Center Widgets
             FutureBuilder(
-                future: _fetchAllRecipes() /*_fetchRecipes()*/,
-                builder: (BuildContext context,
-                    AsyncSnapshot<Map<String, dynamic>> snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
+                future:  Future.value(_allRecipes) /*_fetchRecipes()*/,
+                builder: (BuildContext context, AsyncSnapshot <Map<String, dynamic>> snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting || snapshot.data == null) {
                     return Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
+                  } else if (snapshot.hasError && snapshot.error.runtimeType == TypeError) {
+                    // Specific error case: Show loading circle
+                    return Center(child: CircularProgressIndicator());
+                  }
+                  else if (snapshot.hasError) {
                     return Center(child: Text('Error: $snapshot.error}'));
-                  } else {
+                  }
+                  else {
                     //Map<String, dynamic> breakfast = snapshot.data!;
-                    Map<String, dynamic> recipes = snapshot.data!;
-                    Map<String, dynamic> breakfast = recipes['breakfast'];
-                    Map<String, dynamic> lunch = recipes['lunch'];
-                    Map<String, dynamic> dinner = recipes['dinner'];
+                    final Map<String, dynamic>? recipes = snapshot.data;
+                    if (recipes == null) {
+                      return Center(child: Text('Recipes data is null'));
+                    }
+
+                    final Map<String, dynamic>? breakfast = recipes['breakfast'];
+                    final Map<String, dynamic>? lunch = recipes['lunch'];
+                    final Map<String, dynamic>? dinner = recipes['dinner'];
+
+                    if (breakfast == null || lunch == null || dinner == null) {
+                      return Center(child: CircularProgressIndicator());
+                    }
 
                     String getMissingIngredients(Map<String, dynamic> recipes) {
                       int missingIngredients = 0;
@@ -423,6 +435,11 @@ class _SceneState extends State<PhoneScene> {
                                 onTap: () {
                                   setState(() {
                                     _allRecipes = {};
+                                  });
+                                  _fetchAllRecipes()/*_fetchRecipes()*/.then((recipes) {
+                                    setState(() {
+                                      _allRecipes = recipes;
+                                    });
                                   });
                                 },
                                 child: Align(

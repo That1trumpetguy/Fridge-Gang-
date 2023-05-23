@@ -94,17 +94,21 @@ class _ExpiryListCardState extends State<ExpiryListCard> {
                   ),
                 ),
 
-                   Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(widget.item.itemName,
-                          style: TextStyle(fontSize: screenWidth * 0.05),
-                          textAlign: TextAlign.left),
-                      Text("Expires On: " + widget.item.expirationDate,
-                          style: TextStyle(fontSize: screenWidth * 0.05),
-                          textAlign: TextAlign.left),
-                    ],
+                   Flexible(
+                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(widget.item.itemName,
+                            style: TextStyle(fontSize: screenWidth * 0.05),
+                            textAlign: TextAlign.left,
+                            overflow: TextOverflow.visible,
+                        ),
+                        Text("Expires On: " + widget.item.expirationDate,
+                            style: TextStyle(fontSize: screenWidth * 0.05),
+                            textAlign: TextAlign.left),
+                      ],
                   ),
+                   ),
 
               ],
             )

@@ -87,7 +87,6 @@ class _SceneState extends State<Scene2> {
     final breakfast = await fetchBreakfastRecipe();
     final lunch = await fetchLunchRecipes();
     final dinner = await fetchDinnerRecipes();
-    print('Breakfast Recipes: $breakfast');
     return{
       'breakfast':breakfast,
       'lunch':lunch,
@@ -308,7 +307,10 @@ class _SceneState extends State<Scene2> {
                               return Center(child: CircularProgressIndicator());
                             } else {
                               print("there");
-                              return Expanded(
+                              return ConstrainedBox(
+                                constraints: const BoxConstraints(
+                                  maxHeight: double.infinity,
+                                ),
                                 child: ListView.builder(
                                   shrinkWrap: true,
                                   itemCount: WhatIHaveList.length,
@@ -331,9 +333,12 @@ class _SceneState extends State<Scene2> {
             ),
             // Middle to Right
             FutureBuilder(
-            future:  _fetchAllRecipes() /*_fetchRecipes()*/,
+            future:  Future.value(_allRecipes) /*_fetchRecipes()*/,
               builder: (BuildContext context, AsyncSnapshot <Map<String, dynamic>> snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
+                if (snapshot.connectionState == ConnectionState.waiting || snapshot.data == null) {
+                  return Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError && snapshot.error.runtimeType == TypeError) {
+                  // Specific error case: Show loading circle
                   return Center(child: CircularProgressIndicator());
                 }
                 else if (snapshot.hasError) {
@@ -341,10 +346,18 @@ class _SceneState extends State<Scene2> {
                 }
                 else {
                   //Map<String, dynamic> breakfast = snapshot.data!;
-                  Map<String, dynamic> recipes = snapshot.data!;
-                  Map<String, dynamic> breakfast = recipes['breakfast'];
-                  Map<String, dynamic> lunch = recipes['lunch'];
-                  Map<String, dynamic> dinner = recipes['dinner'];
+                  final Map<String, dynamic>? recipes = snapshot.data;
+                  if (recipes == null) {
+                    return Center(child: Text('Recipes data is null'));
+                  }
+
+                  final Map<String, dynamic>? breakfast = recipes['breakfast'];
+                  final Map<String, dynamic>? lunch = recipes['lunch'];
+                  final Map<String, dynamic>? dinner = recipes['dinner'];
+
+                  if (breakfast == null || lunch == null || dinner == null) {
+                    return Center(child: CircularProgressIndicator());
+                  }
 
                   String getMissingIngredients(Map<String, dynamic> recipes){
                     int missingIngredients = 0;
