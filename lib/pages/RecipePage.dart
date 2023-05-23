@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -8,6 +10,7 @@ class RecipePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(jsonEncode(recipe));
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -45,7 +48,7 @@ class RecipePage extends StatelessWidget {
               height: 250,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount: recipe['extendedIngredients'].length,
+                itemCount: recipe['extendedIngredients']?.length ?? 0,
                 itemBuilder: (BuildContext context, int index) => Card(
                   child: Container(
                     width: 150,
@@ -77,7 +80,7 @@ class RecipePage extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text(recipe['instructions'], style: TextStyle(fontSize: 16),),
+              child: Text(recipe['instructions'] ?? '', style: TextStyle(fontSize: 16)),
             ),
 
 
