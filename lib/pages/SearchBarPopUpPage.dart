@@ -154,7 +154,7 @@ class _SearchBarPopUpPageState extends State<SearchBarPopUpPage> {
               );
               ListItemHelper.addItem(
                   'me',
-                  'Freezer List',
+                  'Grocery List',
                   prod?.productName ?? '',
                   prod?.categories ?? '',
                   prod?.imageFrontSmallUrl ?? '',

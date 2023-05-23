@@ -164,7 +164,7 @@ class _GroceryListPageState extends State<GroceryListPage> {
                                               decoration: InputDecoration(
                                                 labelText: 'Expiration Date',
                                               ),
-                                                /*controller: TextEditingController(
+                                               /* controller: TextEditingController(
                                                   text: groceryList[index].expirationDate,
                                                 ),*/
                                                 onChanged: (value) async{
@@ -186,8 +186,8 @@ class _GroceryListPageState extends State<GroceryListPage> {
                                                   print(groceryList[index].itemName);
                                                   print(groceryList[index].expirationDate);
                                                   //print(newExpirationDate);
-                                                }
-                                              ),*/
+                                                },*/
+                                              ),
 
                                             /*
                                             Column(
@@ -232,8 +232,8 @@ class _GroceryListPageState extends State<GroceryListPage> {
                                               ],
                                             )
                                             */
-                                            ),
 
+                                           //), //onchanged
                                           ],
                                         ),
                                       ),

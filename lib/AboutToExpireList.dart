@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_app/helpers/ListItemHelper.dart';
@@ -8,6 +10,8 @@ import 'package:flutter_app/widget/ExpiryListCard.dart';
 import 'package:flutter_app/widget/ListCard.dart';
 import '../models/ListItem.dart';
 import 'package:openfoodfacts/openfoodfacts.dart';
+
+import 'models/ListType.dart';
 
 class AboutToExpireList extends StatefulWidget {
   const AboutToExpireList({Key? key}) : super(key: key);
@@ -21,7 +25,7 @@ class _AboutToExpireListState extends State<AboutToExpireList> {
   List<ListItem> expiryList = [];
 
   Future<int> something() async {
-    expiryList = await ListItemHelper.getItems('me', 'Expiration');
+    expiryList = await ListItemHelper.addToExpirationList('me', 'Grocery List');
     print(expiryList);
     return 1;
   }
@@ -98,7 +102,7 @@ class _AboutToExpireListState extends State<AboutToExpireList> {
     );
   }
 }
-Future<List<String>> get_product_codes(String product_name) async {
+/*Future<List<String>> get_product_codes(String product_name) async {
   final base_url = 'https://world.openfoodfacts.org/cgi/search.pl';
   final params = {
     'search_terms': product_name,
@@ -174,11 +178,11 @@ Future<List<DateTime>> getExpiryDate(String username, String listName) async {
   print(expirationDates);
 
   return expirationDates;
-}
+}*/
 
 
 
-void main() async {
+/*void main() async {
   final expiryDates = await getExpiryDate('me', 'Fridge List');
   print(expiryDates);
-}
+}*/

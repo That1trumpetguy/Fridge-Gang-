@@ -30,11 +30,13 @@ class ListItemHelper {
     List<ListItem> foodList = [];
 
     for (var i = 0; i < data[0].length; i++) {
+      print(data[0][i]["expiration date"]);
       print(data[0][i]["image"]);
       ListItem temp = ListItem(
           itemName: data[0][i]["name"],
           imageName: data[0][i]["image"],
-          expirationDate: "05/06/2023");
+          expirationDate: data[0][i]["expiration date"]);
+          //expirationDate: "05/06/2023");
       foodList.add(temp);
     }
 
@@ -209,4 +211,25 @@ class ListItemHelper {
 
     print('Updated expiration date: $expirationDate');
   }
+
+  static Future<List<ListItem>> addToExpirationList(String userName, String listName) async{
+    final listItems = await getItems(userName, listName);
+    final currentDate = DateTime.now();
+    final expirationLimit = currentDate.add(Duration(days:4));
+    final itemsToExpire = <ListItem>[];
+
+    for(final item in listItems){
+      final expirationDate = DateTime.parse(item.expirationDate);
+      if(expirationDate.isBefore(expirationLimit)){
+        itemsToExpire.add(item);
+      }
+    }
+    return itemsToExpire;
+  }
+
+
+}
+
+void main(){
+
 }
