@@ -346,10 +346,18 @@ class _SceneState extends State<Scene2> {
                 }
                 else {
                   //Map<String, dynamic> breakfast = snapshot.data!;
-                  final Map<String, dynamic> recipes = snapshot.data!;
-                  Map<String, dynamic> breakfast = recipes['breakfast'];
-                  Map<String, dynamic> lunch = recipes['lunch'];
-                  Map<String, dynamic> dinner = recipes['dinner'];
+                  final Map<String, dynamic>? recipes = snapshot.data;
+                  if (recipes == null) {
+                    return Center(child: Text('Recipes data is null'));
+                  }
+
+                  final Map<String, dynamic>? breakfast = recipes['breakfast'];
+                  final Map<String, dynamic>? lunch = recipes['lunch'];
+                  final Map<String, dynamic>? dinner = recipes['dinner'];
+
+                  if (breakfast == null || lunch == null || dinner == null) {
+                    return Center(child: CircularProgressIndicator());
+                  }
 
                   String getMissingIngredients(Map<String, dynamic> recipes){
                     int missingIngredients = 0;
