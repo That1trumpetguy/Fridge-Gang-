@@ -29,6 +29,11 @@ class _CustomListPageState extends State<CustomListPage> {
   //input for list type.
   String listType = '';
 
+  String userName = 'me'; //constant for now.
+
+//Max number of lists a user can have.
+  final maxNumLists = 10;
+
   void checkRadio(String value) {
     setState(() {
       group = value;
@@ -157,26 +162,32 @@ class _CustomListPageState extends State<CustomListPage> {
                           listType = group;
 
                           if (listName.length >= 20){
-                             showAlertDialog(context, "Alert", "List name must not exceed 20 characters!");
+                             showAlertDialog(context, "List name must not exceed 20 characters!");
 
                             }
 
-                          /*
                           else if(await ListItemHelper.listAlreadyExists('me', listName)){
-                            showAlertDialog(context, "Alert", "List already exists!");
+                            showAlertDialog(
+                                context,
+                                "List of this name already exists! Please enter a different list name.");
                           }
 
-                          */
+                          else if(await ListItemHelper.maxNumListsReached('me', maxNumLists)){
+                            showAlertDialog(context,
+                                "Maximum number of 10 lists has been reached! Please delete a list if you want to continue.");
+                          }
 
                           else if(listName.isEmpty){
-                            showAlertDialog(context, "Alert", "Please enter a list name!");
+                            showAlertDialog(context, "Please enter a list name!");
                           }
 
                           else if(listType == ''){
-                            showAlertDialog(context, "Alert", "Please select a List type!");
+                            showAlertDialog(context, "Please select a List type!");
                           }
 
                           else{
+                            //Todo: Since Firebase requires a document upon collection creation,
+                            //force the user to scan an item into the newly created collection
                             ListItemHelper.addNewList('me', listName, listType);
                             Navigator.of(context).pop();
                           }
@@ -198,10 +209,10 @@ class _CustomListPageState extends State<CustomListPage> {
       ),
     );
   }
-  static void showAlertDialog(BuildContext context, String title, String content){
+  static void showAlertDialog(BuildContext context, String content){
     var alert = AlertDialog(
       alignment: Alignment.center,
-      title: Text(title),
+      title: const Text("Alert"),
       content: Text(content),
       actions: [
         TextButton(

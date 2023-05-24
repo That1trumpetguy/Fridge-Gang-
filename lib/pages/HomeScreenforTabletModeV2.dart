@@ -315,11 +315,14 @@ class _SceneState extends State<Scene2> {
                                   shrinkWrap: true,
                                   itemCount: WhatIHaveList.length,
                                   itemBuilder: (BuildContext context, int index){
-                                    return ListCard(
-                                        item: WhatIHaveList[index],
-                                        index: index,
-                                        foodList: WhatIHaveList
-                                    );
+
+                                    if (WhatIHaveList[index].itemName != ' ') {
+                                     return ListCard(
+                                         item: WhatIHaveList[index],
+                                         index: index,
+                                         foodList: WhatIHaveList
+                                     );
+                                   }
                                   },
                                 ),
                               );

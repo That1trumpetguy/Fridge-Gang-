@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/models/ListItem.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -6,6 +7,7 @@ import '../models/ListType.dart';
 
 //Class to derive lists (grocery, fridge, custom) from the database.
 class ListItemHelper {
+
   //Derives a list of grocery items from database. This is static for now....
   static Future<List<ListItem>> getGroceryListItems() async {
     var data = await Future.wait([getList("me", "Grocery List")]);
@@ -142,10 +144,9 @@ class ListItemHelper {
       "name": listName
     };
 
-    //Firebase does not allow for the creation of empty collections, so this is just a default food item for now.
-    //Will require the user to scan an item upon new list creation later....
+    //Dummy food item.
     final foodItem = <String, dynamic>{
-      "name": "",
+      "name": " ",
       "food type": " ",
       "expiration date": " ",
       "image": " "
@@ -179,23 +180,21 @@ class ListItemHelper {
 
     //Creates a new collection given the list name.
     final ref =
-        db.collection("users").doc(userName).collection('Lists').doc(listName);
+        db.collection("users").doc(userName).collection('Lists').doc(listName).set(newList);
     db
         .collection("users")
         .doc(userName)
         .collection(listName)
-        .doc("American Cheese")
+        .doc(" ")
         .set(foodItem);
 
     final ref2 = db
         .collection("users")
         .doc(userName)
         .collection(listName)
-        .doc("American Cheese");
+        .doc("");
     ref2.delete().then((doc) => print("Document deleted"),
         onError: (e) => print("Error updating document $e"));
-
-    ref.set(newList);
   }
 
   static Future<void> updateExpiry(String userName, String listName,
@@ -227,8 +226,35 @@ class ListItemHelper {
     return itemsToExpire;
   }
 
+  //Check if a given list name already exists for a particular user.
+  static Future<bool> listAlreadyExists(String userName, String listName) async {
+    FirebaseFirestore db = FirebaseFirestore.instance;
+
+    final snapshot = await db.collection("users").doc(userName).collection(listName).get();
+
+    if(snapshot.size == 0){
+      //List does not exist.
+      return false;
+    }
+
+    return true;
+  }
+
+  static Future<bool> maxNumListsReached(String userName, int maxNumLists) async {
+    FirebaseFirestore db = FirebaseFirestore.instance;
+
+    final snapshot = await db.collection("users").doc(userName).collection('Lists').count().get();
+
+    if (snapshot.count == maxNumLists){
+      return true;
+    }
+
+    return false;
+  }
+
 
 }
+
 
 void main(){
 
