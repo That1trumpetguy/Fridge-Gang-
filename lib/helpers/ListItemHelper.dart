@@ -33,9 +33,10 @@ class ListItemHelper {
       print(data[0][i]["expiration date"]);
       print(data[0][i]["image"]);
       ListItem temp = ListItem(
-          itemName: data[0][i]["name"],
-          imageName: data[0][i]["image"],
-          expirationDate: data[0][i]["expiration date"]);
+          itemName: data[0][i]["name"] ?? '',
+          imageName: data[0][i]["image"] ?? '',
+          expirationDate: data[0][i]["expiration date"] ?? '');
+
           //expirationDate: "05/06/2023");
       foodList.add(temp);
     }
