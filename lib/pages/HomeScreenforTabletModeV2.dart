@@ -42,11 +42,11 @@ class _SceneState extends State<Scene2> {
 
   //Map<String, dynamic>? listNames;
 
-  Future<List> listNames = ListItemHelper.fetchListNames('me');
+  Future<List> listNames = ListItemHelper.fetchListNames();
 
 
-  Future<int> whatIHaveListItem(String userName, String listName) async {
-    WhatIHaveList = await ListItemHelper.getItems(userName, listName);
+  Future<int> whatIHaveListItem(String listName) async {
+    WhatIHaveList = await ListItemHelper.getItems(listName);
 
     if (kDebugMode) {
       print(WhatIHaveList);
@@ -56,7 +56,7 @@ class _SceneState extends State<Scene2> {
 
   Future<int> getMyLists(String userName) async {
 
-    _listNames = await ListItemHelper.fetchListNames(userName);
+    _listNames = await ListItemHelper.fetchListNames();
 
     if (kDebugMode) {
       print(_listNames);
@@ -283,7 +283,7 @@ class _SceneState extends State<Scene2> {
                               onChanged: (value) {
                                 setState(() {
                                   this.value = value;
-                                  whatIHaveListItem('me', this.value ?? defaultList);
+                                  whatIHaveListItem(this.value ?? defaultList);
                                 });
 
                               },
@@ -300,7 +300,7 @@ class _SceneState extends State<Scene2> {
                       height: screenHeight * 0.65,
                       width: screenWidth * 0.8,
                       child: FutureBuilder(
-                          future: whatIHaveListItem('me', value.toString()),
+                          future: whatIHaveListItem(value.toString()),
                           builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
                             if (!snapshot.hasData) {
                               print("here");
@@ -315,11 +315,14 @@ class _SceneState extends State<Scene2> {
                                   shrinkWrap: true,
                                   itemCount: WhatIHaveList.length,
                                   itemBuilder: (BuildContext context, int index){
-                                    return ListCard(
-                                        item: WhatIHaveList[index],
-                                        index: index,
-                                        foodList: WhatIHaveList
-                                    );
+
+                                    if (WhatIHaveList[index].itemName != ' ') {
+                                     return ListCard(
+                                         item: WhatIHaveList[index],
+                                         index: index,
+                                         foodList: WhatIHaveList
+                                     );
+                                   }
                                   },
                                 ),
                               );
