@@ -15,7 +15,7 @@ Future<Map<String, dynamic>> fetchRecipeData( int recipeId) async {
 
 Future<Map<String, dynamic>> fetchBreakfastRecipe() async {
   // Get the list of everything in fridge and pantry
-  final list = await ListItemHelper.getAllItems('me');
+  final list = await ListItemHelper.getAllItems();
 
   final ingredients = list.split(',');
   // Check for recipes with ingredients in the list,
@@ -65,7 +65,7 @@ Future<Map<String, dynamic>> fetchBreakfastRecipe() async {
 
 Future<Map<String, dynamic>> fetchLunchRecipes() async {
   // Get the list of everything in fridge and pantry
-  final list = await ListItemHelper.getAllItems('me');
+  final list = await ListItemHelper.getAllItems();
 
   final ingredients = list.split(',');
   // Check for recipes with ingredients in the list,
@@ -112,7 +112,7 @@ Future<Map<String, dynamic>> fetchLunchRecipes() async {
 
 Future<Map<String, dynamic>> fetchDinnerRecipes() async {
   // Get the list of everything in fridge and pantry
-  final list = await ListItemHelper.getAllItems('me');
+  final list = await ListItemHelper.getAllItems();
 
   final ingredients = list.split(',');
   // Check for recipes with ingredients in the list,

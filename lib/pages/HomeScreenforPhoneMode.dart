@@ -38,10 +38,10 @@ class _SceneState extends State<PhoneScene> {
 
   String group = '';
 
-  Future<List> listNames = ListItemHelper.fetchListNames('me');
+  Future<List> listNames = ListItemHelper.fetchListNames();
 
   Future<int> whatIHaveListItem(String userName, String listName) async {
-    WhatIHaveList = await ListItemHelper.getItems(userName, listName);
+    WhatIHaveList = await ListItemHelper.getItems(listName);
 
     if (kDebugMode) {
       print(WhatIHaveList);
@@ -51,7 +51,7 @@ class _SceneState extends State<PhoneScene> {
 
   Future<int> getMyLists(String userName) async {
 
-    _listNames = await ListItemHelper.fetchListNames(userName);
+    _listNames = await ListItemHelper.fetchListNames();
 
     if (kDebugMode) {
       print(_listNames);

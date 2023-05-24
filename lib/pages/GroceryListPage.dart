@@ -28,7 +28,7 @@ class _GroceryListPageState extends State<GroceryListPage> {
 
 
   Future<int> something() async {
-    groceryList = await ListItemHelper.getItems('me', 'Grocery List');
+    groceryList = await ListItemHelper.getItems('Grocery List');
     print(groceryList);
     return 1;
   }
@@ -132,7 +132,7 @@ class _GroceryListPageState extends State<GroceryListPage> {
                                 SlidableAction(onPressed: (context){
                                   //Do action here //todo: add action to remove from list.
                                   print(groceryList[index].itemName);
-                                  ListItemHelper.deleteItem('me', 'Grocery List', groceryList[index].itemName);
+                                  ListItemHelper.deleteItem('Grocery List', groceryList[index].itemName);
                                   setState(() {
                                     groceryList.removeAt(index);
                                   });
@@ -206,7 +206,7 @@ class _GroceryListPageState extends State<GroceryListPage> {
                                                   setState(() {
                                                     groceryList[index].expirationDate = value;
                                                   });
-                                                  await ListItemHelper.updateExpiry('me', 'Grocery List', groceryList[index].itemName, value);
+                                                  await ListItemHelper.updateExpiry('Grocery List', groceryList[index].itemName, value);
                                                   print(groceryList[index].itemName);
                                                   print(groceryList[index].expirationDate);
                                                 },
