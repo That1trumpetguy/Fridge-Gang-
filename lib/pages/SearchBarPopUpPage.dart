@@ -153,6 +153,7 @@ class _SearchBarPopUpPageState extends State<SearchBarPopUpPage> {
                   expirationDate: expirationDateString
               );
               ListItemHelper.addItem(
+                  'me',
                   'Grocery List',
                   prod?.productName ?? '',
                   prod?.categories ?? '',

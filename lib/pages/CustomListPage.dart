@@ -1,11 +1,7 @@
-
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/helpers/ListItemHelper.dart';
 
-//import '../models/Alert.dart';
-import '../models/Alert.dart';
 import '../style.dart';
 
 class CustomListPage extends StatefulWidget {
@@ -28,11 +24,6 @@ class _CustomListPageState extends State<CustomListPage> {
 
   //input for list type.
   String listType = '';
-
-  String userName = 'me'; //constant for now.
-
-//Max number of lists a user can have.
-  final maxNumLists = 10;
 
   void checkRadio(String value) {
     setState(() {
@@ -155,46 +146,18 @@ class _CustomListPageState extends State<CustomListPage> {
                                 RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(20.0),
                                 ))),
-                        onPressed: () async {
-
-                          //Set parameters.
+                        onPressed: () {
                           listName = _textController.text;
+                          print(listName);
                           listType = group;
 
-                          if (listName.length >= 20){
-                             showAlertDialog(context, "List name must not exceed 20 characters!");
+                          ListItemHelper.addNewList('me', listName, listType);
 
-                            }
+                          Navigator.of(context).pop();
 
-                          else if(await ListItemHelper.listAlreadyExists(listName)){
-                            showAlertDialog(
-                                context,
-                                "List of this name already exists! Please enter a different list name.");
-                          }
 
-                          else if(await ListItemHelper.maxNumListsReached(maxNumLists)){
-                            showAlertDialog(context,
-                                "Maximum number of 10 lists has been reached! Please delete a list if you want to continue.");
-                          }
 
-                          else if(listName.isEmpty){
-                            showAlertDialog(context, "Please enter a list name!");
-                          }
-
-                          else if(listType == ''){
-                            showAlertDialog(context, "Please select a List type!");
-                          }
-
-                          else{
-                            //Todo: Since Firebase requires a document upon collection creation,
-                            //force the user to scan an item into the newly created collection
-                            ListItemHelper.addNewList(listName, listType);
-                            Navigator.of(context).pop();
-                          }
-
-                          _textController.clear();
-
-                          },
+                        },
                         child: Text(
                           "Submit",
                           overflow: TextOverflow.ellipsis,
@@ -207,28 +170,6 @@ class _CustomListPageState extends State<CustomListPage> {
             )
           ]
       ),
-    );
-  }
-  static void showAlertDialog(BuildContext context, String content){
-    var alert = AlertDialog(
-      alignment: Alignment.center,
-      title: const Text("Alert"),
-      content: Text(content),
-      actions: [
-        TextButton(
-            onPressed: (){
-              Navigator.of(context).pop();
-            },
-            child: const Text("ok")),
-      ],
-
-    );
-
-    showDialog(
-        context: context,
-        builder: (BuildContext context){
-          return alert;
-        }
     );
   }
 }

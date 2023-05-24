@@ -96,6 +96,7 @@ class _ManEnterState extends State<ManEnter> {
                   );
                   // Call the method to add the item to the list
                   ListItemHelper.addItem(
+                    'me',
                     'Fridge List',
                     newItem.itemName,
                     '',

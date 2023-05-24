@@ -1,5 +1,3 @@
-import 'package:flutter/cupertino.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_app/models/ListItem.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -8,10 +6,9 @@ import '../models/ListType.dart';
 
 //Class to derive lists (grocery, fridge, custom) from the database.
 class ListItemHelper {
-
   //Derives a list of grocery items from database. This is static for now....
   static Future<List<ListItem>> getGroceryListItems() async {
-    var data = await Future.wait([getList("Grocery List")]);
+    var data = await Future.wait([getList("me", "Grocery List")]);
     List<ListItem> foodList = [];
 
     for (var i = 0; i < data[0].length; i++) {
@@ -27,8 +24,9 @@ class ListItemHelper {
   }
 
   //Derives a list of grocery items from database. This is static for now....
-  static Future<List<ListItem>> getItems(String listName) async {
-    var data = await Future.wait([getList(listName)]);
+  static Future<List<ListItem>> getItems(
+      String username, String listName) async {
+    var data = await Future.wait([getList(username, listName)]);
     List<ListItem> foodList = [];
 
     for (var i = 0; i < data[0].length; i++) {
@@ -47,10 +45,10 @@ class ListItemHelper {
   }
 
   // gets the data from a specific list (grocery, fridge, etc.)
-  static Future<List> getList(String listName) async {
+  static Future<List> getList(String username, String listName) async {
     CollectionReference ref = FirebaseFirestore.instance
         .collection("users")
-        .doc(FirebaseAuth.instance.currentUser?.uid)
+        .doc(username)
         .collection(listName);
 
     List allData = [];
@@ -68,7 +66,7 @@ class ListItemHelper {
     return (allData);
   }
 
-  static void addItem(String listName, String foodName,
+  static void addItem(String username, String listName, String foodName,
       String foodType, String imgURL, String expDate) {
     final foodItem = <String, dynamic>{
       "name": foodName,
@@ -80,25 +78,25 @@ class ListItemHelper {
     FirebaseFirestore db = FirebaseFirestore.instance;
 
     final ref =
-        db.collection("users").doc(FirebaseAuth.instance.currentUser?.uid).collection(listName).doc(foodName);
+        db.collection("users").doc(username).collection(listName).doc(foodName);
     ref.set(foodItem);
   }
 
   // deletes item from database based on name/doc title
-  static void deleteItem(String listName, String foodName) {
+  static void deleteItem(String username, String listName, String foodName) {
     FirebaseFirestore db = FirebaseFirestore.instance;
 
     final ref =
-        db.collection("users").doc(FirebaseAuth.instance.currentUser?.uid).collection(listName).doc(foodName);
+        db.collection("users").doc(username).collection(listName).doc(foodName);
     ref.delete().then((doc) => print("Document deleted"),
         onError: (e) => print("Error updating document $e"));
   }
 
-  static Future<String> getAllItems() async {
+  static Future<String> getAllItems(String username) async {
     String full = "";
 
-    var listFridge = await Future.wait([getList("Fridge List")]);
-    var listPantry = await Future.wait([getList("Pantry List")]);
+    var listFridge = await Future.wait([getList(username, "Fridge List")]);
+    var listPantry = await Future.wait([getList(username, "Pantry List")]);
 
     for (int i = 0; i < listFridge[0].length; i++) {
       full += listFridge[0][i]['name'];
@@ -116,8 +114,8 @@ class ListItemHelper {
   }
 
   //Retrieves the list names based on username.
-  static Future<List<ListType>> fetchListNames() async {
-    var data = await Future.wait([getList("Lists")]);
+  static Future<List<ListType>> fetchListNames(String userName) async {
+    var data = await Future.wait([getList("me", "Lists")]);
 
     List<ListType> listNames = [];
 
@@ -135,19 +133,20 @@ class ListItemHelper {
   }
 
   //Method to add a new custom list to the database.
-  static void addNewList(String listName, String listType) {
+  static void addNewList(String userName, String listName, String listType) {
     //New list info.
     var newList = <String, dynamic>{
       "isFreezerList": false,
       "isFridgeList": false,
       "isGroceryList": false,
       "isPantryList": false,
-      "name": listName
+      "name": listType
     };
 
-    //Dummy food item.
+    //Firebase does not allow for the creation of empty collections, so this is just a default food item for now.
+    //Will require the user to scan an item upon new list creation later....
     final foodItem = <String, dynamic>{
-      "name": " ",
+      "name": "",
       "food type": " ",
       "expiration date": " ",
       "image": " "
@@ -181,28 +180,31 @@ class ListItemHelper {
 
     //Creates a new collection given the list name.
     final ref =
-        db.collection("users").doc(FirebaseAuth.instance.currentUser?.uid).collection('Lists').doc(listName).set(newList);
+        db.collection("users").doc(userName).collection('Lists').doc(listName);
     db
         .collection("users")
-        .doc(FirebaseAuth.instance.currentUser?.uid)
+        .doc(userName)
         .collection(listName)
-        .doc(" ")
+        .doc("American Cheese")
         .set(foodItem);
 
     final ref2 = db
         .collection("users")
-        .doc(FirebaseAuth.instance.currentUser?.uid)
+        .doc(userName)
         .collection(listName)
-        .doc("");
+        .doc("American Cheese");
     ref2.delete().then((doc) => print("Document deleted"),
         onError: (e) => print("Error updating document $e"));
+
+    ref.set(newList);
   }
 
-  static Future<void> updateExpiry(String listName,
+  static Future<void> updateExpiry(String userName, String listName,
       String foodName, String expirationDate) async {
     FirebaseFirestore db = FirebaseFirestore.instance;
 
-    final ref = db.collection("users").doc(FirebaseAuth.instance.currentUser?.uid).collection(listName).doc(foodName);
+    final ref =
+        db.collection("users").doc(userName).collection(listName).doc(foodName);
 
     await ref.update({
       'expiration date': expirationDate,
@@ -211,8 +213,8 @@ class ListItemHelper {
     print('Updated expiration date: $expirationDate');
   }
 
-  static Future<List<ListItem>> addToExpirationList(String listName) async{
-    final listItems = await getItems(listName);
+  static Future<List<ListItem>> addToExpirationList(String userName, String listName) async{
+    final listItems = await getItems(userName, listName);
     final currentDate = DateTime.now();
     final expirationLimit = currentDate.add(Duration(days:4));
     final itemsToExpire = <ListItem>[];
@@ -226,88 +228,8 @@ class ListItemHelper {
     return itemsToExpire;
   }
 
-  //Check if a given list name already exists for a particular user.
-  static Future<bool> listAlreadyExists(String listName) async {
-    FirebaseFirestore db = FirebaseFirestore.instance;
-
-    final snapshot = await db.collection("users").doc(FirebaseAuth.instance.currentUser?.uid).collection(listName).get();
-
-    if(snapshot.size == 0){
-      //List does not exist.
-      return false;
-    }
-
-    return true;
-  }
-
-  static Future<bool> maxNumListsReached(int maxNumLists) async {
-    FirebaseFirestore db = FirebaseFirestore.instance;
-
-    
-
-    final snapshot = await db.collection("users").doc(FirebaseAuth.instance.currentUser?.uid).collection('Lists').count().get();
-
-    if (snapshot.count == maxNumLists){
-      return true;
-    }
-
-    return false;
-  }
-
-  static void newUserLists(String? userName) async {
-
-    FirebaseFirestore db = FirebaseFirestore.instance;
-
-    final ref = db.collection("users").doc(userName).collection("Lists");
-
-    var fList = <String, dynamic>{
-      "isFreezerList": false,
-      "isFridgeList": true,
-      "isGroceryList": false,
-      "isPantryList": false,
-      "name": "Fridge List"
-    };
-
-    var pList = <String, dynamic>{
-      "isFreezerList": false,
-      "isFridgeList": false,
-      "isGroceryList": false,
-      "isPantryList": true,
-      "name": "Pantry List"
-    };
-
-    var gList = <String, dynamic>{
-      "isFreezerList": false,
-      "isFridgeList": false,
-      "isGroceryList": true,
-      "isPantryList": false,
-      "name": "Grocery List"
-    };
-
-    var eList = <String, dynamic>{
-      "isFreezerList": false,
-      "isFridgeList": false,
-      "isGroceryList": true,
-      "isPantryList": false,
-      "name": "Expiration List"
-    };
-
-
-    ref.doc("Fridge List").set(fList);
-    ref.doc("Pantry List").set(pList);
-    ref.doc("Grocery List").set(gList);
-    ref.doc("Expiration List").set(eList);
-  }
-
 
 }
-  /*
-  static Future<void> swapAndDeleteItem(String userName, String itemName){
-
-}
-
-   */
-
 
 void main(){
 

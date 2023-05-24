@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/helpers/ListItemHelper.dart';
 import 'package:flutter_app/pages/SearchBarPopUpPage.dart';
@@ -7,8 +6,6 @@ import 'package:flutter_app/widget/ListCard.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 import '../models/ListItem.dart';
-import '../models/ListType.dart';
-import '../style.dart';
 
 class GroceryListPage extends StatefulWidget {
   const GroceryListPage({Key? key}) : super(key: key);
@@ -19,36 +16,11 @@ class GroceryListPage extends StatefulWidget {
 
 class _GroceryListPageState extends State<GroceryListPage> {
   List<ListItem> groceryList = [];
-  List<ListType> _listNames = [];
-  List<ListItem> WhatIHaveList = [];
-  final String defaultList = 'Grocery List';
-
-  String? value;
-  String? selection;
 
 
   Future<int> something() async {
-    groceryList = await ListItemHelper.getItems('Grocery List');
+    groceryList = await ListItemHelper.getItems('me', 'Grocery List');
     print(groceryList);
-    return 1;
-  }
-
-  Future<int> getMyLists(String userName) async {
-
-    _listNames = await ListItemHelper.fetchListNames(userName);
-
-    if (kDebugMode) {
-      print(_listNames);
-    }
-    return 1;
-  }
-
-  Future<int> whatIHaveListItem(String userName, String listName) async {
-    WhatIHaveList = await ListItemHelper.getItems(userName, listName);
-
-    if (kDebugMode) {
-      print(WhatIHaveList);
-    }
     return 1;
   }
 
@@ -111,13 +83,6 @@ class _GroceryListPageState extends State<GroceryListPage> {
                               children: [
                                 SlidableAction(onPressed: (context){
                                   //Do action here //todo: add action to add to list.
-                                  openDialog(index);
-                                  if(selection != ''){
-
-                                  }
-
-                                  selection = '';
-                                  //ListItemHelper.swapAndDeleteItem('me', groceryList[index].itemName);
                                 },
                                   //borderRadius: BorderRadius.circular(20),
                                   backgroundColor: Colors.blue,
@@ -132,7 +97,7 @@ class _GroceryListPageState extends State<GroceryListPage> {
                                 SlidableAction(onPressed: (context){
                                   //Do action here //todo: add action to remove from list.
                                   print(groceryList[index].itemName);
-                                  ListItemHelper.deleteItem('Grocery List', groceryList[index].itemName);
+                                  ListItemHelper.deleteItem('me', 'Grocery List', groceryList[index].itemName);
                                   setState(() {
                                     groceryList.removeAt(index);
                                   });
@@ -206,7 +171,7 @@ class _GroceryListPageState extends State<GroceryListPage> {
                                                   setState(() {
                                                     groceryList[index].expirationDate = value;
                                                   });
-                                                  await ListItemHelper.updateExpiry('Grocery List', groceryList[index].itemName, value);
+                                                  await ListItemHelper.updateExpiry('me', 'Grocery List', groceryList[index].itemName, value);
                                                   print(groceryList[index].itemName);
                                                   print(groceryList[index].expirationDate);
                                                 },
@@ -302,118 +267,4 @@ class _GroceryListPageState extends State<GroceryListPage> {
       ),
     );
   }
-
-
-
-  Future openDialog(int index) => showDialog(
-  context: context,
-  builder: (context) => StatefulBuilder(
-    builder: (context, StateSetter setThisState) => ButtonBarTheme(
-      data: ButtonBarThemeData(alignment: MainAxisAlignment.center),
-      child: AlertDialog(
-        insetPadding: EdgeInsets.all(10),
-        title: (Text("Select a list you would like to transfer the item to: ")),
-        content: SizedBox(
-          height: MediaQuery.of(context).size.width * 0.20,
-          width: MediaQuery.of(context).size.width * 0.01,
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(bottom: 50.0),
-                child: Container(
-                  alignment: Alignment.center,
-
-                  child: FutureBuilder(
-                    future: getMyLists('me'),
-                    builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
-                      if (!snapshot.hasData){
-                        Center(child: CircularProgressIndicator());
-                      } else {
-                        return DropdownButton<String>( //Dropdown menu.
-                          value: value,
-                          hint: Text("Please select a List", style: const TextStyle(fontSize: 20),),
-                          items: _listNames.map((ListType value) {
-                            return DropdownMenuItem<String>(
-                              value: value.listName,
-                              child: Text(value.listName, style: const TextStyle(fontSize: 20),),
-                            );
-
-                          }).toList(),
-                          onChanged: (value) {
-                            setThisState(() {
-                              this.value = value;
-                              whatIHaveListItem('me', this.value ?? defaultList);
-                            });
-
-
-                          },
-                        );
-                      }
-
-                      return Container();
-
-                    },
-
-                  ),
-                ),
-              ),
-
-
-            ],
-          ),
-        ),
-        actions: [
-          OutlinedButton(
-              style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(
-                      ColorConstant.red300),
-                  shape:
-                  MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ))),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text(
-                "Cancel",
-                overflow: TextOverflow.ellipsis,
-                style: AppStyle.txtRobotoBold20,
-              )),
-          Padding(
-            padding: const EdgeInsets.only(left: 25),
-            child: OutlinedButton(
-
-                style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(
-                        ColorConstant.teal300),
-                    shape:
-                    MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                        ))),
-                onPressed: () {
-
-                  selection = value!;
-
-                  ListItemHelper.addItem('me', selection!, groceryList[index].itemName, '', groceryList[index].imageName, groceryList[index].expirationDate);
-                  ListItemHelper.deleteItem('me', 'Grocery List', groceryList[index].itemName);
-                  setState(() {
-                    groceryList.removeAt(index);
-                  });
-                  selection = null;
-                  Navigator.of(context).pop();
-                },
-                child: Text(
-                  "Confirm",
-                  overflow: TextOverflow.ellipsis,
-                  style: AppStyle.txtRobotoBold20,
-                )),
-          ),
-        ],
-          actionsAlignment: MainAxisAlignment.center
-      ),
-    ),
-  ),
-  );
 }

@@ -51,7 +51,6 @@ class DefaultFirebaseOptions {
     appId: '1:515577614227:web:1e91f521e7d9cb8a47e266',
     messagingSenderId: '515577614227',
     projectId: 'fridge-bfde1',
-    databaseURL: 'fridge-bfde1.firebaseio.com',
     authDomain: 'fridge-bfde1.firebaseapp.com',
     storageBucket: 'fridge-bfde1.appspot.com',
     measurementId: 'G-8VRCP1TT6C',
@@ -62,7 +61,6 @@ class DefaultFirebaseOptions {
     appId: '1:515577614227:android:1667c000dade394047e266',
     messagingSenderId: '515577614227',
     projectId: 'fridge-bfde1',
-    databaseURL: 'fridge-bfde1.firebaseio.com',
     storageBucket: 'fridge-bfde1.appspot.com',
   );
 
@@ -71,7 +69,6 @@ class DefaultFirebaseOptions {
     appId: '1:515577614227:ios:8fd58a691738b08e47e266',
     messagingSenderId: '515577614227',
     projectId: 'fridge-bfde1',
-    databaseURL: 'fridge-bfde1.firebaseio.com',
     storageBucket: 'fridge-bfde1.appspot.com',
     iosClientId: '515577614227-7pcrlv0bmqmuemr4ugduo6p2a0r20rj7.apps.googleusercontent.com',
     iosBundleId: 'com.example.flutterApp',
