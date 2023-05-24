@@ -166,13 +166,13 @@ class _CustomListPageState extends State<CustomListPage> {
 
                             }
 
-                          else if(await ListItemHelper.listAlreadyExists('me', listName)){
+                          else if(await ListItemHelper.listAlreadyExists(listName)){
                             showAlertDialog(
                                 context,
                                 "List of this name already exists! Please enter a different list name.");
                           }
 
-                          else if(await ListItemHelper.maxNumListsReached('me', maxNumLists)){
+                          else if(await ListItemHelper.maxNumListsReached(maxNumLists)){
                             showAlertDialog(context,
                                 "Maximum number of 10 lists has been reached! Please delete a list if you want to continue.");
                           }
@@ -188,7 +188,7 @@ class _CustomListPageState extends State<CustomListPage> {
                           else{
                             //Todo: Since Firebase requires a document upon collection creation,
                             //force the user to scan an item into the newly created collection
-                            ListItemHelper.addNewList('me', listName, listType);
+                            ListItemHelper.addNewList(listName, listType);
                             Navigator.of(context).pop();
                           }
 
