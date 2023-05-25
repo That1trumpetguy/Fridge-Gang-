@@ -128,7 +128,28 @@ class ListItemHelper {
           isPantryList: data[0][i]["isPantryList"],
           isFridgeList: data[0][i]["isFridgeList"],
           isFreezerList: data[0][i]["isFreezerList"]);
-      listNames.add(temp);
+          listNames.add(temp);
+    }
+
+    return listNames;
+  }
+
+  // Retrieves only lists of owned items
+  static Future<List<ListType>> fetchOwnedListNames() async {
+    var data = await Future.wait([getList("Lists")]);
+
+    List<ListType> listNames = [];
+
+    for (var i = 0; i < data[0].length; i++) {
+      ListType temp = ListType(
+          listName: data[0][i]["name"],
+          isGroceryList: data[0][i]["isGroceryList"],
+          isPantryList: data[0][i]["isPantryList"],
+          isFridgeList: data[0][i]["isFridgeList"],
+          isFreezerList: data[0][i]["isFreezerList"]);
+          if (!temp.isGroceryList) {
+            listNames.add(temp);
+          }
     }
 
     return listNames;

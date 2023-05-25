@@ -54,9 +54,9 @@ class _SceneState extends State<Scene2> {
     return 1;
   }
 
-  Future<int> getMyLists(String userName) async {
+  Future<int> getMyLists() async {
 
-    _listNames = await ListItemHelper.fetchListNames();
+    _listNames = await ListItemHelper.fetchOwnedListNames();
 
     if (kDebugMode) {
       print(_listNames);
@@ -266,7 +266,7 @@ class _SceneState extends State<Scene2> {
                         width: screenWidth * 0.8,
 
                         child: FutureBuilder(
-                        future: getMyLists('me'),
+                        future: getMyLists(),
                         builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
                           if (!snapshot.hasData){
                             Center(child: CircularProgressIndicator());
