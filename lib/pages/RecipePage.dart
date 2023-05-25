@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -8,8 +7,38 @@ class RecipePage extends StatelessWidget {
   RecipePage({Key? key, required this.recipe}) : super(key: key);
   String imageName = '';
 
+  String formatInstructions(String instructions) {
+    if (instructions == null || instructions.isEmpty) {
+      return '';
+    }
+
+    // Remove <ol> and </ol> tags
+    instructions = instructions.replaceAll('<ol>', '');
+    instructions = instructions.replaceAll('</ol>', '');
+
+    // Replace <li> tags with line breaks
+    instructions = instructions.replaceAll('<li>', '\n');
+
+    // Remove any remaining HTML tags
+    instructions = instructions.replaceAll(RegExp(r'<[^>]+>'), '');
+
+    // Add a space after each period not followed by a number or acronym
+    final formattedText = instructions.replaceAllMapped(
+      RegExp(r'\.(?![0-9]| [A-Z])'), // Matches periods not followed by a number or acronym
+          (match) => '. ', // Adds a space after the period
+    );
+
+    // Add line breaks after each sentence
+    final sentences = formattedText.split('. ');
+    final formattedSentences = sentences.map((sentence) => '$sentence.\n').toList();
+
+    return formattedSentences.join();
+  }
+
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
     print(jsonEncode(recipe));
     return Scaffold(
       appBar: AppBar(
@@ -30,28 +59,28 @@ class RecipePage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Container(
-              width: 100,
-              height: 300,
+              width: screenWidth * 0.1,
+              height: screenHeight * 0.225,
               decoration: BoxDecoration(
                 color: Colors.blue,
                 image: DecorationImage(
                   image: NetworkImage(recipe['image']),
-                  fit: BoxFit.fitWidth,
+                  fit: BoxFit.fitHeight
                 ),
               ),
             ),
-            const Padding(
+            Padding(
               padding: EdgeInsets.all(8.0),
-              child: Text('Ingredients', style: TextStyle(fontSize: 32),),
+              child: Text('Ingredients', style: TextStyle(fontSize: screenWidth * 0.05),),
             ),
             SizedBox(
-              height: 250,
+              height: screenHeight * 0.25,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 itemCount: recipe['extendedIngredients']?.length ?? 0,
                 itemBuilder: (BuildContext context, int index) => Card(
                   child: Container(
-                    width: 150,
+                    width: screenWidth * .20,
                       child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -65,7 +94,7 @@ class RecipePage extends StatelessWidget {
                             Center(child: Text(
                               recipe['extendedIngredients'][index]['measures']['us']['amount'].toString() + ' ' +
                                   recipe['extendedIngredients'][index]['measures']['us']['unitShort']  + ' ' +
-                                  recipe['extendedIngredients'][index]['name'],style: TextStyle(fontSize: 15),)
+                                  recipe['extendedIngredients'][index]['name'],style: TextStyle(fontSize: screenWidth * 0.03),)
                   )
                       ]
                 ),
@@ -74,16 +103,24 @@ class RecipePage extends StatelessWidget {
                   ),
 
             ),
-            const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Text('Instructions', style: TextStyle(fontSize: 32),),
-            ),
             Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(recipe['instructions'] ?? '', style: TextStyle(fontSize: 16)),
+              padding: EdgeInsets.all(screenHeight * 0.005),
+              child: Text('Instructions', style: TextStyle(fontSize: screenWidth * 0.05),),
             ),
-
-
+            Container(
+              constraints: BoxConstraints(
+                maxHeight: screenHeight * 0.6, // Adjust the value as needed
+              ),
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(screenWidth * 0.005, 0, screenWidth * 0.005, 0),
+                  child: Text(
+                    formatInstructions(recipe['instructions'] ?? ''),
+                    style: TextStyle(fontSize: screenWidth * 0.03),
+                  ),
+                ),
+              ),
+            )
           ],
         ),
       ),
