@@ -5,7 +5,7 @@ import 'package:flutter_app/helpers/ListItemHelper.dart';
 import 'package:flutter_app/pages/SearchBarPopUpPage.dart';
 import 'package:flutter_app/widget/ListCard.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-
+import 'package:flutter_app/BarScanner.dart';
 import '../models/ListItem.dart';
 import '../models/ListType.dart';
 import '../style.dart';
@@ -26,7 +26,6 @@ class _GroceryListPageState extends State<GroceryListPage> {
   String? value;
   String? selection;
 
-
   Future<int> something() async {
     groceryList = await ListItemHelper.getItems('Grocery List');
     print(groceryList);
@@ -34,7 +33,6 @@ class _GroceryListPageState extends State<GroceryListPage> {
   }
 
   Future<int> getMyLists(String userName) async {
-
     _listNames = await ListItemHelper.fetchListNames();
 
     if (kDebugMode) {
@@ -44,7 +42,7 @@ class _GroceryListPageState extends State<GroceryListPage> {
   }
 
   Future<int> whatIHaveListItem(String userName, String listName) async {
-    WhatIHaveList = await ListItemHelper.getItems( listName);
+    WhatIHaveList = await ListItemHelper.getItems(listName);
 
     if (kDebugMode) {
       print(WhatIHaveList);
@@ -91,13 +89,11 @@ class _GroceryListPageState extends State<GroceryListPage> {
                   builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
                     if (snapshot.hasError) {
                       return Center(child: Text('Error: $snapshot.error}'));
-                    }
-                    else if (!snapshot.hasData) {
+                    } else if (!snapshot.hasData) {
                       print("here");
                       return Center(child: CircularProgressIndicator());
                       //here
-                    }
-                    else {
+                    } else {
                       print("there");
                       return ListView.builder(
                         itemCount: groceryList.length,
@@ -109,16 +105,15 @@ class _GroceryListPageState extends State<GroceryListPage> {
                             startActionPane: ActionPane(
                               motion: const StretchMotion(),
                               children: [
-                                SlidableAction(onPressed: (context){
-                                  //Do action here //todo: add action to add to list.
-                                  openDialog(index);
-                                  if(selection != ''){
+                                SlidableAction(
+                                  onPressed: (context) {
+                                    //Do action here //todo: add action to add to list.
+                                    openDialog(index);
+                                    if (selection != '') {}
 
-                                  }
-
-                                  selection = '';
-                                  //ListItemHelper.swapAndDeleteItem('me', groceryList[index].itemName);
-                                },
+                                    selection = '';
+                                    //ListItemHelper.swapAndDeleteItem('me', groceryList[index].itemName);
+                                  },
                                   //borderRadius: BorderRadius.circular(20),
                                   backgroundColor: Colors.blue,
                                   //padding: const EdgeInsets.all(20),
@@ -129,15 +124,16 @@ class _GroceryListPageState extends State<GroceryListPage> {
                             endActionPane: ActionPane(
                               motion: const StretchMotion(),
                               children: [
-                                SlidableAction(onPressed: (context){
-                                  //Do action here //todo: add action to remove from list.
-                                  print(groceryList[index].itemName);
-                                  ListItemHelper.deleteItem('Grocery List', groceryList[index].itemName);
-                                  setState(() {
-                                    groceryList.removeAt(index);
-                                  });
-
-                                },
+                                SlidableAction(
+                                  onPressed: (context) {
+                                    //Do action here //todo: add action to remove from list.
+                                    print(groceryList[index].itemName);
+                                    ListItemHelper.deleteItem('Grocery List',
+                                        groceryList[index].itemName);
+                                    setState(() {
+                                      groceryList.removeAt(index);
+                                    });
+                                  },
                                   //borderRadius: BorderRadius.circular(20),
                                   backgroundColor: Colors.red,
                                   //padding: const EdgeInsets.all(20),
@@ -153,44 +149,50 @@ class _GroceryListPageState extends State<GroceryListPage> {
                                   Positioned.fill(
                                     child: Container(
                                       decoration: BoxDecoration(
-                                        //borderRadius: BorderRadius.circular(20),
+                                          //borderRadius: BorderRadius.circular(20),
                                           color: Color(0xffdbdfd1),
-                                          border: Border.all(color: Colors.grey)
-                                      ),
+                                          border:
+                                              Border.all(color: Colors.grey)),
                                     ),
                                   ),
                                   Row(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       //Image.asset(item.imageName),
                                       ClipRRect(
-                                        borderRadius: BorderRadius.circular(screenWidth * 0.150),
+                                        borderRadius: BorderRadius.circular(
+                                            screenWidth * 0.150),
                                         child: CachedNetworkImage(
-                                          cacheManager: ListCard.customCacheManager,
+                                          cacheManager:
+                                              ListCard.customCacheManager,
                                           height: screenHeight * .140,
-                                          width: screenWidth* .140,
+                                          width: screenWidth * .140,
                                           key: UniqueKey(),
-                                          imageUrl: groceryList[index].imageName,
-                                          placeholder: (context,url) => Container(color: Colors.black12,),
-                                          errorWidget: (context,url,error) => Container(
-                                            child:
-                                            Icon(
-                                                Icons.error,
+                                          imageUrl:
+                                              groceryList[index].imageName,
+                                          placeholder: (context, url) =>
+                                              Container(
+                                            color: Colors.black12,
+                                          ),
+                                          errorWidget: (context, url, error) =>
+                                              Container(
+                                            child: Icon(Icons.error,
                                                 color: Colors.red,
-                                                size: screenHeight * 0.080
-                                            ),
+                                                size: screenHeight * 0.080),
                                           ),
                                         ),
                                       ),
 
                                       Flexible(
                                         child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.stretch,
-
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.stretch,
                                           children: [
                                             Text(
                                               groceryList[index].itemName,
-                                              style: TextStyle(fontSize: screenWidth * 0.04),
+                                              style: TextStyle(
+                                                  fontSize: screenWidth * 0.04),
                                               textAlign: TextAlign.left,
                                               overflow: TextOverflow.visible,
                                             ),
@@ -199,19 +201,27 @@ class _GroceryListPageState extends State<GroceryListPage> {
                                               decoration: InputDecoration(
                                                 labelText: 'Expiration Date',
                                               ),
-                                               /* controller: TextEditingController(
+                                              /* controller: TextEditingController(
                                                   text: groceryList[index].expirationDate,
                                                 ),*/
-                                                onChanged: (value) async{
-                                                  setState(() {
-                                                    groceryList[index].expirationDate = value;
-                                                  });
-                                                  await ListItemHelper.updateExpiry('Grocery List', groceryList[index].itemName, value);
-                                                  print(groceryList[index].itemName);
-                                                  print(groceryList[index].expirationDate);
-                                                },
-                                                //
-                                               /*onEditingComplete: () async {
+                                              onChanged: (value) async {
+                                                setState(() {
+                                                  groceryList[index]
+                                                      .expirationDate = value;
+                                                });
+                                                await ListItemHelper
+                                                    .updateExpiry(
+                                                        'Grocery List',
+                                                        groceryList[index]
+                                                            .itemName,
+                                                        value);
+                                                print(groceryList[index]
+                                                    .itemName);
+                                                print(groceryList[index]
+                                                    .expirationDate);
+                                              },
+                                              //
+                                              /*onEditingComplete: () async {
                                                   String newExpirationDate = groceryList[index].expirationDate;
                                                   setState(() {
                                                     //String newExpirationDate = groceryList[index].expirationDate;
@@ -222,7 +232,7 @@ class _GroceryListPageState extends State<GroceryListPage> {
                                                   print(groceryList[index].expirationDate);
                                                   //print(newExpirationDate);
                                                 },*/
-                                              ),
+                                            ),
 
                                             /*
                                             Column(
@@ -268,11 +278,10 @@ class _GroceryListPageState extends State<GroceryListPage> {
                                             )
                                             */
 
-                                           //), //onchanged
+                                            //), //onchanged
                                           ],
                                         ),
                                       ),
-
                                     ],
                                   )
                                 ],
@@ -294,6 +303,10 @@ class _GroceryListPageState extends State<GroceryListPage> {
           child: FloatingActionButton(
               child: new Icon(Icons.add),
               onPressed: () {
+                //Navigator.of(context).push(MaterialPageRoute(             REMOVE THIS FOR THE SHOWCASE ON FRIDAY
+                //builder: (BuildContext context) => BarScanner(),
+                //));
+
                 Navigator.of(context).push(MaterialPageRoute(
                   builder: (BuildContext context) => SearchBarPopUpPage(),
                 ));
@@ -303,117 +316,119 @@ class _GroceryListPageState extends State<GroceryListPage> {
     );
   }
 
-
-
   Future openDialog(int index) => showDialog(
-  context: context,
-  builder: (context) => StatefulBuilder(
-    builder: (context, StateSetter setThisState) => ButtonBarTheme(
-      data: ButtonBarThemeData(alignment: MainAxisAlignment.center),
-      child: AlertDialog(
-        insetPadding: EdgeInsets.all(10),
-        title: (Text("Select a list you would like to transfer the item to: ")),
-        content: SizedBox(
-          height: MediaQuery.of(context).size.width * 0.20,
-          width: MediaQuery.of(context).size.width * 0.01,
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(bottom: 50.0),
-                child: Container(
-                  alignment: Alignment.center,
+        context: context,
+        builder: (context) => StatefulBuilder(
+          builder: (context, StateSetter setThisState) => ButtonBarTheme(
+            data: ButtonBarThemeData(alignment: MainAxisAlignment.center),
+            child: AlertDialog(
+                insetPadding: EdgeInsets.all(10),
+                title: (Text(
+                    "Select a list you would like to transfer the item to: ")),
+                content: SizedBox(
+                  height: MediaQuery.of(context).size.width * 0.20,
+                  width: MediaQuery.of(context).size.width * 0.01,
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 50.0),
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: FutureBuilder(
+                            future: getMyLists('me'),
+                            builder: (BuildContext context,
+                                AsyncSnapshot<int> snapshot) {
+                              if (!snapshot.hasData) {
+                                Center(child: CircularProgressIndicator());
+                              } else {
+                                return DropdownButton<String>(
+                                  //Dropdown menu.
+                                  value: value,
+                                  hint: Text(
+                                    "Please select a List",
+                                    style: const TextStyle(fontSize: 20),
+                                  ),
+                                  items: _listNames.map((ListType value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value.listName,
+                                      child: Text(
+                                        value.listName,
+                                        style: const TextStyle(fontSize: 20),
+                                      ),
+                                    );
+                                  }).toList(),
+                                  onChanged: (value) {
+                                    setThisState(() {
+                                      this.value = value;
+                                      whatIHaveListItem(
+                                          'me', this.value ?? defaultList);
+                                    });
+                                  },
+                                );
+                              }
 
-                  child: FutureBuilder(
-                    future: getMyLists('me'),
-                    builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
-                      if (!snapshot.hasData){
-                        Center(child: CircularProgressIndicator());
-                      } else {
-                        return DropdownButton<String>( //Dropdown menu.
-                          value: value,
-                          hint: Text("Please select a List", style: const TextStyle(fontSize: 20),),
-                          items: _listNames.map((ListType value) {
-                            return DropdownMenuItem<String>(
-                              value: value.listName,
-                              child: Text(value.listName, style: const TextStyle(fontSize: 20),),
-                            );
-
-                          }).toList(),
-                          onChanged: (value) {
-                            setThisState(() {
-                              this.value = value;
-                              whatIHaveListItem('me', this.value ?? defaultList);
-                            });
-
-
-                          },
-                        );
-                      }
-
-                      return Container();
-
-                    },
-
+                              return Container();
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ),
+                actions: [
+                  OutlinedButton(
+                      style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              ColorConstant.red300),
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                          ))),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Text(
+                        "Cancel",
+                        overflow: TextOverflow.ellipsis,
+                        style: AppStyle.txtRobotoBold20,
+                      )),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 25),
+                    child: OutlinedButton(
+                        style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                                ColorConstant.teal300),
+                            shape: MaterialStateProperty.all<
+                                RoundedRectangleBorder>(RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                            ))),
+                        onPressed: () {
+                          selection = value!;
 
-
-            ],
+                          ListItemHelper.addItem(
+                              selection!,
+                              groceryList[index].itemName,
+                              '',
+                              groceryList[index].imageName,
+                              groceryList[index].expirationDate);
+                          ListItemHelper.deleteItem(
+                              'Grocery List', groceryList[index].itemName);
+                          setState(() {
+                            groceryList.removeAt(index);
+                          });
+                          selection = null;
+                          Navigator.of(context).pop();
+                        },
+                        child: Text(
+                          "Confirm",
+                          overflow: TextOverflow.ellipsis,
+                          style: AppStyle.txtRobotoBold20,
+                        )),
+                  ),
+                ],
+                actionsAlignment: MainAxisAlignment.center),
           ),
         ),
-        actions: [
-          OutlinedButton(
-              style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(
-                      ColorConstant.red300),
-                  shape:
-                  MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ))),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text(
-                "Cancel",
-                overflow: TextOverflow.ellipsis,
-                style: AppStyle.txtRobotoBold20,
-              )),
-          Padding(
-            padding: const EdgeInsets.only(left: 25),
-            child: OutlinedButton(
-
-                style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(
-                        ColorConstant.teal300),
-                    shape:
-                    MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                        ))),
-                onPressed: () {
-
-                  selection = value!;
-
-                  ListItemHelper.addItem( selection!, groceryList[index].itemName, '', groceryList[index].imageName, groceryList[index].expirationDate);
-                  ListItemHelper.deleteItem( 'Grocery List', groceryList[index].itemName);
-                  setState(() {
-                    groceryList.removeAt(index);
-                  });
-                  selection = null;
-                  Navigator.of(context).pop();
-                },
-                child: Text(
-                  "Confirm",
-                  overflow: TextOverflow.ellipsis,
-                  style: AppStyle.txtRobotoBold20,
-                )),
-          ),
-        ],
-          actionsAlignment: MainAxisAlignment.center
-      ),
-    ),
-  ),
-  );
+      );
 }
