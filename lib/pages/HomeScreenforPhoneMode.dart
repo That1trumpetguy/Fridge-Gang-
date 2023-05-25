@@ -92,17 +92,21 @@ class _SceneState extends State<PhoneScene> {
                     return Center(child: CircularProgressIndicator());
                   } else {
                     print("there");
+
                     return ListView.builder(
                       shrinkWrap: true,
                       itemCount: WhatIHaveList.length,
                       itemBuilder: (BuildContext context, int index){
+                        /*
                         return ListCard(
                             item: WhatIHaveList[index],
                             index: index,
                             foodList: WhatIHaveList
                         );
+                        */
                       },
                     );
+
                   }
       }
             ),

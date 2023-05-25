@@ -1,10 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter/material.dart';
 
+import '../helpers/ListItemHelper.dart';
 import '../models/ListItem.dart';
+import '../models/ListType.dart';
+import '../style.dart';
 
 class ListCard extends StatefulWidget {
 
@@ -15,12 +19,20 @@ class ListCard extends StatefulWidget {
        maxNrOfCacheObjects: 100,
      )
   );
+
+   //Constructor
    ListCard({
-    Key? key, required this.item, required int index, required List<ListItem> foodList,
+    Key? key, required this.item, required this.index, required this.foodList, required this.callback, required this.listName,
   }) : super(key: key);
 
   //Reference for the current list item.
  final ListItem item;
+ final Function callback;
+ final String listName;
+ final int index;
+ final List<ListItem> foodList;
+
+
 
   @override
   State<ListCard> createState() => _ListCardState();
@@ -28,6 +40,30 @@ class ListCard extends StatefulWidget {
 
 class _ListCardState extends State<ListCard> {
  int counter = 1;
+
+ List<ListType> _listNames = [];
+ List<ListItem> WhatIHaveList = [];
+ String? value;
+ String? selection;
+ final String defaultList = 'Grocery List';
+
+ Future<int> getMyLists() async {
+   _listNames = await ListItemHelper.fetchListNames();
+
+   if (kDebugMode) {
+     print(_listNames);
+   }
+   return 1;
+ }
+
+ Future<int> whatIHaveListItem(String listName) async {
+   WhatIHaveList = await ListItemHelper.getItems(listName);
+
+   if (kDebugMode) {
+     print(WhatIHaveList);
+   }
+   return 1;
+ }
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +75,7 @@ class _ListCardState extends State<ListCard> {
         children: [
           SlidableAction(onPressed: (context){
             //Do action here //todo: add action to add to list.
+            openDialog(widget.index);
           },
             //borderRadius: BorderRadius.circular(20),
             backgroundColor: Colors.blue,
@@ -51,6 +88,13 @@ class _ListCardState extends State<ListCard> {
         motion: const StretchMotion(),
         children: [
           SlidableAction(onPressed: (context){
+            ListItemHelper.deleteItem(widget.listName,
+                widget.foodList[widget.index].itemName);
+
+              widget.foodList.removeAt(widget.index);
+
+              widget.callback(widget.foodList);
+
             //Do action here //todo: add action to remove from list.
           },
             //borderRadius: BorderRadius.circular(20),
@@ -109,49 +153,7 @@ class _ListCardState extends State<ListCard> {
                             textAlign: TextAlign.left,
                             overflow: TextOverflow.visible,
                         ),
-                        /*
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                             Text(
-                                "Quantity:",
-                                style: TextStyle(fontSize: screenWidth * 0.03),
-                                textAlign: TextAlign.left
-                            ),
-                            Row(
-                              children: [
-                                counter !=0 ? IconButton(
-                                  icon: Icon(
-                                    Icons.remove,
-                                    color: Theme.of(context).primaryColor,
-                                  ), onPressed: () {
-                                  setState(() {
-                                    counter--;
-                                  });
-                                },
-                                ): Padding(
-                                  padding: EdgeInsets.only(left: screenWidth * 0.15),
-                                  child: Container(),
-                                ),
-                                Text(
-                                  "$counter",
-                                  style: TextStyle(fontSize: screenWidth * 0.03),
-                                ),
-                                IconButton(
-                                  icon: Icon(
-                                    Icons.add,
-                                    color: Theme.of(context).primaryColor,
-                                  ), onPressed: () {
-                                  setState(() {
-                                    counter++;
-                                  });
-                                },
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        */
+
 
                       ],
                   ),
@@ -163,4 +165,119 @@ class _ListCardState extends State<ListCard> {
       ),
     );
   }
+
+ Future openDialog(int index) => showDialog(
+   context: context,
+   builder: (context) => StatefulBuilder(
+     builder: (context, StateSetter setThisState) => ButtonBarTheme(
+       data: ButtonBarThemeData(alignment: MainAxisAlignment.center),
+       child: AlertDialog(
+           insetPadding: EdgeInsets.all(10),
+           title: (Text(
+               "Select a list you would like to transfer the item to: ")),
+           content: SizedBox(
+             height: MediaQuery.of(context).size.width * 0.20,
+             width: MediaQuery.of(context).size.width * 0.01,
+             child: Column(
+               children: [
+                 Padding(
+                   padding: const EdgeInsets.only(bottom: 50.0),
+                   child: Container(
+                     alignment: Alignment.center,
+                     child: FutureBuilder(
+                       future: getMyLists(),
+                       builder: (BuildContext context,
+                           AsyncSnapshot<int> snapshot) {
+                         if (!snapshot.hasData) {
+                           Center(child: CircularProgressIndicator());
+                         } else {
+                           return DropdownButton<String>(
+                             //Dropdown menu.
+                             value: value,
+                             hint: Text(
+                               "Please select a List",
+                               style: const TextStyle(fontSize: 20),
+                             ),
+                             items: _listNames.map((ListType value) {
+                               return DropdownMenuItem<String>(
+                                 value: value.listName,
+                                 child: Text(
+                                   value.listName,
+                                   style: const TextStyle(fontSize: 20),
+                                 ),
+                               );
+                             }).toList(),
+                             onChanged: (value) {
+                               setThisState(() {
+                                 this.value = value;
+                                 whatIHaveListItem(this.value ?? defaultList);
+                               });
+                             },
+                           );
+                         }
+
+                         return Container();
+                       },
+                     ),
+                   ),
+                 ),
+               ],
+             ),
+           ),
+           actions: [
+             OutlinedButton(
+                 style: ButtonStyle(
+                     backgroundColor: MaterialStateProperty.all<Color>(
+                         ColorConstant.red300),
+                     shape:
+                     MaterialStateProperty.all<RoundedRectangleBorder>(
+                         RoundedRectangleBorder(
+                           borderRadius: BorderRadius.circular(20.0),
+                         ))),
+                 onPressed: () {
+                   Navigator.of(context).pop();
+                 },
+                 child: Text(
+                   "Cancel",
+                   overflow: TextOverflow.ellipsis,
+                   style: AppStyle.txtRobotoBold20,
+                 )),
+             Padding(
+               padding: const EdgeInsets.only(left: 25),
+               child: OutlinedButton(
+                   style: ButtonStyle(
+                       backgroundColor: MaterialStateProperty.all<Color>(
+                           ColorConstant.teal300),
+                       shape: MaterialStateProperty.all<
+                           RoundedRectangleBorder>(RoundedRectangleBorder(
+                         borderRadius: BorderRadius.circular(20.0),
+                       ))),
+                   onPressed: () {
+                     selection = value!;
+
+                     ListItemHelper.addItem(
+                         selection!,
+                         widget.foodList[index].itemName,
+                         '',
+                         widget.foodList[index].imageName,
+                         widget.foodList[index].expirationDate);
+                     ListItemHelper.deleteItem(widget.listName,widget.foodList[index].itemName);
+                          widget.foodList.removeAt(index);
+                          widget.callback(widget.foodList);
+
+
+                     selection = null;
+                     Navigator.of(context).pop();
+                   },
+                   child: Text(
+                     "Confirm",
+                     overflow: TextOverflow.ellipsis,
+                     style: AppStyle.txtRobotoBold20,
+                   )),
+             ),
+           ],
+           actionsAlignment: MainAxisAlignment.center),
+     ),
+   ),
+ );
 }

@@ -25,6 +25,7 @@ class Scene2 extends StatefulWidget {
 
   @override
   State<Scene2> createState() => _SceneState();
+
 }
 
 class _SceneState extends State<Scene2> {
@@ -64,7 +65,12 @@ class _SceneState extends State<Scene2> {
     return 1;
   }
 
-
+  //To set the state.
+  callback(varWhatIHaveList) {
+    setState(() {
+      WhatIHaveList = varWhatIHaveList;
+    });
+  }
 
 
   Map<String, dynamic> _allRecipes = {};
@@ -319,8 +325,10 @@ class _SceneState extends State<Scene2> {
                                     if (WhatIHaveList[index].itemName != ' ') {
                                      return ListCard(
                                          item: WhatIHaveList[index],
+                                         listName: value ?? '',
                                          index: index,
-                                         foodList: WhatIHaveList
+                                         foodList: WhatIHaveList,
+                                         callback: callback
                                      );
                                    }
                                   },

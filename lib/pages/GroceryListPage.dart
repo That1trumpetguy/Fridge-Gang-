@@ -32,7 +32,7 @@ class _GroceryListPageState extends State<GroceryListPage> {
     return 1;
   }
 
-  Future<int> getMyLists(String userName) async {
+  Future<int> getMyLists() async {
     _listNames = await ListItemHelper.fetchListNames();
 
     if (kDebugMode) {
@@ -41,7 +41,7 @@ class _GroceryListPageState extends State<GroceryListPage> {
     return 1;
   }
 
-  Future<int> whatIHaveListItem(String userName, String listName) async {
+  Future<int> whatIHaveListItem(String listName) async {
     WhatIHaveList = await ListItemHelper.getItems(listName);
 
     if (kDebugMode) {
@@ -109,7 +109,6 @@ class _GroceryListPageState extends State<GroceryListPage> {
                                   onPressed: (context) {
                                     //Do action here //todo: add action to add to list.
                                     openDialog(index);
-                                    if (selection != '') {}
 
                                     selection = '';
                                     //ListItemHelper.swapAndDeleteItem('me', groceryList[index].itemName);
@@ -335,7 +334,7 @@ class _GroceryListPageState extends State<GroceryListPage> {
                         child: Container(
                           alignment: Alignment.center,
                           child: FutureBuilder(
-                            future: getMyLists('me'),
+                            future: getMyLists(),
                             builder: (BuildContext context,
                                 AsyncSnapshot<int> snapshot) {
                               if (!snapshot.hasData) {
@@ -361,7 +360,7 @@ class _GroceryListPageState extends State<GroceryListPage> {
                                     setThisState(() {
                                       this.value = value;
                                       whatIHaveListItem(
-                                          'me', this.value ?? defaultList);
+                                          this.value ?? defaultList);
                                     });
                                   },
                                 );
