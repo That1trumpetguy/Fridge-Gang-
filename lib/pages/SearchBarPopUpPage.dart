@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:async';
+import 'dart:convert';
 
+import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/models/ListItem.dart';
@@ -9,6 +11,7 @@ import 'package:flutter_app/helpers/ListItemHelper.dart';
 
 class SearchBarPopUpPage extends StatefulWidget {
   const SearchBarPopUpPage({Key? key}) : super(key: key);
+  
 
   @override
   State<SearchBarPopUpPage> createState() => _SearchBarPopUpPageState();
@@ -21,10 +24,78 @@ class _SearchBarPopUpPageState extends State<SearchBarPopUpPage> {
   //UserInput
   String itemName = '';
 
-  //Search bar popup to search for food items by name using autocomplete.
-  //Todo: add more error handling!!!
+
+  FutureOr<List<String>> getSuggestions(String input) async {
+    
+    final response = await http.get(Uri.parse(
+      'https://api.edamam.com/auto-complete?app_id=07ca8641&app_key=f239759c5a8f2b695c852f20ea31f966&q=$input&limit=10'
+    ));
+
+    if (response.statusCode == 200) {
+      print("hello");
+      List<dynamic> foods = json.decode(response.body);
+      final List<String> finalFoods = foods.map((e) => e.toString()).toList();
+      return finalFoods;
+    } else {
+      return [];
+    }
+
+
+  }
+
+  /*
   @override
   Widget build(BuildContext context) {
+    return Autocomplete<String>(
+      fieldViewBuilder: (
+        BuildContext context,
+        TextEditingController fieldTextEditingController,
+        FocusNode fieldFocusNode,
+        VoidCallback onFieldSubmitted,
+      ) {
+        return Container(
+            width: double.infinity,
+            height: 40,
+            color: Colors.white,
+            child: TextField(
+              controller: fieldTextEditingController,
+              focusNode: fieldFocusNode,
+              style: const TextStyle(fontSize: 16.0, color: Colors.black),
+              decoration: InputDecoration(
+                  hintText: 'Insert name of food',
+                  prefixIcon: Icon(Icons.search),
+                  suffixIcon: IconButton(
+                    icon: Icon(Icons.clear),
+                    onPressed: fieldTextEditingController.clear,
+                  ) //(Icons.clear)
+                  ),
+            ));
+      },
+
+      onSelected: (String selection) {
+        String selectedFood = selection;
+        debugPrint('You just selected $selection');
+      },
+
+      optionsBuilder: (TextEditingValue textEditingValue) {
+        String input = textEditingValue.text;
+        if (input == '') {
+          return const Iterable<String>.empty();
+        }
+        return getSuggestions(input);
+      }
+    );
+  }
+*/
+      
+
+  
+  //Search bar popup to search for food items by name using autocomplete.
+  //Todo: add more error handling!!!
+  
+  @override
+  Widget build(BuildContext context) {
+    
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -74,6 +145,48 @@ class _SearchBarPopUpPageState extends State<SearchBarPopUpPage> {
                 ],
               ),
             ),
+
+            Autocomplete<String>(
+              fieldViewBuilder: (
+                BuildContext context,
+                TextEditingController fieldTextEditingController,
+                FocusNode fieldFocusNode,
+                VoidCallback onFieldSubmitted,
+              ) {
+                return Container(
+                    width: double.infinity,
+                    height: 40,
+                    color: Colors.white,
+                    child: TextField(
+                      controller: fieldTextEditingController,
+                      focusNode: fieldFocusNode,
+                      style: const TextStyle(fontSize: 16.0, color: Colors.black),
+                      decoration: InputDecoration(
+                          hintText: 'Insert name of food',
+                          prefixIcon: Icon(Icons.search),
+                          suffixIcon: IconButton(
+                            icon: Icon(Icons.clear),
+                            onPressed: fieldTextEditingController.clear,
+                          ) //(Icons.clear)
+                          ),
+                    ));
+              },
+
+              onSelected: (String selection) {
+                String selectedFood = selection;
+                debugPrint('You just selected $selection');
+              },
+
+              optionsBuilder: (TextEditingValue textEditingValue) {
+                String input = textEditingValue.text;
+                if (input == '') {
+                  return const Iterable<String>.empty();
+                }
+                return getSuggestions(input);
+              }
+            ),
+            /*
+
             TextField(
               controller: _textController,
               decoration: InputDecoration(
@@ -86,6 +199,8 @@ class _SearchBarPopUpPageState extends State<SearchBarPopUpPage> {
                     icon: const Icon(Icons.clear),
                   )),
             ),
+
+            */
             MaterialButton(
               onPressed: () async {
                 //Asynchronous button press to query database with given code
@@ -111,7 +226,7 @@ class _SearchBarPopUpPageState extends State<SearchBarPopUpPage> {
       ),
     );
   }
-
+  
   Future<Product?> getProduct(String barcode) async {
     //var barcode = '0048151623426';
 
@@ -179,4 +294,5 @@ class _SearchBarPopUpPageState extends State<SearchBarPopUpPage> {
       },
     );
   }
+  
 }

@@ -9,6 +9,8 @@ import '../models/ListType.dart';
 //Class to derive lists (grocery, fridge, custom) from the database.
 class ListItemHelper {
 
+  static String? currentList;
+
   //Derives a list of grocery items from database. This is static for now....
   static Future<List<ListItem>> getGroceryListItems() async {
     var data = await Future.wait([getList("Grocery List")]);
@@ -221,6 +223,7 @@ class ListItemHelper {
         onError: (e) => print("Error updating document $e"));
   }
 
+  //updating expiration dates
   static Future<void> updateExpiry(String listName,
       String foodName, String expirationDate) async {
     FirebaseFirestore db = FirebaseFirestore.instance;
@@ -242,7 +245,9 @@ class ListItemHelper {
     ref.delete();
   }
 
+  //populating the about to expire list page
   static Future<List<ListItem>> addToExpirationList(String listName) async{
+
     final listItems = await getItems(listName);
     final currentDate = DateTime.now();
     final expirationLimit = currentDate.add(Duration(days:4));

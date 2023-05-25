@@ -39,6 +39,7 @@ class ListCard extends StatefulWidget {
 }
 
 class _ListCardState extends State<ListCard> {
+
  int counter = 1;
 
  List<ListType> _listNames = [];
@@ -153,6 +154,71 @@ class _ListCardState extends State<ListCard> {
                             textAlign: TextAlign.left,
                             overflow: TextOverflow.visible,
                         ),
+                        SizedBox(height: 8),
+                        Text(
+                              'Expiration Date: ${widget.item.expirationDate}',
+                              style: TextStyle(fontSize: screenWidth * 0.03),
+                              textAlign: TextAlign.left,
+                              overflow: TextOverflow.visible,
+                        ),
+                        SizedBox(height: 8),
+                        TextField(
+                          decoration: InputDecoration(
+                            labelText: 'Enter new expiration date',
+                          ),
+                       onChanged: (value) async{
+                         setState(() {
+                           widget.item.expirationDate = value;
+                           //groceryList[index].expirationDate = value;
+                         });
+                         await ListItemHelper.updateExpiry(/*'Grocery List'*/ ListItemHelper.currentList.toString(), widget.item.itemName, value);
+                        print(ListItemHelper.currentList.toString());
+                        print(widget.item.itemName);
+                       },
+                     )
+                        /*
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                             Text(
+                                "Quantity:",
+                                style: TextStyle(fontSize: screenWidth * 0.03),
+                                textAlign: TextAlign.left
+                            ),
+                            Row(
+                              children: [
+                                counter !=0 ? IconButton(
+                                  icon: Icon(
+                                    Icons.remove,
+                                    color: Theme.of(context).primaryColor,
+                                  ), onPressed: () {
+                                  setState(() {
+                                    counter--;
+                                  });
+                                },
+                                ): Padding(
+                                  padding: EdgeInsets.only(left: screenWidth * 0.15),
+                                  child: Container(),
+                                ),
+                                Text(
+                                  "$counter",
+                                  style: TextStyle(fontSize: screenWidth * 0.03),
+                                ),
+                                IconButton(
+                                  icon: Icon(
+                                    Icons.add,
+                                    color: Theme.of(context).primaryColor,
+                                  ), onPressed: () {
+                                  setState(() {
+                                    counter++;
+                                  });
+                                },
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        */
 
 
                       ],
