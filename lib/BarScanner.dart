@@ -148,7 +148,6 @@ class SearchMe {
             onAddToList: (ListItem newItem) {
               // Call the method to add the item to the list
               ListItemHelper.addItem(
-                'me',
                 'Fridge List',
                 newItem.itemName,
                 '', //newItem.categories, somehow there is an error here, it does not want to accept foodType or categories

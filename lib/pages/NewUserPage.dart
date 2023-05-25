@@ -8,6 +8,7 @@ import 'package:flutter_app/style.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:device_info/device_info.dart';
+import '../helpers/ListItemHelper.dart';
 
 class NewUserScreen extends StatelessWidget {
   TextEditingController emailinputController = TextEditingController();
@@ -217,6 +218,7 @@ class NewUserScreen extends StatelessWidget {
   }
 
   final FirebaseAuth _firebaseAuth= FirebaseAuth.instance;
+
   void registerNewUser(BuildContext context) async {
     final User? firebaseUser = (await _firebaseAuth.createUserWithEmailAndPassword(
         email: emailinputController.text,
@@ -230,8 +232,12 @@ class NewUserScreen extends StatelessWidget {
       "password": passwordinputController.text.trim(),
     };
     usersRef.child(firebaseUser!.uid).set(userDataMap);
+    ListItemHelper.newUserLists(firebaseUser.uid);
+    
     displayToastMsg("Congrats account created", context);
   }
+
+
   displayToastMsg(String msg, BuildContext context){
     Fluttertoast.showToast(msg: msg);
   }
