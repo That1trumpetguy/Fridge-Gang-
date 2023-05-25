@@ -90,7 +90,7 @@ class ListItemHelper {
 
     final ref =
         db.collection("users").doc(FirebaseAuth.instance.currentUser?.uid).collection(listName).doc(foodName);
-    ref.delete().then((doc) => print("Document deleted"),
+        ref.delete().then((doc) => print("Document deleted"),
         onError: (e) => print("Error updating document $e"));
   }
 
@@ -198,6 +198,8 @@ class ListItemHelper {
         break;
     }
 
+    
+
     FirebaseFirestore db = FirebaseFirestore.instance;
 
     //Creates a new collection given the list name.
@@ -230,6 +232,14 @@ class ListItemHelper {
     });
 
     print('Updated expiration date: $expirationDate');
+  }
+
+  // deletes a list from available lists
+  static void deleteList(String listName) {
+    FirebaseFirestore db = FirebaseFirestore.instance;
+
+    final ref = db.collection("users").doc(FirebaseAuth.instance.currentUser?.uid).collection("Lists").doc(listName);
+    ref.delete();
   }
 
   static Future<List<ListItem>> addToExpirationList(String listName) async{
