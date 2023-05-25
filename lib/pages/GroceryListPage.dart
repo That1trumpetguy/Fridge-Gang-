@@ -35,7 +35,7 @@ class _GroceryListPageState extends State<GroceryListPage> {
 
   Future<int> getMyLists(String userName) async {
 
-    _listNames = await ListItemHelper.fetchListNames(userName);
+    _listNames = await ListItemHelper.fetchListNames();
 
     if (kDebugMode) {
       print(_listNames);
@@ -44,7 +44,7 @@ class _GroceryListPageState extends State<GroceryListPage> {
   }
 
   Future<int> whatIHaveListItem(String userName, String listName) async {
-    WhatIHaveList = await ListItemHelper.getItems(userName, listName);
+    WhatIHaveList = await ListItemHelper.getItems( listName);
 
     if (kDebugMode) {
       print(WhatIHaveList);
@@ -396,8 +396,8 @@ class _GroceryListPageState extends State<GroceryListPage> {
 
                   selection = value!;
 
-                  ListItemHelper.addItem('me', selection!, groceryList[index].itemName, '', groceryList[index].imageName, groceryList[index].expirationDate);
-                  ListItemHelper.deleteItem('me', 'Grocery List', groceryList[index].itemName);
+                  ListItemHelper.addItem( selection!, groceryList[index].itemName, '', groceryList[index].imageName, groceryList[index].expirationDate);
+                  ListItemHelper.deleteItem( 'Grocery List', groceryList[index].itemName);
                   setState(() {
                     groceryList.removeAt(index);
                   });
