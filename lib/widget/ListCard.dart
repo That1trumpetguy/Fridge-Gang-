@@ -4,6 +4,7 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter/material.dart';
 
+import '../helpers/ListItemHelper.dart';
 import '../models/ListItem.dart';
 
 class ListCard extends StatefulWidget {
@@ -27,6 +28,7 @@ class ListCard extends StatefulWidget {
 }
 
 class _ListCardState extends State<ListCard> {
+
  int counter = 1;
 
   @override
@@ -109,6 +111,28 @@ class _ListCardState extends State<ListCard> {
                             textAlign: TextAlign.left,
                             overflow: TextOverflow.visible,
                         ),
+                        SizedBox(height: 8),
+                        Text(
+                              'Expiration Date: ${widget.item.expirationDate}',
+                              style: TextStyle(fontSize: screenWidth * 0.03),
+                              textAlign: TextAlign.left,
+                              overflow: TextOverflow.visible,
+                        ),
+                        SizedBox(height: 8),
+                        TextField(
+                          decoration: InputDecoration(
+                            labelText: 'Enter new expiration date',
+                          ),
+                       onChanged: (value) async{
+                         setState(() {
+                           widget.item.expirationDate = value;
+                           //groceryList[index].expirationDate = value;
+                         });
+                         await ListItemHelper.updateExpiry(/*'Grocery List'*/ ListItemHelper.currentList.toString(), widget.item.itemName, value);
+                        print(ListItemHelper.currentList.toString());
+                        print(widget.item.itemName);
+                       },
+                     )
                         /*
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,

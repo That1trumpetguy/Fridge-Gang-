@@ -40,7 +40,12 @@ class _SceneState extends State<PhoneScene> {
 
   Future<List> listNames = ListItemHelper.fetchListNames();
 
-  Future<int> whatIHaveListItem(String userName, String listName) async {
+  void currentList(String listName){
+    ListItemHelper.currentList = listName;
+  }
+
+
+  Future<int> whatIHaveListItem(String listName) async {
     WhatIHaveList = await ListItemHelper.getItems(listName);
 
     if (kDebugMode) {
@@ -49,7 +54,7 @@ class _SceneState extends State<PhoneScene> {
     return 1;
   }
 
-  Future<int> getMyLists(String userName) async {
+  Future<int> getMyLists() async {
 
     _listNames = await ListItemHelper.fetchListNames();
 
@@ -82,7 +87,7 @@ class _SceneState extends State<PhoneScene> {
             height: MediaQuery.of(context).size.height * 0.8,
             width: MediaQuery.of(context).size.width * 0.8,
             child: FutureBuilder(
-                future: whatIHaveListItem('me', value.toString()),
+                future: whatIHaveListItem(value.toString()),
                 builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
                   if (snapshot.hasError){
                     return Center(child:Text('Error: $snapshot.error}'));
@@ -317,7 +322,7 @@ class _SceneState extends State<PhoneScene> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             FutureBuilder(
-                                future: getMyLists('me'),
+                                future: getMyLists(),
                                 builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
                                   return DropdownButton<String>(
                                     value: value,
@@ -336,7 +341,8 @@ class _SceneState extends State<PhoneScene> {
                                     onChanged: (value) {
                                       setState(() {
                                         this.value = value;
-                                        whatIHaveListItem('me', this.value ?? defaultList);
+                                        currentList(value!);
+                                        whatIHaveListItem(this.value ?? defaultList);
                                         // Open the popup menu here or perform any other desired action
                                         _openPopupMenu(value!);
                                       });
