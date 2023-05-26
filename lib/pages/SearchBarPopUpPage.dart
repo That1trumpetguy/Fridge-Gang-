@@ -1,17 +1,14 @@
 import 'dart:async';
-import 'dart:async';
 import 'dart:convert';
 
-import 'package:http/http.dart' as http;
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/models/ListItem.dart';
-import 'package:openfoodfacts/openfoodfacts.dart';
 import 'package:flutter_app/helpers/ListItemHelper.dart';
+import 'package:flutter_app/models/ListItem.dart';
+import 'package:http/http.dart' as http;
+import 'package:openfoodfacts/openfoodfacts.dart';
 
 class SearchBarPopUpPage extends StatefulWidget {
   const SearchBarPopUpPage({Key? key}) : super(key: key);
-  
 
   @override
   State<SearchBarPopUpPage> createState() => _SearchBarPopUpPageState();
@@ -21,15 +18,13 @@ class _SearchBarPopUpPageState extends State<SearchBarPopUpPage> {
   //Keeps track of what's happening in the text field.
   final _textController = TextEditingController();
   Product? result;
+
   //UserInput
   String itemName = '';
 
-
   FutureOr<List<String>> getSuggestions(String input) async {
-    
     final response = await http.get(Uri.parse(
-      'https://api.edamam.com/auto-complete?app_id=07ca8641&app_key=f239759c5a8f2b695c852f20ea31f966&q=$input&limit=10'
-    ));
+        'https://api.edamam.com/auto-complete?app_id=07ca8641&app_key=f239759c5a8f2b695c852f20ea31f966&q=$input&limit=10'));
 
     if (response.statusCode == 200) {
       print("hello");
@@ -39,8 +34,6 @@ class _SearchBarPopUpPageState extends State<SearchBarPopUpPage> {
     } else {
       return [];
     }
-
-
   }
 
   /*
@@ -87,15 +80,12 @@ class _SearchBarPopUpPageState extends State<SearchBarPopUpPage> {
     );
   }
 */
-      
 
-  
   //Search bar popup to search for food items by name using autocomplete.
   //Todo: add more error handling!!!
-  
+
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -122,9 +112,9 @@ class _SearchBarPopUpPageState extends State<SearchBarPopUpPage> {
                     padding: const EdgeInsets.only(bottom: 8),
                     child: Center(
                       child: GestureDetector(
-                        child: Image.network(
-                          result?.imageFrontSmallUrl ??
-                              'assets/page-1/images/image-1.png',
+                        child: Image.asset(
+                          'assets/page-1/images/image-1.png',
+                          fit: BoxFit.cover,
                         ),
                         behavior: HitTestBehavior.translucent,
                         onTap: () {
@@ -145,46 +135,39 @@ class _SearchBarPopUpPageState extends State<SearchBarPopUpPage> {
                 ],
               ),
             ),
-
-            Autocomplete<String>(
-              fieldViewBuilder: (
-                BuildContext context,
-                TextEditingController fieldTextEditingController,
-                FocusNode fieldFocusNode,
-                VoidCallback onFieldSubmitted,
-              ) {
-                return Container(
-                    width: double.infinity,
-                    height: 40,
-                    color: Colors.white,
-                    child: TextField(
-                      controller: fieldTextEditingController,
-                      focusNode: fieldFocusNode,
-                      style: const TextStyle(fontSize: 16.0, color: Colors.black),
-                      decoration: InputDecoration(
-                          hintText: 'Insert name of food',
-                          prefixIcon: Icon(Icons.search),
-                          suffixIcon: IconButton(
-                            icon: Icon(Icons.clear),
-                            onPressed: fieldTextEditingController.clear,
-                          ) //(Icons.clear)
-                          ),
-                    ));
-              },
-
-              onSelected: (String selection) {
-                String selectedFood = selection;
-                debugPrint('You just selected $selection');
-              },
-
-              optionsBuilder: (TextEditingValue textEditingValue) {
-                String input = textEditingValue.text;
-                if (input == '') {
-                  return const Iterable<String>.empty();
-                }
-                return getSuggestions(input);
+            Autocomplete<String>(fieldViewBuilder: (
+              BuildContext context,
+              TextEditingController fieldTextEditingController,
+              FocusNode fieldFocusNode,
+              VoidCallback onFieldSubmitted,
+            ) {
+              return Container(
+                  width: double.infinity,
+                  height: 40,
+                  color: Colors.white,
+                  child: TextField(
+                    controller: fieldTextEditingController,
+                    focusNode: fieldFocusNode,
+                    style: const TextStyle(fontSize: 16.0, color: Colors.black),
+                    decoration: InputDecoration(
+                        hintText: 'Insert name of food',
+                        prefixIcon: Icon(Icons.search),
+                        suffixIcon: IconButton(
+                          icon: Icon(Icons.clear),
+                          onPressed: fieldTextEditingController.clear,
+                        ) //(Icons.clear)
+                        ),
+                  ));
+            }, onSelected: (String selection) {
+              String selectedFood = selection;
+              debugPrint('You just selected $selection');
+            }, optionsBuilder: (TextEditingValue textEditingValue) {
+              String input = textEditingValue.text;
+              if (input == '') {
+                return const Iterable<String>.empty();
               }
-            ),
+              return getSuggestions(input);
+            }),
             /*
 
             TextField(
@@ -226,7 +209,7 @@ class _SearchBarPopUpPageState extends State<SearchBarPopUpPage> {
       ),
     );
   }
-  
+
   Future<Product?> getProduct(String barcode) async {
     //var barcode = '0048151623426';
 
@@ -261,14 +244,14 @@ class _SearchBarPopUpPageState extends State<SearchBarPopUpPage> {
               //Todo: add item to list.
               //Create new List item object.
               DateTime expirationDate = DateTime.now().add(Duration(days: 7));
-              String expirationDateString = expirationDate.toString().split(' ')[0];
+              String expirationDateString =
+                  expirationDate.toString().split(' ')[0];
               //formatting to get rid of 24hour clock
 
               ListItem newItem = ListItem(
                   itemName: prod?.productName ?? '',
                   imageName: prod?.imageFrontSmallUrl ?? '',
-                  expirationDate: expirationDateString
-              );
+                  expirationDate: expirationDateString);
               ListItemHelper.addItem(
                   'Grocery List',
                   prod?.productName ?? '',
@@ -296,5 +279,4 @@ class _SearchBarPopUpPageState extends State<SearchBarPopUpPage> {
       },
     );
   }
-  
 }

@@ -1,21 +1,17 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/gestures.dart';
+import 'package:flutter_app/AboutToExpireList.dart';
 import 'package:flutter_app/BarScanner.dart';
 import 'package:flutter_app/pages/GroceryListPage.dart';
-import 'package:flutter_app/AboutToExpireList.dart';
 import 'package:flutter_app/pages/RecipePage.dart';
+import 'package:flutter_app/pages/SearchBarPopUpPage.dart';
 import 'package:flutter_app/pages/settings.dart';
-import 'package:flutter_app/style.dart';
 import 'package:flutter_app/utils.dart';
-import 'dart:ui';
-import 'package:google_fonts/google_fonts.dart';
+
 import '../api_services.dart';
 import '../helpers/ListItemHelper.dart';
 import '../models/ListItem.dart';
 import '../models/ListType.dart';
-import '../widget/ListCard.dart';
 import 'CustomListPage.dart';
 
 //import 'package:myapp/utils.dart';
@@ -40,10 +36,9 @@ class _SceneState extends State<PhoneScene> {
 
   Future<List> listNames = ListItemHelper.fetchListNames();
 
-  void currentList(String listName){
+  void currentList(String listName) {
     ListItemHelper.currentList = listName;
   }
-
 
   Future<int> whatIHaveListItem(String listName) async {
     WhatIHaveList = await ListItemHelper.getItems(listName);
@@ -55,7 +50,6 @@ class _SceneState extends State<PhoneScene> {
   }
 
   Future<int> getMyLists() async {
-
     _listNames = await ListItemHelper.fetchListNames();
 
     if (kDebugMode) {
@@ -89,10 +83,9 @@ class _SceneState extends State<PhoneScene> {
             child: FutureBuilder(
                 future: whatIHaveListItem(value.toString()),
                 builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
-                  if (snapshot.hasError){
-                    return Center(child:Text('Error: $snapshot.error}'));
-                  }
-                  else if (!snapshot.hasData) {
+                  if (snapshot.hasError) {
+                    return Center(child: Text('Error: $snapshot.error}'));
+                  } else if (!snapshot.hasData) {
                     print("here");
                     return Center(child: CircularProgressIndicator());
                   } else {
@@ -101,7 +94,7 @@ class _SceneState extends State<PhoneScene> {
                     return ListView.builder(
                       shrinkWrap: true,
                       itemCount: WhatIHaveList.length,
-                      itemBuilder: (BuildContext context, int index){
+                      itemBuilder: (BuildContext context, int index) {
                         /*
                         return ListCard(
                             item: WhatIHaveList[index],
@@ -111,10 +104,8 @@ class _SceneState extends State<PhoneScene> {
                         */
                       },
                     );
-
                   }
-      }
-            ),
+                }),
           ),
           actions: [
             ElevatedButton(
@@ -128,8 +119,6 @@ class _SceneState extends State<PhoneScene> {
       },
     );
   }
-
-
 
   Future<Map<String, dynamic>> _fetchAllRecipes() async {
     final breakfast = await fetchBreakfastRecipe();
@@ -169,7 +158,7 @@ class _SceneState extends State<PhoneScene> {
                   onPressed: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (BuildContext context) => SettingsPage(),
+                        builder: (BuildContext context) => SearchBarPopUpPage(),
                       ),
                     );
                   },
@@ -327,7 +316,8 @@ class _SceneState extends State<PhoneScene> {
                           children: [
                             FutureBuilder(
                                 future: getMyLists(),
-                                builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<int> snapshot) {
                                   return DropdownButton<String>(
                                     value: value,
                                     items: _listNames.map((ListType value) {
@@ -346,14 +336,14 @@ class _SceneState extends State<PhoneScene> {
                                       setState(() {
                                         this.value = value;
                                         currentList(value!);
-                                        whatIHaveListItem(this.value ?? defaultList);
+                                        whatIHaveListItem(
+                                            this.value ?? defaultList);
                                         // Open the popup menu here or perform any other desired action
                                         _openPopupMenu(value!);
                                       });
                                     },
                                   );
-                              }
-                            ),
+                                }),
                             IconButton(
                               onPressed: () {
                                 Navigator.push(
@@ -375,25 +365,27 @@ class _SceneState extends State<PhoneScene> {
             ),
             // Widget Between Center and Bottom Center Widgets
             FutureBuilder(
-                future:  Future.value(_allRecipes) /*_fetchRecipes()*/,
-                builder: (BuildContext context, AsyncSnapshot <Map<String, dynamic>> snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting || snapshot.data == null) {
+                future: Future.value(_allRecipes) /*_fetchRecipes()*/,
+                builder: (BuildContext context,
+                    AsyncSnapshot<Map<String, dynamic>> snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting ||
+                      snapshot.data == null) {
                     return Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError && snapshot.error.runtimeType == TypeError) {
+                  } else if (snapshot.hasError &&
+                      snapshot.error.runtimeType == TypeError) {
                     // Specific error case: Show loading circle
                     return Center(child: CircularProgressIndicator());
-                  }
-                  else if (snapshot.hasError) {
+                  } else if (snapshot.hasError) {
                     return Center(child: Text('Error: $snapshot.error}'));
-                  }
-                  else {
+                  } else {
                     //Map<String, dynamic> breakfast = snapshot.data!;
                     final Map<String, dynamic>? recipes = snapshot.data;
                     if (recipes == null) {
                       return Center(child: Text('Recipes data is null'));
                     }
 
-                    final Map<String, dynamic>? breakfast = recipes['breakfast'];
+                    final Map<String, dynamic>? breakfast =
+                        recipes['breakfast'];
                     final Map<String, dynamic>? lunch = recipes['lunch'];
                     final Map<String, dynamic>? dinner = recipes['dinner'];
 
@@ -446,7 +438,8 @@ class _SceneState extends State<PhoneScene> {
                                   setState(() {
                                     _allRecipes = {};
                                   });
-                                  _fetchAllRecipes()/*_fetchRecipes()*/.then((recipes) {
+                                  _fetchAllRecipes() /*_fetchRecipes()*/
+                                      .then((recipes) {
                                     setState(() {
                                       _allRecipes = recipes;
                                     });
@@ -474,234 +467,252 @@ class _SceneState extends State<PhoneScene> {
                               itemBuilder: (context, index) {
                                 if (index == 0) {
                                   return GestureDetector(
-                                    onTap: (){
-                                      Navigator.push(context, MaterialPageRoute(builder: (context) => RecipePage(recipe: breakfast)));
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => RecipePage(
+                                                  recipe: breakfast)));
                                     },
 
-                                  // Container for Breakfast
-                                  child: Container(
-                                    height: screenHeight * 0.3,
-                                    decoration: BoxDecoration(
-                                      color: const Color(0xffdbdfd1),
-                                      borderRadius: BorderRadius.circular(12.0),
-                                    ),
-                                    child: Column(
-                                      children: [
-                                        Text(
-                                          'Breakfast',
-                                          textAlign: TextAlign.left,
-                                          style: SafeGoogleFont(
-                                            'Inter',
-                                            fontSize: screenWidth * 0.05,
-                                            fontWeight: FontWeight.w600,
-                                            color: const Color(0xff000000),
+                                    // Container for Breakfast
+                                    child: Container(
+                                      height: screenHeight * 0.3,
+                                      decoration: BoxDecoration(
+                                        color: const Color(0xffdbdfd1),
+                                        borderRadius:
+                                            BorderRadius.circular(12.0),
+                                      ),
+                                      child: Column(
+                                        children: [
+                                          Text(
+                                            'Breakfast',
+                                            textAlign: TextAlign.left,
+                                            style: SafeGoogleFont(
+                                              'Inter',
+                                              fontSize: screenWidth * 0.05,
+                                              fontWeight: FontWeight.w600,
+                                              color: const Color(0xff000000),
+                                            ),
                                           ),
-                                        ),
-                                        Container(
-                                          width: screenWidth,
-                                          height: screenHeight * 0.25,
-                                          child: Stack(
-                                            children: [
-                                              Positioned(
-                                                left: screenWidth * 0.05,
-                                                child: Align(
-                                                  alignment: Alignment.topLeft,
-                                                  child: SizedBox(
-                                                    width: screenWidth * 0.25,
-                                                    height: screenHeight * 0.25,
-                                                    child: Container(
-                                                      decoration: BoxDecoration(
-                                                        image: DecorationImage(
-                                                          fit: BoxFit.cover,
-                                                          image: NetworkImage(
-                                                              breakfast[
-                                                                  'image']),
+                                          Container(
+                                            width: screenWidth,
+                                            height: screenHeight * 0.25,
+                                            child: Stack(
+                                              children: [
+                                                Positioned(
+                                                  left: screenWidth * 0.05,
+                                                  child: Align(
+                                                    alignment:
+                                                        Alignment.topLeft,
+                                                    child: SizedBox(
+                                                      width: screenWidth * 0.25,
+                                                      height:
+                                                          screenHeight * 0.25,
+                                                      child: Container(
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          image:
+                                                              DecorationImage(
+                                                            fit: BoxFit.cover,
+                                                            image: NetworkImage(
+                                                                breakfast[
+                                                                    'image']),
+                                                          ),
                                                         ),
                                                       ),
                                                     ),
                                                   ),
                                                 ),
-                                              ),
-
-                                              Positioned(
-                                                left: screenWidth * 0.4,
-                                                child: SizedBox(
-                                                  height: screenHeight * 0.5,
-                                                  width: screenWidth * 0.6,
-                                                  child: Column(
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                    children: [
-                                                      Flexible(
-                                                        child: RichText(
-                                                          text: TextSpan(
-                                                            style:
-                                                                SafeGoogleFont(
-                                                              'Inter',
-                                                              fontSize:
-                                                                  screenWidth *
-                                                                      0.05,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
-                                                              color: const Color(
-                                                                  0xff000000),
-                                                            ),
-                                                            children: [
-                                                              TextSpan(
-                                                                text: breakfast[
-                                                                        'title'] +
-                                                                    '\n\n',
+                                                Positioned(
+                                                  left: screenWidth * 0.4,
+                                                  child: SizedBox(
+                                                    height: screenHeight * 0.5,
+                                                    width: screenWidth * 0.6,
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Flexible(
+                                                          child: RichText(
+                                                            text: TextSpan(
+                                                              style:
+                                                                  SafeGoogleFont(
+                                                                'Inter',
+                                                                fontSize:
+                                                                    screenWidth *
+                                                                        0.05,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                color: const Color(
+                                                                    0xff000000),
                                                               ),
-                                                              TextSpan(
-                                                                text:
-                                                                    /*'Vegetarian: ' + breakfast['vegetarian'].toString() + '\nGluten free: ' + breakfast['glutenFree'].toString()*/
-                                                                    '\nYou are missing: \n' +
-                                                                        breakfast['missedIngredientCount']
-                                                                            .toString() +
-                                                                        ' Ingredients',
-                                                                style:
-                                                                    SafeGoogleFont(
-                                                                  'Inter',
-                                                                  fontSize:
-                                                                      screenWidth *
-                                                                          0.05,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500,
-                                                                  color: const Color(
-                                                                      0xff000000),
+                                                              children: [
+                                                                TextSpan(
+                                                                  text: breakfast[
+                                                                          'title'] +
+                                                                      '\n\n',
                                                                 ),
-                                                              ),
-                                                            ],
+                                                                TextSpan(
+                                                                  text:
+                                                                      /*'Vegetarian: ' + breakfast['vegetarian'].toString() + '\nGluten free: ' + breakfast['glutenFree'].toString()*/
+                                                                      '\nYou are missing: \n' +
+                                                                          breakfast['missedIngredientCount']
+                                                                              .toString() +
+                                                                          ' Ingredients',
+                                                                  style:
+                                                                      SafeGoogleFont(
+                                                                    'Inter',
+                                                                    fontSize:
+                                                                        screenWidth *
+                                                                            0.05,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500,
+                                                                    color: const Color(
+                                                                        0xff000000),
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
                                                           ),
                                                         ),
-                                                      ),
-                                                    ],
+                                                      ],
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
-                                            ],
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
-                                  ),
                                   );
                                 } else if (index == 1) {
                                   // Container for Lunch
                                   return GestureDetector(
-                                    onTap: (){
+                                    onTap: () {
                                       Navigator.push(
                                         context,
-                                        MaterialPageRoute(builder: (context) => RecipePage(recipe: lunch)),
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                RecipePage(recipe: lunch)),
                                       );
                                     },
-
-                                  child:  Container(
-                                    height: screenHeight * 0.3,
-                                    decoration: BoxDecoration(
-                                      color: const Color(0xffdbdfd1),
-                                      borderRadius: BorderRadius.circular(12.0),
-                                    ),
-                                    child: Column(
-                                      children: [
-                                        Text(
-                                          'Lunch',
-                                          textAlign: TextAlign.left,
-                                          style: SafeGoogleFont(
-                                            'Inter',
-                                            fontSize: screenWidth * 0.05,
-                                            fontWeight: FontWeight.w600,
-                                            color: const Color(0xff000000),
+                                    child: Container(
+                                      height: screenHeight * 0.3,
+                                      decoration: BoxDecoration(
+                                        color: const Color(0xffdbdfd1),
+                                        borderRadius:
+                                            BorderRadius.circular(12.0),
+                                      ),
+                                      child: Column(
+                                        children: [
+                                          Text(
+                                            'Lunch',
+                                            textAlign: TextAlign.left,
+                                            style: SafeGoogleFont(
+                                              'Inter',
+                                              fontSize: screenWidth * 0.05,
+                                              fontWeight: FontWeight.w600,
+                                              color: const Color(0xff000000),
+                                            ),
                                           ),
-                                        ),
-                                        Container(
-                                          width: screenWidth,
-                                          height: screenHeight * 0.25,
-                                          child: Stack(
-                                            children: [
-                                              Positioned(
-                                                left: screenWidth * 0.05,
-                                                child: Align(
-                                                  alignment: Alignment.topLeft,
-                                                  child: SizedBox(
-                                                    width: screenWidth * 0.25,
-                                                    height: screenHeight * 0.25,
-                                                    child: Container(
-                                                      decoration: BoxDecoration(
-                                                        image: DecorationImage(
-                                                          fit: BoxFit.cover,
-                                                          image: NetworkImage(
-                                                              lunch['image']),
+                                          Container(
+                                            width: screenWidth,
+                                            height: screenHeight * 0.25,
+                                            child: Stack(
+                                              children: [
+                                                Positioned(
+                                                  left: screenWidth * 0.05,
+                                                  child: Align(
+                                                    alignment:
+                                                        Alignment.topLeft,
+                                                    child: SizedBox(
+                                                      width: screenWidth * 0.25,
+                                                      height:
+                                                          screenHeight * 0.25,
+                                                      child: Container(
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          image:
+                                                              DecorationImage(
+                                                            fit: BoxFit.cover,
+                                                            image: NetworkImage(
+                                                                lunch['image']),
+                                                          ),
                                                         ),
                                                       ),
                                                     ),
                                                   ),
                                                 ),
-                                              ),
-                                              Positioned(
-                                                left: screenWidth * 0.4,
-                                                child: SizedBox(
-                                                  height: screenHeight * 0.5,
-                                                  width: screenWidth * 0.6,
-                                                  child: Column(
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                    children: [
-                                                      Flexible(
-                                                        child: RichText(
-                                                          text: TextSpan(
-                                                            style:
-                                                                SafeGoogleFont(
-                                                              'Inter',
-                                                              fontSize:
-                                                                  screenWidth *
-                                                                      0.05,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
-                                                              color: const Color(
-                                                                  0xff000000),
-                                                            ),
-                                                            children: [
-                                                              TextSpan(
-                                                                text: lunch[
-                                                                        'title'] +
-                                                                    '\n\n',
+                                                Positioned(
+                                                  left: screenWidth * 0.4,
+                                                  child: SizedBox(
+                                                    height: screenHeight * 0.5,
+                                                    width: screenWidth * 0.6,
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Flexible(
+                                                          child: RichText(
+                                                            text: TextSpan(
+                                                              style:
+                                                                  SafeGoogleFont(
+                                                                'Inter',
+                                                                fontSize:
+                                                                    screenWidth *
+                                                                        0.05,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                color: const Color(
+                                                                    0xff000000),
                                                               ),
-                                                              TextSpan(
-                                                                text:
-                                                                    /*'Vegetarian: ' + lunch['vegetarian'].toString() + '\nGluten free: ' + lunch['glutenFree'].toString()*/
-                                                                    '\nYou are missing: \n' +
-                                                                        lunch['missedIngredientCount']
-                                                                            .toString() +
-                                                                        ' Ingredients',
-                                                                style:
-                                                                    SafeGoogleFont(
-                                                                  'Inter',
-                                                                  fontSize:
-                                                                      screenWidth *
-                                                                          0.05,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500,
-                                                                  color: const Color(
-                                                                      0xff000000),
+                                                              children: [
+                                                                TextSpan(
+                                                                  text: lunch[
+                                                                          'title'] +
+                                                                      '\n\n',
                                                                 ),
-                                                              ),
-                                                            ],
+                                                                TextSpan(
+                                                                  text:
+                                                                      /*'Vegetarian: ' + lunch['vegetarian'].toString() + '\nGluten free: ' + lunch['glutenFree'].toString()*/
+                                                                      '\nYou are missing: \n' +
+                                                                          lunch['missedIngredientCount']
+                                                                              .toString() +
+                                                                          ' Ingredients',
+                                                                  style:
+                                                                      SafeGoogleFont(
+                                                                    'Inter',
+                                                                    fontSize:
+                                                                        screenWidth *
+                                                                            0.05,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500,
+                                                                    color: const Color(
+                                                                        0xff000000),
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
                                                           ),
                                                         ),
-                                                      ),
-                                                    ],
+                                                      ],
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
-                                            ],
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
-                                  ),
                                   );
                                 } else if (index == 2) {
                                   // Container for Dinner
@@ -709,115 +720,124 @@ class _SceneState extends State<PhoneScene> {
                                     onTap: () {
                                       Navigator.push(
                                         context,
-                                        MaterialPageRoute(builder: (context) => RecipePage(recipe: dinner)),
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                RecipePage(recipe: dinner)),
                                       );
                                     },
-
-                                  child: Container(
-                                    height: screenHeight * 0.3,
-                                    decoration: BoxDecoration(
-                                      color: const Color(0xffdbdfd1),
-                                      borderRadius: BorderRadius.circular(12.0),
-                                    ),
-                                    child: Column(
-                                      children: [
-                                        Text(
-                                          'Dinner',
-                                          textAlign: TextAlign.left,
-                                          style: SafeGoogleFont(
-                                            'Inter',
-                                            fontSize: screenWidth * 0.05,
-                                            fontWeight: FontWeight.w600,
-                                            color: const Color(0xff000000),
+                                    child: Container(
+                                      height: screenHeight * 0.3,
+                                      decoration: BoxDecoration(
+                                        color: const Color(0xffdbdfd1),
+                                        borderRadius:
+                                            BorderRadius.circular(12.0),
+                                      ),
+                                      child: Column(
+                                        children: [
+                                          Text(
+                                            'Dinner',
+                                            textAlign: TextAlign.left,
+                                            style: SafeGoogleFont(
+                                              'Inter',
+                                              fontSize: screenWidth * 0.05,
+                                              fontWeight: FontWeight.w600,
+                                              color: const Color(0xff000000),
+                                            ),
                                           ),
-                                        ),
-                                        Container(
-                                          width: screenWidth,
-                                          height: screenHeight * 0.25,
-                                          child: Stack(
-                                            children: [
-                                              Positioned(
-                                                left: screenWidth * 0.05,
-                                                child: Align(
-                                                  alignment: Alignment.topLeft,
-                                                  child: SizedBox(
-                                                    width: screenWidth * 0.25,
-                                                    height: screenHeight * 0.25,
-                                                    child: Container(
-                                                      decoration: BoxDecoration(
-                                                        image: DecorationImage(
-                                                          fit: BoxFit.cover,
-                                                          image: NetworkImage(
-                                                              dinner['image']),
+                                          Container(
+                                            width: screenWidth,
+                                            height: screenHeight * 0.25,
+                                            child: Stack(
+                                              children: [
+                                                Positioned(
+                                                  left: screenWidth * 0.05,
+                                                  child: Align(
+                                                    alignment:
+                                                        Alignment.topLeft,
+                                                    child: SizedBox(
+                                                      width: screenWidth * 0.25,
+                                                      height:
+                                                          screenHeight * 0.25,
+                                                      child: Container(
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          image:
+                                                              DecorationImage(
+                                                            fit: BoxFit.cover,
+                                                            image: NetworkImage(
+                                                                dinner[
+                                                                    'image']),
+                                                          ),
                                                         ),
                                                       ),
                                                     ),
                                                   ),
                                                 ),
-                                              ),
-                                              Positioned(
-                                                left: screenWidth * 0.4,
-                                                child: SizedBox(
-                                                  height: screenHeight * 0.5,
-                                                  width: screenWidth * 0.6,
-                                                  child: Column(
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                    children: [
-                                                      Flexible(
-                                                        child: RichText(
-                                                          text: TextSpan(
-                                                            style:
-                                                                SafeGoogleFont(
-                                                              'Inter',
-                                                              fontSize:
-                                                                  screenWidth *
-                                                                      0.05,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
-                                                              color: const Color(
-                                                                  0xff000000),
-                                                            ),
-                                                            children: [
-                                                              TextSpan(
-                                                                text: dinner[
-                                                                        'title'] +
-                                                                    '\n\n',
+                                                Positioned(
+                                                  left: screenWidth * 0.4,
+                                                  child: SizedBox(
+                                                    height: screenHeight * 0.5,
+                                                    width: screenWidth * 0.6,
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Flexible(
+                                                          child: RichText(
+                                                            text: TextSpan(
+                                                              style:
+                                                                  SafeGoogleFont(
+                                                                'Inter',
+                                                                fontSize:
+                                                                    screenWidth *
+                                                                        0.05,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                color: const Color(
+                                                                    0xff000000),
                                                               ),
-                                                              TextSpan(
-                                                                text:
-                                                                    /*'Vegetarian: ' + dinner['vegetarian'].toString() + '\nGluten free: ' + dinner['glutenFree'].toString()*/
-                                                                    '\nYou are missing: \n' +
-                                                                        dinner['missedIngredientCount']
-                                                                            .toString() +
-                                                                        ' Ingredients',
-                                                                style:
-                                                                    SafeGoogleFont(
-                                                                  'Inter',
-                                                                  fontSize:
-                                                                      screenWidth *
-                                                                          0.05,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500,
-                                                                  color: const Color(
-                                                                      0xff000000),
+                                                              children: [
+                                                                TextSpan(
+                                                                  text: dinner[
+                                                                          'title'] +
+                                                                      '\n\n',
                                                                 ),
-                                                              ),
-                                                            ],
+                                                                TextSpan(
+                                                                  text:
+                                                                      /*'Vegetarian: ' + dinner['vegetarian'].toString() + '\nGluten free: ' + dinner['glutenFree'].toString()*/
+                                                                      '\nYou are missing: \n' +
+                                                                          dinner['missedIngredientCount']
+                                                                              .toString() +
+                                                                          ' Ingredients',
+                                                                  style:
+                                                                      SafeGoogleFont(
+                                                                    'Inter',
+                                                                    fontSize:
+                                                                        screenWidth *
+                                                                            0.05,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500,
+                                                                    color: const Color(
+                                                                        0xff000000),
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
                                                           ),
                                                         ),
-                                                      ),
-                                                    ],
+                                                      ],
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
-                                            ],
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
-                                  ),
                                   );
                                 }
                               },

@@ -1,16 +1,12 @@
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/pages/GroceryListPage.dart';
 import 'package:flutter_app/pages/ChangePasswordPage.dart';
-import 'package:flutter_app/pages/EditProfilePage.dart';
-import 'package:flutter_app/pages/HomeScreenforTabletMode.dart';
+import 'package:flutter_app/pages/HomeScreenforPhoneMode.dart';
+import 'package:flutter_app/pages/HomeScreenforTabletModeV2.dart';
 import 'package:flutter_app/pages/NewUserPage.dart';
-import 'package:flutter_app/main.dart';
 import 'package:flutter_app/style.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:flutter_app/pages/HomeScreenforTabletModeV2.dart';
-import 'package:flutter_app/pages/HomeScreenforPhoneMode.dart';
-import 'package:device_info/device_info.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -216,6 +212,7 @@ class _SignupState extends State<LoginScreen> {
   }
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
+
   Future<void> loginWithEmail({
     required String email,
     required String password,

@@ -1,13 +1,14 @@
+import 'package:device_info_plus/device_info_plus.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/pages/HomeScreenforTabletMode.dart';
 import 'package:flutter_app/main.dart';
 import 'package:flutter_app/pages/HomeScreenforPhoneMode.dart';
+import 'package:flutter_app/pages/HomeScreenforTabletMode.dart';
 import 'package:flutter_app/pages/HomeScreenforTabletModeV2.dart';
 import 'package:flutter_app/pages/login.dart';
 import 'package:flutter_app/style.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:device_info/device_info.dart';
+
 import '../helpers/ListItemHelper.dart';
 
 class NewUserScreen extends StatelessWidget {
@@ -178,7 +179,6 @@ class NewUserScreen extends StatelessWidget {
                             }
                           });
                         },
-
                         child: Container(
                           width: getHorizontalSize(
                             295,
@@ -213,18 +213,20 @@ class NewUserScreen extends StatelessWidget {
           ),
         ),
       ),
-
     );
   }
 
-  final FirebaseAuth _firebaseAuth= FirebaseAuth.instance;
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   void registerNewUser(BuildContext context) async {
-    final User? firebaseUser = (await _firebaseAuth.createUserWithEmailAndPassword(
-        email: emailinputController.text,
-        password: passwordinputController.text).catchError(
-            (errorMsg){displayToastMsg("Error: "+ errorMsg.toString(), context);
-        })).user!;
+    final User? firebaseUser = (await _firebaseAuth
+            .createUserWithEmailAndPassword(
+                email: emailinputController.text,
+                password: passwordinputController.text)
+            .catchError((errorMsg) {
+      displayToastMsg("Error: " + errorMsg.toString(), context);
+    }))
+        .user!;
 
     Map userDataMap = {
       "name": nameinputController.text.trim(),
@@ -233,12 +235,11 @@ class NewUserScreen extends StatelessWidget {
     };
     usersRef.child(firebaseUser!.uid).set(userDataMap);
     ListItemHelper.newUserLists(firebaseUser.uid);
-    
+
     displayToastMsg("Congrats account created", context);
   }
 
-
-  displayToastMsg(String msg, BuildContext context){
+  displayToastMsg(String msg, BuildContext context) {
     Fluttertoast.showToast(msg: msg);
   }
 
@@ -255,4 +256,3 @@ class NewUserScreen extends StatelessWidget {
     }
   }
 }
-
