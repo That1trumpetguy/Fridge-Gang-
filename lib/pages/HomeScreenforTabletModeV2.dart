@@ -31,12 +31,11 @@ class Scene2 extends StatefulWidget {
 class _SceneState extends State<Scene2> {
   late Future future;
   List<ListItem> WhatIHaveList = [];
-  //List<String> _listNames = ['Grocery List', 'Pantry List', 'Fridge List', 'Expiration'];
   List<ListType> _listNames = [];
   final String defaultList = 'Grocery List';
   late String _selectedList;
   List<DropdownMenuItem<String>> dropdownItems = [];
-  String? value;
+  String value = "Fridge List";
 
   //For radio buttons.
   String group = '';
@@ -163,7 +162,7 @@ class _SceneState extends State<Scene2> {
                     Navigator.of(context).push(
                         MaterialPageRoute (
                             builder: (BuildContext context) => const GroceryListPage()
-                        ));},
+                        )).then((value) => callback(WhatIHaveList));},
                   child: Container(
                     constraints: BoxConstraints(
                       maxWidth: screenWidth*0.3,
@@ -286,7 +285,7 @@ class _SceneState extends State<Scene2> {
                               items: _listNames.map((ListType value) {
                                 return DropdownMenuItem<String>(
                                   value: value.listName,
-                                  child: Text(value.listName, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
+                                  child: Text(value.listName, style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),),
                                 );
 
                               }).toList(),
