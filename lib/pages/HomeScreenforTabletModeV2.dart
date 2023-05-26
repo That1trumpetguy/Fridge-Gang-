@@ -55,6 +55,10 @@ class _SceneState extends State<Scene2> {
     return 1;
   }
 
+  void currentList(String listName){
+    ListItemHelper.currentList = listName;
+  }
+
   Future<int> getMyLists() async {
 
     _listNames = await ListItemHelper.fetchOwnedListNames();
@@ -288,6 +292,7 @@ class _SceneState extends State<Scene2> {
                               }).toList(),
                               onChanged: (value) {
                                 setState(() {
+                                  currentList(value!);
                                   this.value = value;
                                   whatIHaveListItem(this.value ?? defaultList);
                                 });

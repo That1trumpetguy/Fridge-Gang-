@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../helpers/ListItemHelper.dart';
 import '../models/ListItem.dart';
@@ -39,8 +40,9 @@ class ListCard extends StatefulWidget {
 }
 
 class _ListCardState extends State<ListCard> {
-
- int counter = 1;
+  final RegExp dateRegex = RegExp(r'^\d{4}-\d{2}-\d{2}$');
+  String? errorMessage;
+  int counter = 1;
 
  List<ListType> _listNames = [];
  List<ListItem> WhatIHaveList = [];
@@ -165,15 +167,17 @@ class _ListCardState extends State<ListCard> {
                         TextField(
                           decoration: InputDecoration(
                             labelText: 'Enter new expiration date',
+                            errorText: errorMessage,
                           ),
                        onChanged: (value) async{
+
                          setState(() {
                            widget.item.expirationDate = value;
-                           //groceryList[index].expirationDate = value;
+                           errorMessage = !dateRegex.hasMatch(value) ? 'Invalid Date Format. Please Enter yyyy-mm-dd.' : null;
                          });
-                         await ListItemHelper.updateExpiry(/*'Grocery List'*/ ListItemHelper.currentList.toString(), widget.item.itemName, value);
-                        print(ListItemHelper.currentList.toString());
-                        print(widget.item.itemName);
+                          await ListItemHelper.updateExpiry(/*'Grocery List'*/ ListItemHelper.currentList.toString(), widget.item.itemName, value);
+                          print(ListItemHelper.currentList.toString());
+                          print(widget.item.itemName);
                        },
                      )
                         /*

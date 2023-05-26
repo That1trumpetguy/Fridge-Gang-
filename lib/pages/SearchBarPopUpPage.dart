@@ -261,7 +261,9 @@ class _SearchBarPopUpPageState extends State<SearchBarPopUpPage> {
               //Todo: add item to list.
               //Create new List item object.
               DateTime expirationDate = DateTime.now().add(Duration(days: 7));
-              String expirationDateString = expirationDate.toString();
+              String expirationDateString = expirationDate.toString().split(' ')[0];
+              //formatting to get rid of 24hour clock
+
               ListItem newItem = ListItem(
                   itemName: prod?.productName ?? '',
                   imageName: prod?.imageFrontSmallUrl ?? '',

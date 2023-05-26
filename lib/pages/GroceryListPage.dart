@@ -195,6 +195,13 @@ class _GroceryListPageState extends State<GroceryListPage> {
                                               textAlign: TextAlign.left,
                                               overflow: TextOverflow.visible,
                                             ),
+                                            Text(
+                                              groceryList[index].expirationDate,
+                                              style: TextStyle(
+                                                  fontSize: screenWidth * 0.04),
+                                              textAlign: TextAlign.left,
+                                              overflow: TextOverflow.visible,
+                                            ),
                                             SizedBox(height: 8),
                                             TextField(
                                               decoration: InputDecoration(
@@ -203,7 +210,7 @@ class _GroceryListPageState extends State<GroceryListPage> {
                                               /* controller: TextEditingController(
                                                   text: groceryList[index].expirationDate,
                                                 ),*/
-                                              onChanged: (value) async {
+                                              /*onChanged: (value) async {
                                                 setState(() {
                                                   groceryList[index]
                                                       .expirationDate = value;
@@ -231,7 +238,7 @@ class _GroceryListPageState extends State<GroceryListPage> {
                                                   print(groceryList[index].expirationDate);
                                                   //print(newExpirationDate);
                                                 },*/
-                                            ),
+                                            ),*/
 
                                             /*
                                             Column(
@@ -277,7 +284,7 @@ class _GroceryListPageState extends State<GroceryListPage> {
                                             )
                                             */
 
-                                            //), //onchanged
+                                            ), //onchanged
                                           ],
                                         ),
                                       ),
