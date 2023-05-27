@@ -173,7 +173,7 @@ class _ListCardState extends State<ListCard> {
 
                          setState(() {
                            widget.item.expirationDate = value;
-                           errorMessage = !dateRegex.hasMatch(value) ? 'Invalid Date Format. Please Enter yyyy-mm-dd.' : null;
+                           errorMessage = !dateRegex.hasMatch(value) ? 'Please Enter yyyy-mm-dd.' : null;
                          });
                           await ListItemHelper.updateExpiry(/*'Grocery List'*/ ListItemHelper.currentList.toString(), widget.item.itemName, value);
                           print(ListItemHelper.currentList.toString());
