@@ -51,7 +51,7 @@ class _SceneState extends State<PhoneScene> {
   }
 
   Future<int> getMyLists() async {
-    _listNames = await ListItemHelper.fetchListNames();
+    _listNames = await ListItemHelper.fetchOwnedListNames();
 
     if (kDebugMode) {
       print(_listNames);
