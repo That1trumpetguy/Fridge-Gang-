@@ -256,7 +256,7 @@ class ListItemHelper {
       final listItems = await getItems(listType.listName);
       for(final item in listItems){
         final expirationDate = DateTime.parse(item.expirationDate);
-        if(expirationDate.isBefore(expirationLimit)){
+        if(expirationDate.isBefore(expirationLimit) || expirationDate.isAtSameMomentAs(expirationLimit)){
           itemsToExpire.add(item);
         }
       }
