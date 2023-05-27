@@ -12,6 +12,7 @@ import '../api_services.dart';
 import '../helpers/ListItemHelper.dart';
 import '../models/ListItem.dart';
 import '../models/ListType.dart';
+import '../widget/ListCard.dart';
 import 'CustomListPage.dart';
 
 //import 'package:myapp/utils.dart';
@@ -58,6 +59,13 @@ class _SceneState extends State<PhoneScene> {
     return 1;
   }
 
+  //To set the state.
+  callback(varWhatIHaveList) {
+    setState(() {
+      WhatIHaveList = varWhatIHaveList;
+    });
+  }
+
   Map<String, dynamic> _allRecipes = {};
 
   @override
@@ -95,13 +103,14 @@ class _SceneState extends State<PhoneScene> {
                       shrinkWrap: true,
                       itemCount: WhatIHaveList.length,
                       itemBuilder: (BuildContext context, int index) {
-                        /*
                         return ListCard(
                             item: WhatIHaveList[index],
+                            listName: value ?? '',
                             index: index,
-                            foodList: WhatIHaveList
+                            foodList: WhatIHaveList,
+                            callback: callback,
                         );
-                        */
+
                       },
                     );
                   }

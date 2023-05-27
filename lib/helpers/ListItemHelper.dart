@@ -246,19 +246,28 @@ class ListItemHelper {
   }
 
   //populating the about to expire list page
-  static Future<List<ListItem>> addToExpirationList(String listName) async{
-
-    final listItems = await getItems(listName);
+  static Future<List<ListItem>> addToExpirationList(/*String listName*/) async{
+    final myLists = await fetchOwnedListNames();
+    //final listItems = await getItems(listName);
     final currentDate = DateTime.now();
     final expirationLimit = currentDate.add(Duration(days:4));
     final itemsToExpire = <ListItem>[];
+    for(final listType in myLists){
+      final listItems = await getItems(listType.listName);
+      for(final item in listItems){
+        final expirationDate = DateTime.parse(item.expirationDate);
+        if(expirationDate.isBefore(expirationLimit)){
+          itemsToExpire.add(item);
+        }
+      }
+    }
 
-    for(final item in listItems){
+    /*for(final item in listItems){
       final expirationDate = DateTime.parse(item.expirationDate);
       if(expirationDate.isBefore(expirationLimit)){
         itemsToExpire.add(item);
       }
-    }
+    }*/
     return itemsToExpire;
   }
 

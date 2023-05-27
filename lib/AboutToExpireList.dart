@@ -25,9 +25,7 @@ class _AboutToExpireListState extends State<AboutToExpireList> {
   List<ListItem> expiryList = [];
 
   Future<int> something() async {
-    expiryList = await ListItemHelper.addToExpirationList('Fridge List');
-    //expiryList = await ListItemHelper.addToExpirationList('Grocery List');
-    //expiryList = await ListItemHelper.addToExpirationList('Pantry List');
+    expiryList = await ListItemHelper.addToExpirationList();
     print(expiryList);
     return 1;
   }
