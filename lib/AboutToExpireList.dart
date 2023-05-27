@@ -71,7 +71,9 @@ class _AboutToExpireListState extends State<AboutToExpireList> {
                   future: something(),
                   builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
                     if (snapshot.hasError) {
-                      return Center(child: Text('Error: $snapshot.error}'));
+                      //return Center(child: Text('Error: $snapshot.error}'));
+                      return Center(child: Text('PLEASE ENSURE ALL DATES ACROSS LISTS ARE FORMATTED CORRECTLY:\n YYYY-MM-DD\n',
+                      style: TextStyle(fontSize: 24)));
                     }
                     else if (!snapshot.hasData) {
                       print("here");
