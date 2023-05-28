@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_app/helpers/ListItemHelper.dart';
@@ -21,13 +22,16 @@ class _SearchBarPopUpPageState extends State<SearchBarPopUpPage> {
 
   //UserInput
   String itemName = '';
+  var screenImage = Image.network('https://icons.veryicon.com/png/o/miscellaneous/project-management-tools/select-not-selected.png',
+                                fit: BoxFit.cover);
+
+  var redrawObject = Object();
 
   FutureOr<List<String>> getSuggestions(String input) async {
     final response = await http.get(Uri.parse(
         'https://api.edamam.com/auto-complete?app_id=07ca8641&app_key=f239759c5a8f2b695c852f20ea31f966&q=$input&limit=10'));
 
     if (response.statusCode == 200) {
-      print("hello");
       List<dynamic> foods = json.decode(response.body);
       final List<String> finalFoods = foods.map((e) => e.toString()).toList();
       return finalFoods;
@@ -104,6 +108,53 @@ class _SearchBarPopUpPageState extends State<SearchBarPopUpPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+             Autocomplete<String>(fieldViewBuilder: (
+              BuildContext context,
+              TextEditingController fieldTextEditingController,
+              FocusNode fieldFocusNode,
+              VoidCallback onFieldSubmitted,
+            ) {
+              return Container(
+                  width: double.infinity,
+                  height: 40,
+                  color: Colors.white,
+                  child: Padding(
+                    padding: EdgeInsets.only(),
+                    child: TextField(
+                      controller: fieldTextEditingController,
+                      focusNode: fieldFocusNode,
+                      style: const TextStyle(fontSize: 16.0, color: Colors.black),
+                      decoration: InputDecoration(
+                          hintText: 'Insert name of food',
+                          prefixIcon: Icon(Icons.search),
+                          suffixIcon: IconButton(
+                            icon: Icon(Icons.clear),
+                            onPressed: fieldTextEditingController.clear,
+                          ) //(Icons.clear)
+                          ),
+                    ),
+                  ));
+            }, onSelected: (String selection) async {
+              itemName = selection;
+              final foods = await http.get(Uri.parse("https://api.edamam.com/api/food-database/v2/parser?app_id=07ca8641&app_key=f239759c5a8f2b695c852f20ea31f966&ingr=$itemName&nutrition-type=cooking"));
+                if (foods.statusCode == 200) {
+                  Map data = json.decode(foods.body);
+                  final foodItem = data["parsed"][0]["food"];
+                  screenImage = Image.network(foodItem["image"]);
+                  setState(() {});
+                }
+              debugPrint('You just selected $selection');
+            }, optionsBuilder: (TextEditingValue textEditingValue) {
+              String input = textEditingValue.text;
+              itemName = textEditingValue.text;
+              if (input == '') {
+                return const Iterable<String>.empty();
+              }
+              return getSuggestions(input);
+            }),
+
+
+
             Expanded(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -112,12 +163,10 @@ class _SearchBarPopUpPageState extends State<SearchBarPopUpPage> {
                     padding: const EdgeInsets.only(bottom: 8),
                     child: Center(
                       child: GestureDetector(
-                        child: Image.asset(
-                          'assets/page-1/images/image-1.png',
-                          fit: BoxFit.cover,
-                        ),
+                        child: screenImage,
                         behavior: HitTestBehavior.translucent,
                         onTap: () {
+                          print(screenImage);
                           showAlertDialog(context, result!);
                           _textController.clear();
                         },
@@ -135,39 +184,35 @@ class _SearchBarPopUpPageState extends State<SearchBarPopUpPage> {
                 ],
               ),
             ),
-            Autocomplete<String>(fieldViewBuilder: (
-              BuildContext context,
-              TextEditingController fieldTextEditingController,
-              FocusNode fieldFocusNode,
-              VoidCallback onFieldSubmitted,
-            ) {
-              return Container(
-                  width: double.infinity,
-                  height: 40,
-                  color: Colors.white,
-                  child: TextField(
-                    controller: fieldTextEditingController,
-                    focusNode: fieldFocusNode,
-                    style: const TextStyle(fontSize: 16.0, color: Colors.black),
-                    decoration: InputDecoration(
-                        hintText: 'Insert name of food',
-                        prefixIcon: Icon(Icons.search),
-                        suffixIcon: IconButton(
-                          icon: Icon(Icons.clear),
-                          onPressed: fieldTextEditingController.clear,
-                        ) //(Icons.clear)
-                        ),
-                  ));
-            }, onSelected: (String selection) {
-              String selectedFood = selection;
-              debugPrint('You just selected $selection');
-            }, optionsBuilder: (TextEditingValue textEditingValue) {
-              String input = textEditingValue.text;
-              if (input == '') {
-                return const Iterable<String>.empty();
-              }
-              return getSuggestions(input);
-            }),
+            MaterialButton(
+              onPressed: () async {
+                //Asynchronous button press to query database with given code
+                //Grab current text controller state.
+
+                final foods = await http.get(Uri.parse("https://api.edamam.com/api/food-database/v2/parser?app_id=07ca8641&app_key=f239759c5a8f2b695c852f20ea31f966&ingr=$itemName&nutrition-type=cooking"));
+
+                if (foods.statusCode == 200) {
+                  Map data = json.decode(foods.body);
+                  final foodItem = data["parsed"][0]["food"];
+                  ListItemHelper.addItem("Grocery List", foodItem["label"], foodItem["category"], foodItem["image"], "NA");
+                }
+
+                //Wait for database to return result.
+                Product? res = await getProduct(itemName);
+
+                //Reset the current state with item name and picture.
+                sleep(Duration(seconds: 1));
+                setState(() {
+                  result = res;
+                });
+              },
+              color: Colors.blue,
+              child: const Text(
+                'Add to Grocery List',
+                style: TextStyle(fontSize: 20),
+              ),
+            )
+            
             /*
 
             TextField(
@@ -184,26 +229,7 @@ class _SearchBarPopUpPageState extends State<SearchBarPopUpPage> {
             ),
 
             */
-            MaterialButton(
-              onPressed: () async {
-                //Asynchronous button press to query database with given code
-                //Grab current text controller state.
-                itemName = _textController.text;
-
-                //Wait for database to return result.
-                Product? res = await getProduct(itemName);
-
-                //Reset the current state with item name and picture.
-                setState(() {
-                  result = res;
-                });
-              },
-              color: Colors.blue,
-              child: const Text(
-                'search',
-                style: TextStyle(fontSize: 20),
-              ),
-            )
+            
           ],
         ),
       ),
