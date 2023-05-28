@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_app/BarScanner.dart';
 import 'package:flutter_app/helpers/ListItemHelper.dart';
 import 'package:flutter_app/models/ListItem.dart';
 import 'package:http/http.dart' as http;
@@ -101,6 +102,19 @@ class _SearchBarPopUpPageState extends State<SearchBarPopUpPage> {
             Icons.arrow_back,
             color: Colors.black,
           ),
+        ),
+      ),
+      floatingActionButton: Container(
+        height: 75.0,
+        width: 75.0,
+        child: FittedBox(
+          child: FloatingActionButton(
+              child: new Icon(Icons.camera_alt),
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (BuildContext context) => BarScanner(),
+                ));
+              }),
         ),
       ),
       body: Padding(
