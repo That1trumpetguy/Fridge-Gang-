@@ -319,7 +319,7 @@ class _GroceryListPageState extends State<GroceryListPage> {
               child: new Icon(Icons.add),
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (BuildContext context) => BarScanner(),
+                  builder: (BuildContext context) => SearchBarPopUpPage(),
                 ));
               }),
         ),
