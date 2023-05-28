@@ -161,21 +161,17 @@ class _CustomListPageState extends State<CustomListPage> {
                           listName = _textController.text;
                           listType = group;
 
+
                           if (listName.length >= 20){
                              showAlertDialog(context, "List name must not exceed 20 characters!");
 
                             }
-
-                          else if(await ListItemHelper.listAlreadyExists(listName)){
-                            showAlertDialog(
-                                context,
-                                "List of this name already exists! Please enter a different list name.");
-                          }
-
-                          else if(await ListItemHelper.maxNumListsReached(maxNumLists)){
+                          /*
+                          if(await ListItemHelper.maxNumListsReached(maxNumLists)){
                             showAlertDialog(context,
                                 "Maximum number of 10 lists has been reached! Please delete a list if you want to continue.");
                           }
+                           */
 
                           else if(listName.isEmpty){
                             showAlertDialog(context, "Please enter a list name!");
@@ -185,12 +181,21 @@ class _CustomListPageState extends State<CustomListPage> {
                             showAlertDialog(context, "Please select a List type!");
                           }
 
+
+                          else if(await ListItemHelper.listAlreadyExists(listName)){
+                            showAlertDialog(
+                                context,
+                                "List of this name already exists! Please enter a different list name.");
+                          }
+
+
                           else{
                             //Todo: Since Firebase requires a document upon collection creation,
                             //force the user to scan an item into the newly created collection
-                            ListItemHelper.addNewList(listName, listType);
                             Navigator.of(context).pop();
+                            ListItemHelper.addNewList(listName, listType);
                           }
+
 
                           _textController.clear();
 

@@ -243,7 +243,7 @@ class _ListCardState extends State<ListCard> {
        data: ButtonBarThemeData(alignment: MainAxisAlignment.center),
        child: AlertDialog(
            insetPadding: EdgeInsets.all(10),
-           title: (Text(
+           title: (const Text(
                "Select a list you would like to transfer the item to: ")),
            content: SizedBox(
              height: MediaQuery.of(context).size.width * 0.20,

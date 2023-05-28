@@ -50,6 +50,13 @@ class _GroceryListPageState extends State<GroceryListPage> {
     return 1;
   }
 
+  //To set the state.
+  callback(varWhatIHaveList) {
+    setState(() {
+      WhatIHaveList = varWhatIHaveList;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -101,6 +108,13 @@ class _GroceryListPageState extends State<GroceryListPage> {
                         itemBuilder: (BuildContext context, int index) {
                           //return ListCard(item: groceryList[index]);
                           //return ListCard(item: groceryList[index]);
+                          return ListCard(
+                              item: groceryList[index],
+                              listName: 'Grocery List',
+                              index: index,
+                              foodList: groceryList,
+                              callback: callback);
+                          /*
                           return Slidable(
                             startActionPane: ActionPane(
                               motion: const StretchMotion(),
@@ -288,6 +302,7 @@ class _GroceryListPageState extends State<GroceryListPage> {
                               ),
                             ),
                           );
+                          */
                         },
                       );
                     }

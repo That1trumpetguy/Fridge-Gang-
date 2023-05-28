@@ -31,7 +31,7 @@ class _SceneState extends State<PhoneScene> {
   final String defaultList = 'Grocery List';
   late String _selectedList;
   List<DropdownMenuItem<String>> dropdownItems = [];
-  String? value;
+  String? value = "Fridge List";
 
   String group = '';
 
@@ -103,14 +103,16 @@ class _SceneState extends State<PhoneScene> {
                       shrinkWrap: true,
                       itemCount: WhatIHaveList.length,
                       itemBuilder: (BuildContext context, int index) {
-                        return ListCard(
-                            item: WhatIHaveList[index],
-                            listName: value ?? '',
-                            index: index,
-                            foodList: WhatIHaveList,
-                            callback: callback,
-                        );
 
+                      if (WhatIHaveList[index].itemName != ' ') {
+                        return ListCard(
+                          item: WhatIHaveList[index],
+                          listName: value ?? '',
+                          index: index,
+                          foodList: WhatIHaveList,
+                          callback: callback,
+                        );
+                      }
                       },
                     );
                   }
