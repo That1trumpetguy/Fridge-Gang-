@@ -78,7 +78,7 @@ class _ListCardState extends State<ListCard> {
         children: [
           SlidableAction(onPressed: (context){
             //Do action here //todo: add action to add to list.
-            openDialog(widget.index);
+            openDialog(widget.index, widget.listName);
           },
             //borderRadius: BorderRadius.circular(20),
             backgroundColor: Colors.blue,
@@ -236,7 +236,7 @@ class _ListCardState extends State<ListCard> {
     );
   }
 
- Future openDialog(int index) => showDialog(
+ Future openDialog(int index, String listName) => showDialog(
    context: context,
    builder: (context) => StatefulBuilder(
      builder: (context, StateSetter setThisState) => ButtonBarTheme(
@@ -251,7 +251,7 @@ class _ListCardState extends State<ListCard> {
              child: Column(
                children: [
                  Padding(
-                   padding: const EdgeInsets.only(bottom: 50.0),
+                   padding: const EdgeInsets.only(bottom: 30.0),
                    child: Container(
                      alignment: Alignment.center,
                      child: FutureBuilder(

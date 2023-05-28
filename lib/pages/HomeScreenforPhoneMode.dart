@@ -14,6 +14,7 @@ import '../models/ListItem.dart';
 import '../models/ListType.dart';
 import '../widget/ListCard.dart';
 import 'CustomListPage.dart';
+import 'ListPage.dart';
 
 //import 'package:myapp/utils.dart';
 
@@ -350,7 +351,11 @@ class _SceneState extends State<PhoneScene> {
                                         whatIHaveListItem(
                                             this.value ?? defaultList);
                                         // Open the popup menu here or perform any other desired action
-                                        _openPopupMenu(value!);
+                                        //_openPopupMenu(value!);
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(builder: (context) => ListPage(value)),
+                                        );
                                       });
                                     },
                                   );

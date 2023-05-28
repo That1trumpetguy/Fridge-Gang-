@@ -130,7 +130,10 @@ class ListItemHelper {
           isPantryList: data[0][i]["isPantryList"],
           isFridgeList: data[0][i]["isFridgeList"],
           isFreezerList: data[0][i]["isFreezerList"]);
+
+        if (temp.listName != 'Expiration List') {
           listNames.add(temp);
+        }
     }
 
     return listNames;
