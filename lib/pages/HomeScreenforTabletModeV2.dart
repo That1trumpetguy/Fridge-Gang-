@@ -347,115 +347,101 @@ class _SceneState extends State<Scene2> {
               ),
             ),
             // Middle to Right
-            // Recommended for You and Refresh Button
-            Positioned(
-              top: screenHeight * 0.15,
-              left: screenWidth / 2.45,
-              right: 0,
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Text(
-                        'Recommended for You',
-                        style: SafeGoogleFont(
-                          'Inter',
-                          fontSize: screenWidth * 0.045,
-                          fontWeight: FontWeight.w600,
-                          color: const Color(0xff000000),
-                        ),
-                      ),
-                      SizedBox(width: screenWidth * 0.03),
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            _allRecipes = {};
-                          });
-                          _fetchAllRecipes().then((recipes) {
-                            setState(() {
-                              _allRecipes = recipes;
-                            });
-                          });
-                        },
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: SizedBox(
-                            width: screenWidth * 0.05,
-                            height: screenHeight * 0.05,
-                            child: Image.asset(
-                              'assets/page-1/images/circleleft.png',
-                              width: screenWidth * 0.05,
-                              height: screenHeight * 0.05,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            // FutureBuilder
-            FutureBuilder<Map<String, dynamic>>(
-              future: Future.value(_allRecipes),
-              builder: (BuildContext context, AsyncSnapshot<Map<String, dynamic>> snapshot) {
+            FutureBuilder(
+            future:  Future.value(_allRecipes) /*_fetchRecipes()*/,
+              builder: (BuildContext context, AsyncSnapshot <Map<String, dynamic>> snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting || snapshot.data == null) {
                   return Center(child: CircularProgressIndicator());
                 } else if (snapshot.hasError && snapshot.error.runtimeType == TypeError) {
                   // Specific error case: Show loading circle
                   return Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasError) {
+                }
+                else if (snapshot.hasError) {
                   return Center(child: Text('Error: $snapshot.error}'));
-                } else {
+                }
+                else {
+                  //Map<String, dynamic> breakfast = snapshot.data!;
                   final Map<String, dynamic>? recipes = snapshot.data;
                   if (recipes == null) {
                     return Center(child: Text('Recipes data is null'));
                   }
+
                   final Map<String, dynamic>? breakfast = recipes['breakfast'];
                   final Map<String, dynamic>? lunch = recipes['lunch'];
                   final Map<String, dynamic>? dinner = recipes['dinner'];
+
                   if (breakfast == null || lunch == null || dinner == null) {
-                    return Center(
-                      child: Container(
-                        margin: EdgeInsets.only(left: screenWidth / 2.45), // Adjust the left margin as needed
-                        child: FittedBox(
-                          fit: BoxFit.fitWidth,
-                          child: Text(
-                            'No recipe found using the specified ingredients',
-                            style: TextStyle(fontSize: screenWidth * 0.05),
-                            textAlign: TextAlign.left,
-                          ),
-                        ),
-                      ),
-                    );
+                    return Center(child: CircularProgressIndicator());
                   }
-                  String getMissingIngredients(Map<String, dynamic> recipes) {
+
+                  String getMissingIngredients(Map<String, dynamic> recipes){
                     int missingIngredients = 0;
                     int ownedIngredients = 0;
                     //compare fridge list to recipe ingredients
                     List<String> recipeIngredients = [];
                     List<String> fridgeList = WhatIHaveList.map((item) => item.itemName).toList();
-                    for (String condiments in recipeIngredients) {
-                      if (fridgeList.contains(condiments)) {
+                    for(String condiments in recipeIngredients){
+                      if(fridgeList.contains(condiments)){
                         ownedIngredients++;
-                      } else {
+                      }else{
                         missingIngredients++;
                       }
                     }
-                    String ok =
-                        'You have ' + ownedIngredients.toString() + '\n' + 'You are missing ' + missingIngredients.toString();
+                    String ok = 'You have ' + ownedIngredients.toString() + '\n' + 'You are missing ' + missingIngredients.toString();
                     return ok;
                   }
-                  return Column(
-                    children: [
-                      // Breakfast Code below:
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => RecipePage(recipe: breakfast)),
-                          );
-                        },
+                  return Positioned(
+                    top: screenHeight * 0.15,
+                    left: screenWidth / 2.45,
+                    right: 0,
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              'Recommended for You',
+                              style: SafeGoogleFont(
+                                'Inter',
+                                fontSize: screenWidth * 0.045,
+                                fontWeight: FontWeight.w600,
+                                color: const Color(0xff000000),
+                              ),
+                            ),
+                            SizedBox(width: screenWidth * 0.03),
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  _allRecipes = {};
+                                });
+                                _fetchAllRecipes()/*_fetchRecipes()*/.then((recipes) {
+                                  setState(() {
+                                    _allRecipes = recipes;
+                                  });
+                                });
+                              },
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: SizedBox(
+                                  width: screenWidth * 0.05,
+                                  height: screenHeight * 0.05,
+                                  child: Image.asset(
+                                    'assets/page-1/images/circleleft.png',
+                                    width: screenWidth * 0.05,
+                                    height: screenHeight * 0.05,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        // Breakfast Code below:
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => RecipePage(recipe: breakfast)),
+                            );
+                          },
 
                         child: Container(
                           height: screenHeight * (0.65 / 3),
@@ -500,46 +486,46 @@ class _SceneState extends State<Scene2> {
                                     ),
                                     Positioned(
                                       left: screenWidth * 0.21,
-                                      child: SizedBox(
-                                        height: screenHeight * 0.4,
-                                        width: screenWidth * 0.4,
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Flexible(
-                                              child: RichText(
-                                                text: TextSpan(
-                                                  style: SafeGoogleFont(
-                                                    'Inter',
-                                                    fontSize: screenWidth * 0.03,
-                                                    fontWeight: FontWeight.w500,
-                                                    color: const Color(0xff000000),
-                                                  ),
-                                                  children: [
-                                                    TextSpan(
-                                                        text: breakfast['title'] +
-                                                            '\n'
-                                                    ),
-                                                    TextSpan(
-                                                      text: /*'Vegetarian: ' + breakfast['vegetarian'].toString() + '\nGluten free: ' + breakfast['glutenFree'].toString()
-                                                              + *//*'\n'+getMissingIngredients(breakfast)*/
-                                                      '\nYou are missing: \n' + breakfast['missedIngredientCount'].toString() + ' Ingredients',
+                                        child: SizedBox(
+                                          height: screenHeight * 0.4,
+                                          width: screenWidth * 0.4,
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Flexible(
+                                                  child: RichText(
+                                                    text: TextSpan(
                                                       style: SafeGoogleFont(
                                                         'Inter',
-                                                        fontSize: screenWidth *
-                                                            0.03,
+                                                        fontSize: screenWidth * 0.03,
                                                         fontWeight: FontWeight.w500,
-                                                        color: const Color(
-                                                            0xff000000),
+                                                        color: const Color(0xff000000),
                                                       ),
+                                                      children: [
+                                                        TextSpan(
+                                                            text: breakfast['title'] +
+                                                                '\n'
+                                                        ),
+                                                        TextSpan(
+                                                          text: /*'Vegetarian: ' + breakfast['vegetarian'].toString() + '\nGluten free: ' + breakfast['glutenFree'].toString()
+                                                              + *//*'\n'+getMissingIngredients(breakfast)*/
+                                                          '\nYou are missing: \n' + breakfast['missedIngredientCount'].toString() + ' Ingredients',
+                                                          style: SafeGoogleFont(
+                                                            'Inter',
+                                                            fontSize: screenWidth *
+                                                                0.03,
+                                                            fontWeight: FontWeight.w500,
+                                                            color: const Color(
+                                                                0xff000000),
+                                                          ),
+                                                        ),
+                                                      ],
                                                     ),
-                                                  ],
+                                                  ),
                                                 ),
-                                              ),
+                                              ],
                                             ),
-                                          ],
                                         ),
-                                      ),
                                     ),
                                   ],
                                 ),
@@ -547,17 +533,17 @@ class _SceneState extends State<Scene2> {
                             ],
                           ),
                         ),
-                      ),
-                      // Divider
-                      SizedBox(height: screenHeight * 0.02,),
-                      // Lunch Code below:
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => RecipePage(recipe: lunch)),
-                          );
-                        },
+                        ),
+                        // Divider
+                        SizedBox(height: screenHeight * 0.02,),
+                        // Lunch Code below:
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => RecipePage(recipe: lunch)),
+                            );
+                          },
 
                         child: Container(
                           height: screenHeight * (0.65 / 3),
@@ -605,41 +591,41 @@ class _SceneState extends State<Scene2> {
                                       child: SizedBox(
                                         height: screenHeight * 0.4,
                                         width: screenWidth * 0.4,
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Flexible(
-                                              child: RichText(
-                                                text: TextSpan(
-                                                  style: SafeGoogleFont(
-                                                    'Inter',
-                                                    fontSize: screenWidth * 0.03,
-                                                    fontWeight: FontWeight.w500,
-                                                    color: const Color(0xff000000),
-                                                  ),
-                                                  children: [
-                                                    TextSpan(
-                                                        text: lunch['title'] +
-                                                            '\n'
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Flexible(
+                                                child: RichText(
+                                                  text: TextSpan(
+                                                    style: SafeGoogleFont(
+                                                      'Inter',
+                                                      fontSize: screenWidth * 0.03,
+                                                      fontWeight: FontWeight.w500,
+                                                      color: const Color(0xff000000),
                                                     ),
-                                                    TextSpan(
-                                                      text:/*'Vegetarian: ' + lunch['vegetarian'].toString() + '\nGluten free: ' + lunch['glutenFree'].toString()*/
-                                                      '\nYou are missing: \n' + breakfast['missedIngredientCount'].toString() + ' Ingredients',
-                                                      style: SafeGoogleFont(
-                                                        'Inter',
-                                                        fontSize: screenWidth *
-                                                            0.03,
-                                                        fontWeight: FontWeight.w500,
-                                                        color: const Color(
-                                                            0xff000000),
+                                                    children: [
+                                                      TextSpan(
+                                                          text: lunch['title'] +
+                                                              '\n'
                                                       ),
-                                                    ),
-                                                  ],
+                                                      TextSpan(
+                                                        text:/*'Vegetarian: ' + lunch['vegetarian'].toString() + '\nGluten free: ' + lunch['glutenFree'].toString()*/
+                                                        '\nYou are missing: \n' + breakfast['missedIngredientCount'].toString() + ' Ingredients',
+                                                        style: SafeGoogleFont(
+                                                          'Inter',
+                                                          fontSize: screenWidth *
+                                                              0.03,
+                                                          fontWeight: FontWeight.w500,
+                                                          color: const Color(
+                                                              0xff000000),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-                                          ],
-                                        ),
+                                            ],
+                                          ),
                                       ),
                                     ),
                                   ],
@@ -648,17 +634,18 @@ class _SceneState extends State<Scene2> {
                             ],
                           ),
                         ),
-                      ),
-                      SizedBox(height: screenHeight * 0.02,),
-                      // Dinner Code below:
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => RecipePage(recipe: dinner)),
+                        ),
+                        // Divider
+                        SizedBox(height: screenHeight * 0.02,),
+                        // Dinner Code below:
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => RecipePage(recipe: dinner)),
 
-                          );
-                        },
+                            );
+                          },
 
                         child: Container(
                           height: screenHeight * (0.65 / 3),
@@ -706,41 +693,41 @@ class _SceneState extends State<Scene2> {
                                       child: SizedBox(
                                         height: screenHeight * 0.4,
                                         width: screenWidth * 0.4,
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Flexible(
-                                              child: RichText(
-                                                text: TextSpan(
-                                                  style: SafeGoogleFont(
-                                                    'Inter',
-                                                    fontSize: screenWidth * 0.03,
-                                                    fontWeight: FontWeight.w500,
-                                                    color: const Color(0xff000000),
-                                                  ),
-                                                  children: [
-                                                    TextSpan(
-                                                        text: dinner['title'] +
-                                                            '\n'
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Flexible(
+                                                child: RichText(
+                                                  text: TextSpan(
+                                                    style: SafeGoogleFont(
+                                                      'Inter',
+                                                      fontSize: screenWidth * 0.03,
+                                                      fontWeight: FontWeight.w500,
+                                                      color: const Color(0xff000000),
                                                     ),
-                                                    TextSpan(
-                                                      text: /*'Vegetarian: ' + dinner['vegetarian'].toString() + '\nGluten free: ' + dinner['glutenFree'].toString()*/
-                                                      '\nYou are missing: \n' + breakfast['missedIngredientCount'].toString() + ' Ingredients',
-                                                      style: SafeGoogleFont(
-                                                        'Inter',
-                                                        fontSize: screenWidth *
-                                                            0.03,
-                                                        fontWeight: FontWeight.w500,
-                                                        color: const Color(
-                                                            0xff000000),
+                                                    children: [
+                                                      TextSpan(
+                                                          text: dinner['title'] +
+                                                              '\n'
                                                       ),
-                                                    ),
-                                                  ],
+                                                      TextSpan(
+                                                        text: /*'Vegetarian: ' + dinner['vegetarian'].toString() + '\nGluten free: ' + dinner['glutenFree'].toString()*/
+                                                        '\nYou are missing: \n' + breakfast['missedIngredientCount'].toString() + ' Ingredients',
+                                                        style: SafeGoogleFont(
+                                                          'Inter',
+                                                          fontSize: screenWidth *
+                                                              0.03,
+                                                          fontWeight: FontWeight.w500,
+                                                          color: const Color(
+                                                              0xff000000),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-                                          ],
-                                        ),
+                                            ],
+                                          ),
                                       ),
                                     ),
                                   ],
@@ -749,12 +736,13 @@ class _SceneState extends State<Scene2> {
                             ],
                           ),
                         ),
-                      ),
-                    ],
+                        ),
+                      ],
+                    ),
                   );
                 }
-              },
-            )
+              }
+              ),
           ],
         ),
       ),

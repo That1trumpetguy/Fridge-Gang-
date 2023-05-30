@@ -170,34 +170,32 @@ class _SearchBarPopUpPageState extends State<SearchBarPopUpPage> {
 
 
             Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.008),
-                      child: Center(
-                        child: GestureDetector(
-                          child: screenImage,
-                          behavior: HitTestBehavior.translucent,
-                          onTap: () {
-                            print(screenImage);
-                            showAlertDialog(context, result!);
-                            _textController.clear();
-                          },
-                        ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: Center(
+                      child: GestureDetector(
+                        child: screenImage,
+                        behavior: HitTestBehavior.translucent,
+                        onTap: () {
+                          print(screenImage);
+                          showAlertDialog(context, result!);
+                          _textController.clear();
+                        },
                       ),
                     ),
-                    Center(
-                      child: Text(
-                          result?.productName ??
-                              '', //View will be updated based on query result.
-                          style: const TextStyle(
-                            fontSize: 25,
-                          )),
-                    ),
-                  ],
-                ),
+                  ),
+                  Center(
+                    child: Text(
+                        result?.productName ??
+                            '', //View will be updated based on query result.
+                        style: const TextStyle(
+                          fontSize: 25,
+                        )),
+                  ),
+                ],
               ),
             ),
             MaterialButton(
