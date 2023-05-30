@@ -421,7 +421,10 @@ class _SceneState extends State<Scene2> {
                         child: FittedBox(
                           fit: BoxFit.fitWidth,
                           child: Text(
-                            'No recipe found using the specified ingredients',
+                            'Please wait a few seconds...\n'
+                                '(If no recipes show up, either: \n'
+                                'no recipes to match the held ingredients or \n'
+                                'an error has occurred.)',
                             style: TextStyle(fontSize: screenWidth * 0.05),
                             textAlign: TextAlign.left,
                           ),
