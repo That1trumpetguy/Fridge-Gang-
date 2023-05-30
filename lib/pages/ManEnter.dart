@@ -6,7 +6,7 @@ import 'package:flutter_app/helpers/ListItemHelper.dart';
 import 'package:flutter_app/models/ListItem.dart';
 import 'package:flutter_app/style.dart';
 import 'package:flutter_app/helpers/ListItemHelper.dart';
-import 'package:flutter_app/models/ListItem.dart';
+//import 'package:flutter_app/models/ListItem.dart';
 import 'package:flutter_app/pages/ProdPage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -14,9 +14,9 @@ import 'package:firebase_storage/firebase_storage.dart';
 import '../firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_app/models/ListType.dart';
-import 'dart:io';
-import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
+//import 'dart:io';
+//import 'package:flutter/material.dart';
+//import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as Path;
 
 class ManEnter extends StatefulWidget {
@@ -92,7 +92,7 @@ class _ManEnterState extends State<ManEnter> {
         : SizedBox.shrink();
   }
 
-  static void addItem(
+  void addItem(
     context,
     String listName,
     String foodName,
@@ -218,12 +218,13 @@ class _ManEnterState extends State<ManEnter> {
                     // Create a new ListItem object with the entered details
                     addItem(
                       context,
+                      _selectedList!,
                       _productName!,
                       '',
-                      _expirationDate.toString(),
-                      _selectedList!,
-                      _imageFile!,
-                      _selectedList!,
+                      '',
+                      _imageFile!, //still does not show the image
+                      _expirationDate
+                          .toString(), //need to modify this so that it drops the miliseconds and such
                     );
                   } else {
                     showDialog(
