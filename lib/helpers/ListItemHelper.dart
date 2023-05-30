@@ -221,7 +221,7 @@ class ListItemHelper {
         .collection("users")
         .doc(FirebaseAuth.instance.currentUser?.uid)
         .collection(listName)
-        .doc("");
+        .doc(" ");
     ref2.delete().then((doc) => print("Document deleted"),
         onError: (e) => print("Error updating document $e"));
   }
