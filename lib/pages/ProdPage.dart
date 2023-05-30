@@ -41,7 +41,7 @@ class ProdPage extends StatelessWidget {
                 ListItem newItem = ListItem(
                   itemName: product?.productName ?? '',
                   imageName: product?.imageFrontSmallUrl ?? '',
-                  expirationDate: '5/13/2023',
+                  expirationDate: '2023-05-30',
                 );
                 onAddToList(newItem);
               },
