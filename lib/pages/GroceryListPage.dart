@@ -9,6 +9,7 @@ import 'package:flutter_app/BarScanner.dart';
 import '../models/ListItem.dart';
 import '../models/ListType.dart';
 import '../style.dart';
+import 'dart:io';
 
 class GroceryListPage extends StatefulWidget {
   const GroceryListPage({Key? key}) : super(key: key);
@@ -114,195 +115,6 @@ class _GroceryListPageState extends State<GroceryListPage> {
                               index: index,
                               foodList: groceryList,
                               callback: callback);
-                          /*
-                          return Slidable(
-                            startActionPane: ActionPane(
-                              motion: const StretchMotion(),
-                              children: [
-                                SlidableAction(
-                                  onPressed: (context) {
-                                    //Do action here //todo: add action to add to list.
-                                    openDialog(index);
-                                    if (selection != '') {}
-
-                                    selection = '';
-                                    //ListItemHelper.swapAndDeleteItem('me', groceryList[index].itemName);
-                                  },
-                                  //borderRadius: BorderRadius.circular(20),
-                                  backgroundColor: Colors.blue,
-                                  //padding: const EdgeInsets.all(20),
-                                  icon: Icons.add,
-                                ),
-                              ],
-                            ),
-                            endActionPane: ActionPane(
-                              motion: const StretchMotion(),
-                              children: [
-                                SlidableAction(
-                                  onPressed: (context) {
-                                    //Do action here //todo: add action to remove from list.
-                                    print(groceryList[index].itemName);
-                                    ListItemHelper.deleteItem('Grocery List',
-                                        groceryList[index].itemName);
-                                    setState(() {
-                                      groceryList.removeAt(index);
-                                    });
-                                  },
-                                  //borderRadius: BorderRadius.circular(20),
-                                  backgroundColor: Colors.red,
-                                  //padding: const EdgeInsets.all(20),
-                                  icon: Icons.delete,
-                                ),
-                              ],
-                            ),
-                            child: Container(
-                              //margin: EdgeInsets.all(20),
-                              height: screenHeight * 0.16,
-                              child: Stack(
-                                children: [
-                                  Positioned.fill(
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                          //borderRadius: BorderRadius.circular(20),
-                                          color: Color(0xffdbdfd1),
-                                          border:
-                                              Border.all(color: Colors.grey)),
-                                    ),
-                                  ),
-                                  Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      //Image.asset(item.imageName),
-                                      ClipRRect(
-                                        borderRadius: BorderRadius.circular(
-                                            screenWidth * 0.150),
-                                        child: CachedNetworkImage(
-                                          cacheManager:
-                                              ListCard.customCacheManager,
-                                          height: screenHeight * .140,
-                                          width: screenWidth * .140,
-                                          key: UniqueKey(),
-                                          imageUrl:
-                                              groceryList[index].imageName,
-                                          placeholder: (context, url) =>
-                                              Container(
-                                            color: Colors.black12,
-                                          ),
-                                          errorWidget: (context, url, error) =>
-                                              Container(
-                                            child: Icon(Icons.error,
-                                                color: Colors.red,
-                                                size: screenHeight * 0.080),
-                                          ),
-                                        ),
-                                      ),
-
-                                      Flexible(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.stretch,
-                                          children: [
-                                            Text(
-                                              groceryList[index].itemName,
-                                              style: TextStyle(
-                                                  fontSize: screenWidth * 0.04),
-                                              textAlign: TextAlign.left,
-                                              overflow: TextOverflow.visible,
-                                            ),
-                                            SizedBox(height: 8),
-                                            TextField(
-                                              decoration: InputDecoration(
-                                                labelText: 'Expiration Date',
-                                              ),
-                                              /* controller: TextEditingController(
-                                                  text: groceryList[index].expirationDate,
-                                                ),*/
-                                              onChanged: (value) async {
-                                                setState(() {
-                                                  groceryList[index]
-                                                      .expirationDate = value;
-                                                });
-                                                await ListItemHelper
-                                                    .updateExpiry(
-                                                        'Grocery List',
-                                                        groceryList[index]
-                                                            .itemName,
-                                                        value);
-                                                print(groceryList[index]
-                                                    .itemName);
-                                                print(groceryList[index]
-                                                    .expirationDate);
-                                              },
-                                              //
-                                              /*onEditingComplete: () async {
-                                                  String newExpirationDate = groceryList[index].expirationDate;
-                                                  setState(() {
-                                                    //String newExpirationDate = groceryList[index].expirationDate;
-                                                    groceryList[index].expirationDate = newExpirationDate;
-                                                  });
-                                                  await ListItemHelper.updateExpiry('me', 'Grocery List', groceryList[index].itemName, /*groceryList[index].expirationDate*/newExpirationDate);
-                                                  print(groceryList[index].itemName);
-                                                  print(groceryList[index].expirationDate);
-                                                  //print(newExpirationDate);
-                                                },*/
-                                            ),
-
-                                            /*
-                                            Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                    "Quantity:",
-                                                    style: TextStyle(fontSize: screenWidth * 0.04),
-                                                    textAlign: TextAlign.left
-                                                ),
-                                                Row(
-                                                  children: [
-                                                    counter !=0 ? IconButton(
-                                                      icon: Icon(
-                                                        Icons.remove,
-                                                        color: Theme.of(context).primaryColor,
-                                                      ), onPressed: () {
-                                                      setState(() {
-                                                        counter--;
-                                                      });
-                                                    },
-                                                    ): Padding(
-                                                      padding: EdgeInsets.only(left: screenWidth * 0.15),
-                                                      child: Container(),
-                                                    ),
-                                                    Text(
-                                                      "$counter",
-                                                      style: TextStyle(fontSize: screenWidth * 0.04),
-                                                    ),
-                                                    IconButton(
-                                                      icon: Icon(
-                                                        Icons.add,
-                                                        color: Theme.of(context).primaryColor,
-                                                      ), onPressed: () {
-                                                      setState(() {
-                                                        counter++;
-                                                      });
-                                                    },
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
-                                            )
-                                            */
-
-                                            //), //onchanged
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                          );
-                          */
                         },
                       );
                     }
@@ -333,112 +145,122 @@ class _GroceryListPageState extends State<GroceryListPage> {
           builder: (context, StateSetter setThisState) => ButtonBarTheme(
             data: ButtonBarThemeData(alignment: MainAxisAlignment.center),
             child: AlertDialog(
-                insetPadding: EdgeInsets.all(10),
-                title: (Text(
-                    "Select a list you would like to transfer the item to: ")),
-                content: SizedBox(
-                  height: MediaQuery.of(context).size.width * 0.20,
-                  width: MediaQuery.of(context).size.width * 0.01,
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 50.0),
-                        child: Container(
-                          alignment: Alignment.center,
-                          child: FutureBuilder(
-                            future: getMyLists('me'),
-                            builder: (BuildContext context,
-                                AsyncSnapshot<int> snapshot) {
-                              if (!snapshot.hasData) {
-                                Center(child: CircularProgressIndicator());
-                              } else {
-                                return DropdownButton<String>(
-                                  //Dropdown menu.
-                                  value: value,
-                                  hint: Text(
-                                    "Please select a List",
-                                    style: const TextStyle(fontSize: 20),
-                                  ),
-                                  items: _listNames.map((ListType value) {
-                                    return DropdownMenuItem<String>(
-                                      value: value.listName,
-                                      child: Text(
-                                        value.listName,
-                                        style: const TextStyle(fontSize: 20),
-                                      ),
-                                    );
-                                  }).toList(),
-                                  onChanged: (value) {
-                                    setThisState(() {
-                                      this.value = value;
-                                      whatIHaveListItem(
-                                          'me', this.value ?? defaultList);
-                                    });
-                                  },
-                                );
-                              }
-
-                              return Container();
-                            },
-                          ),
+              insetPadding: EdgeInsets.all(10),
+              title: Text(
+                  "Select a list you would like to transfer the item to: "),
+              content: SizedBox(
+                height: MediaQuery.of(context).size.width * 0.20,
+                width: MediaQuery.of(context).size.width * 0.01,
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 50.0),
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: FutureBuilder(
+                          future: getMyLists('me'),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<int> snapshot) {
+                            if (!snapshot.hasData) {
+                              return Center(child: CircularProgressIndicator());
+                            } else {
+                              return DropdownButton<String>(
+                                // Dropdown menu.
+                                value: value,
+                                hint: Text(
+                                  "Please select a List",
+                                  style: const TextStyle(fontSize: 20),
+                                ),
+                                items: _listNames.map((ListType value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value.listName,
+                                    child: Text(
+                                      value.listName,
+                                      style: const TextStyle(fontSize: 20),
+                                    ),
+                                  );
+                                }).toList(),
+                                onChanged: (value) {
+                                  setThisState(() {
+                                    this.value = value;
+                                    whatIHaveListItem(
+                                        'me', this.value ?? defaultList);
+                                  });
+                                },
+                              );
+                            }
+                          },
                         ),
                       ),
-                    ],
+                    ),
+                  ],
+                ),
+              ),
+              actions: [
+                OutlinedButton(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                      ColorConstant.red300,
+                    ),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text(
+                    "Cancel",
+                    overflow: TextOverflow.ellipsis,
+                    style: AppStyle.txtRobotoBold20,
                   ),
                 ),
-                actions: [
-                  OutlinedButton(
-                      style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(
-                              ColorConstant.red300),
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0),
-                          ))),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: Text(
-                        "Cancel",
-                        overflow: TextOverflow.ellipsis,
-                        style: AppStyle.txtRobotoBold20,
-                      )),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 25),
-                    child: OutlinedButton(
-                        style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(
-                                ColorConstant.teal300),
-                            shape: MaterialStateProperty.all<
-                                RoundedRectangleBorder>(RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20.0),
-                            ))),
-                        onPressed: () {
-                          selection = value!;
+                Padding(
+                  padding: const EdgeInsets.only(left: 25),
+                  child: OutlinedButton(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                        ColorConstant.teal300,
+                      ),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                      ),
+                    ),
+                    onPressed: () {
+                      selection = value!;
 
-                          ListItemHelper.addItem(
-                              selection!,
-                              groceryList[index].itemName,
-                              '',
-                              groceryList[index].imageName,
-                              groceryList[index].expirationDate);
-                          ListItemHelper.deleteItem(
-                              'Grocery List', groceryList[index].itemName);
-                          setState(() {
-                            groceryList.removeAt(index);
-                          });
-                          selection = null;
-                          Navigator.of(context).pop();
-                        },
-                        child: Text(
-                          "Confirm",
-                          overflow: TextOverflow.ellipsis,
-                          style: AppStyle.txtRobotoBold20,
-                        )),
+                      ListItemHelper.addItem(
+                        selection!,
+                        groceryList[index].itemName,
+                        '',
+                        '',
+                        File(''),
+                        '',
+                      );
+                      ListItemHelper.deleteItem(
+                        'Grocery List',
+                        groceryList[index].itemName,
+                      );
+                      setState(() {
+                        groceryList.removeAt(index);
+                      });
+                      selection = null;
+                      Navigator.of(context).pop();
+                    },
+                    child: Text(
+                      "Confirm",
+                      overflow: TextOverflow.ellipsis,
+                      style: AppStyle.txtRobotoBold20,
+                    ),
                   ),
-                ],
-                actionsAlignment: MainAxisAlignment.center),
+                ),
+              ],
+              actionsAlignment: MainAxisAlignment.center,
+            ),
           ),
         ),
       );

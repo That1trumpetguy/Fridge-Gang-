@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/helpers/ListItemHelper.dart';
@@ -152,6 +152,7 @@ class SearchMe {
                 newItem.itemName,
                 '', //newItem.categories, somehow there is an error here, it does not want to accept foodType or categories
                 newItem.imageName,
+                File(''),
                 newItem.expirationDate,
               );
               // You can show a confirmation message or take any other action
@@ -163,7 +164,7 @@ class SearchMe {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => ManEnter(barcode: barcode),
+          builder: (context) => ManEnter(),
         ),
       );
     }

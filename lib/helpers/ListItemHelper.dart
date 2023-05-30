@@ -1,14 +1,15 @@
+import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_app/models/ListItem.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import '../firebase_options.dart';
 import '../models/ListType.dart';
 
 //Class to derive lists (grocery, fridge, custom) from the database.
 class ListItemHelper {
-
   static String? currentList;
 
   //Derives a list of grocery items from database. This is static for now....
@@ -41,7 +42,7 @@ class ListItemHelper {
           imageName: data[0][i]["image"] ?? '',
           expirationDate: data[0][i]["expiration date"] ?? '');
 
-          //expirationDate: "05/06/2023");
+      //expirationDate: "05/06/2023");
       foodList.add(temp);
     }
 
@@ -70,8 +71,21 @@ class ListItemHelper {
     return (allData);
   }
 
-  static void addItem(String listName, String foodName,
-      String foodType, String imgURL, String expDate) {
+  static void addItem(String listName, String foodName, String foodType,
+      String imgURL, File image, String expDate) async {
+    String imageName = '';
+    if (image != null) {
+      //Upload the image to the Firebase
+      String? imagePath = await uploadImage(image);
+      if (imagePath != null) {
+        //Image was uploaded
+        imageName = imagePath;
+      }
+    } else if (imgURL != null) {
+      //Use provided image
+      imageName = imgURL;
+    }
+
     final foodItem = <String, dynamic>{
       "name": foodName,
       "food type": foodType,
@@ -81,18 +95,48 @@ class ListItemHelper {
 
     FirebaseFirestore db = FirebaseFirestore.instance;
 
-    final ref =
-        db.collection("users").doc(FirebaseAuth.instance.currentUser?.uid).collection(listName).doc(foodName);
+    final ref = db
+        .collection("users")
+        .doc(FirebaseAuth.instance.currentUser?.uid)
+        .collection(listName)
+        .doc(foodName);
     ref.set(foodItem);
+  }
+
+  static Future<String?> uploadImage(File image) async {
+    try {
+      // Replace 'your-image-folder' with the desired folder name in Firebase Storage
+      String folderName = 'your-image-folder';
+
+      // Generate a unique image name
+      String imageName = DateTime.now().millisecondsSinceEpoch.toString();
+
+      // Upload the image file to Firebase Storage
+      Reference storageRef = FirebaseStorage.instance
+          .ref()
+          .child(folderName)
+          .child('$imageName.jpg');
+      await storageRef.putFile(image);
+
+      // Get the download URL of the uploaded image
+      String imageUrl = await storageRef.getDownloadURL();
+      return imageUrl;
+    } catch (e) {
+      print('Error uploading image: $e');
+      return null;
+    }
   }
 
   // deletes item from database based on name/doc title
   static void deleteItem(String listName, String foodName) {
     FirebaseFirestore db = FirebaseFirestore.instance;
 
-    final ref =
-        db.collection("users").doc(FirebaseAuth.instance.currentUser?.uid).collection(listName).doc(foodName);
-        ref.delete().then((doc) => print("Document deleted"),
+    final ref = db
+        .collection("users")
+        .doc(FirebaseAuth.instance.currentUser?.uid)
+        .collection(listName)
+        .doc(foodName);
+    ref.delete().then((doc) => print("Document deleted"),
         onError: (e) => print("Error updating document $e"));
   }
 
@@ -131,9 +175,9 @@ class ListItemHelper {
           isFridgeList: data[0][i]["isFridgeList"],
           isFreezerList: data[0][i]["isFreezerList"]);
 
-        if (temp.listName != 'Expiration List') {
-          listNames.add(temp);
-        }
+      if (temp.listName != 'Expiration List') {
+        listNames.add(temp);
+      }
     }
 
     return listNames;
@@ -152,9 +196,9 @@ class ListItemHelper {
           isPantryList: data[0][i]["isPantryList"],
           isFridgeList: data[0][i]["isFridgeList"],
           isFreezerList: data[0][i]["isFreezerList"]);
-          if (!temp.isGroceryList) {
-            listNames.add(temp);
-          }
+      if (!temp.isGroceryList) {
+        listNames.add(temp);
+      }
     }
 
     return listNames;
@@ -203,13 +247,15 @@ class ListItemHelper {
         break;
     }
 
-    
-
     FirebaseFirestore db = FirebaseFirestore.instance;
 
     //Creates a new collection given the list name.
-    final ref =
-        db.collection("users").doc(FirebaseAuth.instance.currentUser?.uid).collection('Lists').doc(listName).set(newList);
+    final ref = db
+        .collection("users")
+        .doc(FirebaseAuth.instance.currentUser?.uid)
+        .collection('Lists')
+        .doc(listName)
+        .set(newList);
     db
         .collection("users")
         .doc(FirebaseAuth.instance.currentUser?.uid)
@@ -227,11 +273,15 @@ class ListItemHelper {
   }
 
   //updating expiration dates
-  static Future<void> updateExpiry(String listName,
-      String foodName, String expirationDate) async {
+  static Future<void> updateExpiry(
+      String listName, String foodName, String expirationDate) async {
     FirebaseFirestore db = FirebaseFirestore.instance;
 
-    final ref = db.collection("users").doc(FirebaseAuth.instance.currentUser?.uid).collection(listName).doc(foodName);
+    final ref = db
+        .collection("users")
+        .doc(FirebaseAuth.instance.currentUser?.uid)
+        .collection(listName)
+        .doc(foodName);
 
     await ref.update({
       'expiration date': expirationDate,
@@ -244,22 +294,27 @@ class ListItemHelper {
   static void deleteList(String listName) {
     FirebaseFirestore db = FirebaseFirestore.instance;
 
-    final ref = db.collection("users").doc(FirebaseAuth.instance.currentUser?.uid).collection("Lists").doc(listName);
+    final ref = db
+        .collection("users")
+        .doc(FirebaseAuth.instance.currentUser?.uid)
+        .collection("Lists")
+        .doc(listName);
     ref.delete();
   }
 
   //populating the about to expire list page
-  static Future<List<ListItem>> addToExpirationList(/*String listName*/) async{
+  static Future<List<ListItem>> addToExpirationList(/*String listName*/) async {
     final myLists = await fetchOwnedListNames();
     //final listItems = await getItems(listName);
     final currentDate = DateTime.now();
-    final expirationLimit = currentDate.add(Duration(days:4));
+    final expirationLimit = currentDate.add(Duration(days: 4));
     final itemsToExpire = <ListItem>[];
-    for(final listType in myLists){
+    for (final listType in myLists) {
       final listItems = await getItems(listType.listName);
-      for(final item in listItems){
+      for (final item in listItems) {
         final expirationDate = DateTime.parse(item.expirationDate);
-        if(expirationDate.isBefore(expirationLimit) || expirationDate.isAtSameMomentAs(expirationLimit)){
+        if (expirationDate.isBefore(expirationLimit) ||
+            expirationDate.isAtSameMomentAs(expirationLimit)) {
           itemsToExpire.add(item);
         }
       }
@@ -278,9 +333,13 @@ class ListItemHelper {
   static Future<bool> listAlreadyExists(String listName) async {
     FirebaseFirestore db = FirebaseFirestore.instance;
 
-    final snapshot = await db.collection("users").doc(FirebaseAuth.instance.currentUser?.uid).collection(listName).get();
+    final snapshot = await db
+        .collection("users")
+        .doc(FirebaseAuth.instance.currentUser?.uid)
+        .collection(listName)
+        .get();
 
-    if(snapshot.size == 0){
+    if (snapshot.size == 0) {
       //List does not exist.
       return false;
     }
@@ -291,11 +350,14 @@ class ListItemHelper {
   static Future<bool> maxNumListsReached(int maxNumLists) async {
     FirebaseFirestore db = FirebaseFirestore.instance;
 
-    
+    final snapshot = await db
+        .collection("users")
+        .doc(FirebaseAuth.instance.currentUser?.uid)
+        .collection('Lists')
+        .count()
+        .get();
 
-    final snapshot = await db.collection("users").doc(FirebaseAuth.instance.currentUser?.uid).collection('Lists').count().get();
-
-    if (snapshot.count == maxNumLists){
+    if (snapshot.count == maxNumLists) {
       return true;
     }
 
@@ -303,7 +365,6 @@ class ListItemHelper {
   }
 
   static void newUserLists(String? userName) async {
-
     FirebaseFirestore db = FirebaseFirestore.instance;
 
     final ref = db.collection("users").doc(userName).collection("Lists");
@@ -340,23 +401,17 @@ class ListItemHelper {
       "name": "Expiration List"
     };
 
-
     ref.doc("Fridge List").set(fList);
     ref.doc("Pantry List").set(pList);
     ref.doc("Grocery List").set(gList);
     ref.doc("Expiration List").set(eList);
   }
-
-
 }
-  /*
+/*
   static Future<void> swapAndDeleteItem(String userName, String itemName){
 
 }
 
    */
 
-
-void main(){
-
-}
+void main() {}

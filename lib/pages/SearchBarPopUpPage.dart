@@ -23,8 +23,9 @@ class _SearchBarPopUpPageState extends State<SearchBarPopUpPage> {
 
   //UserInput
   String itemName = '';
-  var screenImage = Image.network('https://icons.veryicon.com/png/o/miscellaneous/project-management-tools/select-not-selected.png',
-                                fit: BoxFit.cover);
+  var screenImage = Image.network(
+      'https://icons.veryicon.com/png/o/miscellaneous/project-management-tools/select-not-selected.png',
+      fit: BoxFit.cover);
 
   var redrawObject = Object();
 
@@ -122,7 +123,7 @@ class _SearchBarPopUpPageState extends State<SearchBarPopUpPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-             Autocomplete<String>(fieldViewBuilder: (
+            Autocomplete<String>(fieldViewBuilder: (
               BuildContext context,
               TextEditingController fieldTextEditingController,
               FocusNode fieldFocusNode,
@@ -137,7 +138,8 @@ class _SearchBarPopUpPageState extends State<SearchBarPopUpPage> {
                     child: TextField(
                       controller: fieldTextEditingController,
                       focusNode: fieldFocusNode,
-                      style: const TextStyle(fontSize: 16.0, color: Colors.black),
+                      style:
+                          const TextStyle(fontSize: 16.0, color: Colors.black),
                       decoration: InputDecoration(
                           hintText: 'Insert name of food',
                           prefixIcon: Icon(Icons.search),
@@ -150,13 +152,14 @@ class _SearchBarPopUpPageState extends State<SearchBarPopUpPage> {
                   ));
             }, onSelected: (String selection) async {
               itemName = selection;
-              final foods = await http.get(Uri.parse("https://api.edamam.com/api/food-database/v2/parser?app_id=07ca8641&app_key=f239759c5a8f2b695c852f20ea31f966&ingr=$itemName&nutrition-type=cooking"));
-                if (foods.statusCode == 200) {
-                  Map data = json.decode(foods.body);
-                  final foodItem = data["parsed"][0]["food"];
-                  screenImage = Image.network(foodItem["image"]);
-                  setState(() {});
-                }
+              final foods = await http.get(Uri.parse(
+                  "https://api.edamam.com/api/food-database/v2/parser?app_id=07ca8641&app_key=f239759c5a8f2b695c852f20ea31f966&ingr=$itemName&nutrition-type=cooking"));
+              if (foods.statusCode == 200) {
+                Map data = json.decode(foods.body);
+                final foodItem = data["parsed"][0]["food"];
+                screenImage = Image.network(foodItem["image"]);
+                setState(() {});
+              }
               debugPrint('You just selected $selection');
             }, optionsBuilder: (TextEditingValue textEditingValue) {
               String input = textEditingValue.text;
@@ -166,9 +169,6 @@ class _SearchBarPopUpPageState extends State<SearchBarPopUpPage> {
               }
               return getSuggestions(input);
             }),
-
-
-
             Expanded(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -203,12 +203,14 @@ class _SearchBarPopUpPageState extends State<SearchBarPopUpPage> {
                 //Asynchronous button press to query database with given code
                 //Grab current text controller state.
 
-                final foods = await http.get(Uri.parse("https://api.edamam.com/api/food-database/v2/parser?app_id=07ca8641&app_key=f239759c5a8f2b695c852f20ea31f966&ingr=$itemName&nutrition-type=cooking"));
+                final foods = await http.get(Uri.parse(
+                    "https://api.edamam.com/api/food-database/v2/parser?app_id=07ca8641&app_key=f239759c5a8f2b695c852f20ea31f966&ingr=$itemName&nutrition-type=cooking"));
 
                 if (foods.statusCode == 200) {
                   Map data = json.decode(foods.body);
                   final foodItem = data["parsed"][0]["food"];
-                  ListItemHelper.addItem("Grocery List", foodItem["label"], foodItem["category"], foodItem["image"], "NA");
+                  ListItemHelper.addItem("Grocery List", foodItem["label"],
+                      foodItem["category"], foodItem["image"], File(''), "NA");
                 }
 
                 //Wait for database to return result.
@@ -226,7 +228,7 @@ class _SearchBarPopUpPageState extends State<SearchBarPopUpPage> {
                 style: TextStyle(fontSize: 20),
               ),
             )
-            
+
             /*
 
             TextField(
@@ -243,7 +245,6 @@ class _SearchBarPopUpPageState extends State<SearchBarPopUpPage> {
             ),
 
             */
-            
           ],
         ),
       ),
@@ -297,6 +298,7 @@ class _SearchBarPopUpPageState extends State<SearchBarPopUpPage> {
                   prod?.productName ?? '',
                   prod?.categories ?? '',
                   prod?.imageFrontSmallUrl ?? '',
+                  File(''),
                   expirationDateString);
               // Close the dialog
               Navigator.of(context).pop();
