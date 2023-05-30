@@ -9,6 +9,8 @@ import 'dart:ui';
 import 'package:http/http.dart' as http;
 import 'package:flutter_app/api_services.dart';
 
+import '../helpers/ListItemHelper.dart';
+import '../models/ListItem.dart';
 import 'RecipePage.dart';
 
 class Scene extends StatefulWidget {
@@ -18,6 +20,8 @@ class Scene extends StatefulWidget {
 class _SceneState extends State<Scene> {
 
   Map<String, dynamic> _allRecipes = {};
+  //List<Map<String, dynamic>> recipeBasedOnGroceries = [];
+
   @override
   void initState() {
     super.initState();
@@ -43,7 +47,6 @@ Future<Map<String, dynamic>> _fetchAllRecipes() async {
   };
 }
 
-
   Widget build  (BuildContext context)      {
     double baseWidth = 834;
     double fem = MediaQuery
@@ -55,7 +58,7 @@ Future<Map<String, dynamic>> _fetchAllRecipes() async {
     return Scaffold(
 
       body: FutureBuilder(
-          future:  _fetchAllRecipes(),
+          future:  _fetchAllRecipes() /*_fetchRecipes()*/,
           builder: (BuildContext context, AsyncSnapshot<Map<String, dynamic>> snapshot){
             if(snapshot.connectionState == ConnectionState.waiting){
               return Center(child: CircularProgressIndicator());
@@ -725,7 +728,7 @@ Future<Map<String, dynamic>> _fetchAllRecipes() async {
                                                         children: [
                                                           TextSpan(
                                                             text:
-                                                            /*'Turkey Club Sandwich\n\n\n'*/lunch['title']+'\n\n',
+                                                            lunch['title']+'\n\n',
                                                           ),
                                                           TextSpan(
                                                             text: /*'\nPrep time: 10 mins\n'*/ 'Total prep time:' + lunch['preperationMinutes'].toString() + 'mins',
