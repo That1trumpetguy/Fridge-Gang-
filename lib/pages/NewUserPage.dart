@@ -125,6 +125,7 @@ class NewUserScreen extends StatelessWidget {
                       CustomTextFormField(
                         focusNode: FocusNode(),
                         controller: passwordinputController,
+                        isObscureText: true,
                         margin: getMargin(
                           left: 5,
                           top: 12,
