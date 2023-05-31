@@ -77,15 +77,13 @@ class _BarScannerState extends State<BarScanner> {
     var screenSize = MediaQuery.of(context).size;
     var largeScreen = screenSize.width > 480 ? true : false;
 
-    final ButtonStyle style =
-        ElevatedButton.styleFrom(backgroundColor: ColorConstant.teal300);
     return MaterialApp(
         home: Scaffold(
             appBar: AppBar(
               leading: BackButton(
                 onPressed: () => Navigator.of(context).pop(),
               ),
-              title: Text('Barcode Scan Util',
+              title: Text('Barcode Scanner',
                   style: TextStyle(
                     fontSize: (largeScreen ? 30 : 30),
                   )),
