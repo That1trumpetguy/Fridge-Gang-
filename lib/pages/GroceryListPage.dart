@@ -1,4 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
+//import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/helpers/ListItemHelper.dart';
@@ -232,6 +232,10 @@ class _GroceryListPageState extends State<GroceryListPage> {
                     ),
                     onPressed: () {
                       selection = value!;
+                      DateTime expirationDate =
+                          DateTime.now().add(Duration(days: 7));
+                      String expirationDateString =
+                          expirationDate.toString().split(' ')[0];
 
                       ListItemHelper.addItem(
                         selection!,
@@ -239,7 +243,7 @@ class _GroceryListPageState extends State<GroceryListPage> {
                         '',
                         '',
                         File(''),
-                        '',
+                        expirationDateString,
                       );
                       ListItemHelper.deleteItem(
                         'Grocery List',

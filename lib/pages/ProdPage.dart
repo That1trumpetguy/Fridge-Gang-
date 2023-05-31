@@ -38,12 +38,37 @@ class ProdPage extends StatelessWidget {
             SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
+                //added autodate for items scanned into the system
+                DateTime currentDate = DateTime.now();
+                DateTime expDate = currentDate.add(Duration(days: 7));
+                String formedDate =
+                    "${expDate.year}-${expDate.month.toString().padLeft(2, '0')}-${expDate.day.toString().padLeft(2, '0')}";
+
                 ListItem newItem = ListItem(
                   itemName: product?.productName ?? '',
                   imageName: product?.imageFrontSmallUrl ?? '',
-                  expirationDate: '2023-05-30',
+                  expirationDate: formedDate,
                 );
                 onAddToList(newItem);
+
+                // Display pop-up after adding the item to a list
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text('Item Added'),
+                      content: Text('The item has been added to the list.'),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Text('OK'),
+                        ),
+                      ],
+                    );
+                  },
+                );
               },
               child: Text('Add to List'),
             ),

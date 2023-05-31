@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/helpers/ListItemHelper.dart';
@@ -9,7 +7,6 @@ import '../models/Alert.dart';
 import '../style.dart';
 
 class CustomListPage extends StatefulWidget {
-
   const CustomListPage({Key? key}) : super(key: key);
 
   @override
@@ -43,7 +40,7 @@ class _CustomListPageState extends State<CustomListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset : false,
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         leading: IconButton(
@@ -56,185 +53,164 @@ class _CustomListPageState extends State<CustomListPage> {
           ),
         ),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-          children:  [
-            const Padding(
-              padding: EdgeInsets.only(bottom: 15.0, left: 8.0),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text("Create a New Custom List", style: TextStyle(
-                  fontSize: 32,
-                ),
-                ),
+      body: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+        const Padding(
+          padding: EdgeInsets.only(bottom: 15.0, left: 8.0),
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              "Create a New Custom List",
+              style: TextStyle(
+                fontSize: 32,
               ),
             ),
-            TextField(
-              controller: _textController,
-              decoration: InputDecoration(
-                  hintText: "Enter the list name",
-                border: OutlineInputBorder(),
-                suffixIcon: IconButton(
+          ),
+        ),
+        TextField(
+          controller: _textController,
+          decoration: InputDecoration(
+            hintText: "Enter the list name",
+            border: OutlineInputBorder(),
+            suffixIcon: IconButton(
+              onPressed: () {
+                _textController.clear();
+              },
+              icon: const Icon(Icons.clear),
+            ),
+          ),
+        ),
+        const Padding(
+          padding: EdgeInsets.only(top: 15.0, left: 8),
+          child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "List Type: ",
+                style: TextStyle(fontSize: 24),
+              )),
+        ),
+        RadioListTile(
+          title: Text('Grocery List'),
+          value: "Grocery List",
+          groupValue: group,
+          onChanged: (value) {
+            checkRadio(value as String);
+          },
+        ),
+        RadioListTile(
+          title: Text('Pantry List'),
+          value: "Pantry List",
+          groupValue: group,
+          onChanged: (value) {
+            checkRadio(value as String);
+          },
+        ),
+        RadioListTile(
+          title: Text('Fridge List'),
+          value: "Fridge List",
+          groupValue: group,
+          onChanged: (value) {
+            checkRadio(value as String);
+          },
+        ),
+        RadioListTile(
+          title: Text('Freezer List'),
+          value: "Freezer List",
+          groupValue: group,
+          onChanged: (value) {
+            checkRadio(value as String);
+          },
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Center(
+              child: OutlinedButton(
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                          ColorConstant.red300),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ))),
                   onPressed: () {
-                    _textController.clear();
+                    Navigator.of(context).pop();
                   },
-                  icon: const Icon(Icons.clear),
-                ),
-              ),
+                  child: Text(
+                    "Cancel",
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.left,
+                    style: AppStyle.txtRobotoBold20,
+                  )),
             ),
-            const Padding(
-              padding: EdgeInsets.only(top: 15.0, left: 8),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                  child: Text("List Type: ", style: TextStyle(fontSize: 24),)),
-            ),
-            RadioListTile(
-              title: Text('Grocery List'),
-              value: "Grocery List",
-              groupValue: group,
-              onChanged: (value) {
-                checkRadio(value as String);
-              },
-            ),
-            RadioListTile(
-              title: Text('Pantry List'),
-              value: "Pantry List",
-              groupValue: group,
-              onChanged: (value) {
-                checkRadio(value as String);
-              },
-            ),
-            RadioListTile(
-              title: Text('Fridge List'),
-              value: "Fridge List",
-              groupValue: group,
-              onChanged: (value) {
-                checkRadio(value as String);
-              },
-            ),
-            RadioListTile(
-              title: Text('Freezer List'),
-              value: "Freezer List",
-              groupValue: group,
-              onChanged: (value) {
-                checkRadio(value as String);
-              },
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Center(
-                  child: OutlinedButton(
-
-                      style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(
-                              ColorConstant.red300),
-                          shape:
-                          MaterialStateProperty.all<RoundedRectangleBorder>(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20.0),
-                              ))),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: Text(
-                        "Cancel",
-                        overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign.left,
-                        style: AppStyle.txtRobotoBold20,
-                      )),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 25.0),
-                  child: Center(
-                    child: OutlinedButton(
-                        style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(
-                                ColorConstant.teal300),
-                            shape:
+            Padding(
+              padding: const EdgeInsets.only(left: 25.0),
+              child: Center(
+                child: OutlinedButton(
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                            ColorConstant.teal300),
+                        shape:
                             MaterialStateProperty.all<RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20.0),
-                                ))),
-                        onPressed: () async {
+                          borderRadius: BorderRadius.circular(20.0),
+                        ))),
+                    onPressed: () async {
+                      //Set parameters.
+                      listName = _textController.text;
+                      listType = group;
 
-                          //Set parameters.
-                          listName = _textController.text;
-                          listType = group;
+                      if (listName.length >= 20) {
+                        showAlertDialog(context,
+                            "List name must not exceed 20 characters!");
+                      } else if (listName.isEmpty) {
+                        showAlertDialog(context, "Please enter a list name!");
+                      } else if (listType == '') {
+                        showAlertDialog(context, "Please select a List type!");
+                      } else if (await ListItemHelper.listAlreadyExists(
+                          listName)) {
+                        showAlertDialog(context,
+                            "List of this name already exists! Please enter a different list name.");
+                      } else {
+                        //Todo: Since Firebase requires a document upon collection creation,
+                        //force the user to scan an item into the newly created collection
+                        Navigator.of(context).pop();
+                        ListItemHelper.addNewList(listName, listType);
+                      }
 
-
-                          if (listName.length >= 20){
-                             showAlertDialog(context, "List name must not exceed 20 characters!");
-
-                            }
-                          /*
-                          if(await ListItemHelper.maxNumListsReached(maxNumLists)){
-                            showAlertDialog(context,
-                                "Maximum number of 10 lists has been reached! Please delete a list if you want to continue.");
-                          }
-                           */
-
-                          else if(listName.isEmpty){
-                            showAlertDialog(context, "Please enter a list name!");
-                          }
-
-                          else if(listType == ''){
-                            showAlertDialog(context, "Please select a List type!");
-                          }
-
-
-                          else if(await ListItemHelper.listAlreadyExists(listName)){
-                            showAlertDialog(
-                                context,
-                                "List of this name already exists! Please enter a different list name.");
-                          }
-
-
-                          else{
-                            //Todo: Since Firebase requires a document upon collection creation,
-                            //force the user to scan an item into the newly created collection
-                            Navigator.of(context).pop();
-                            ListItemHelper.addNewList(listName, listType);
-                          }
-
-
-                          _textController.clear();
-
-                          },
-                        child: Text(
-                          "Submit",
-                          overflow: TextOverflow.ellipsis,
-                          textAlign: TextAlign.left,
-                          style: AppStyle.txtRobotoBold20,
-                        )),
-                  ),
-                )
-              ],
+                      _textController.clear();
+                    },
+                    child: Text(
+                      "Submit",
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.left,
+                      style: AppStyle.txtRobotoBold20,
+                    )),
+              ),
             )
-          ]
-      ),
+          ],
+        )
+      ]),
     );
   }
-  static void showAlertDialog(BuildContext context, String content){
+
+  static void showAlertDialog(BuildContext context, String content) {
     var alert = AlertDialog(
       alignment: Alignment.center,
       title: const Text("Alert"),
       content: Text(content),
       actions: [
         TextButton(
-            onPressed: (){
+            onPressed: () {
               Navigator.of(context).pop();
             },
             child: const Text("ok")),
       ],
-
     );
 
     showDialog(
         context: context,
-        builder: (BuildContext context){
+        builder: (BuildContext context) {
           return alert;
-        }
-    );
+        });
   }
 }

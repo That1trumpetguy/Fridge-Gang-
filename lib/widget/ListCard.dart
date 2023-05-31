@@ -97,7 +97,6 @@ class _ListCardState extends State<ListCard> {
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -197,149 +196,92 @@ class _ListCardState extends State<ListCard> {
                       ),
                       SizedBox(height: 8),
                       TextField(
-                        decoration: InputDecoration(
-                          labelText: 'Enter new expiration date',
-                          errorText: errorMessage,
-                        ),
-                        controller: expirationDateController,
-                        textInputAction: TextInputAction.done,
+                          decoration: InputDecoration(
+                            labelText: 'Enter new expiration date',
+                            errorText: errorMessage,
+                          ),
+                          controller: expirationDateController,
+                          textInputAction: TextInputAction.done,
+                          onEditingComplete: () async {
+                            FocusScope.of(context).unfocus();
 
-                        onEditingComplete: () async {
-                          FocusScope.of(context).unfocus();
-
-                          final userInput = expirationDateController.text;
-                          setState(() {
-                            //widget.item.expirationDate = userInput;
-                            errorMessage = !dateRegex.hasMatch(userInput)
-                                ? 'Please Enter yyyy-mm-dd.'
-                                : null;
-                          });
-
-                          if(dateRegex.hasMatch(userInput)){
-                            final delimiter = userInput.split('-');
-                            final day = int.tryParse(delimiter[2]) ?? 0;
-                            print(day);
-                            final month = int.tryParse(delimiter[1]) ?? 0;
-                            print(month);
-
-                            if(month < 1 || month > 12 || day < 1 || day > 31){
-                              showDialog(context: context, builder: (BuildContext context){
-                                return AlertDialog(
-                                  title: Text('Invalid Date Format'),
-                                  content: Text('Please Enter A Valid Day (1-31) and Month (1-12) For ' + widget.item.itemName),
-                                  actions: <Widget>[
-                                    TextButton(onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                        child: Text('OK'))
-                                  ],
-                                );
-                              });
-                              errorMessage = 'Invalid Date';
-                            }else {
-                              setState(() async {
-                                widget.item.expirationDate = userInput;
-                                await ListItemHelper.updateExpiry(
-                                  /*'Grocery List'*/
-                                    ListItemHelper.currentList
-                                        .toString(),
-                                    widget.item.itemName,
-                                    userInput);
-                                print(ListItemHelper.currentList.toString());
-                                print(widget.item.itemName);
-                              });
-
-                              //this does not show for some reason
-                              Fluttertoast.showToast(
-                                msg: 'Expiration Date Updated',
-                                toastLength: Toast.LENGTH_SHORT,
-                                gravity: ToastGravity.BOTTOM,
-                              );
-                            }
-                            //widget.item.expirationDate = userInput;
-                          } else {
-                            showDialog(context: context, builder: (BuildContext context){
-                              return AlertDialog(
-                                title: Text('Invalid Date Format'),
-                                content: Text('Please Enter The Expiration Date As YYYY-MM-DD For ' + widget.item.itemName),
-                                actions: <Widget>[
-                                  TextButton(onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                      child: Text('OK'))
-                                ],
-                              );
+                            final userInput = expirationDateController.text;
+                            setState(() {
+                              //widget.item.expirationDate = userInput;
+                              errorMessage = !dateRegex.hasMatch(userInput)
+                                  ? 'Please Enter yyyy-mm-dd.'
+                                  : null;
                             });
-                          }
 
-                          /*await ListItemHelper.updateExpiry(
-                            /*'Grocery List'*/ ListItemHelper.currentList
-                              .toString(),
-                              widget.item.itemName,
-                              userInput);
-                          print(ListItemHelper.currentList.toString());
-                          print(widget.item.itemName);*/
-                        }
-                        ,
-                        /*onChanged: (value) async {
-                          setState(() {
-                            widget.item.expirationDate = value;
-                            errorMessage = !dateRegex.hasMatch(value)
-                                ? 'Please Enter yyyy-mm-dd.'
-                                : null;
-                          });
-                          await ListItemHelper.updateExpiry(
-                              /*'Grocery List'*/ ListItemHelper.currentList
-                                  .toString(),
-                              widget.item.itemName,
-                              value);
-                          print(ListItemHelper.currentList.toString());
-                          print(widget.item.itemName);
-                        },*/
-                      )
-                      /*
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                             Text(
-                                "Quantity:",
-                                style: TextStyle(fontSize: screenWidth * 0.03),
-                                textAlign: TextAlign.left
-                            ),
-                            Row(
-                              children: [
-                                counter !=0 ? IconButton(
-                                  icon: Icon(
-                                    Icons.remove,
-                                    color: Theme.of(context).primaryColor,
-                                  ), onPressed: () {
-                                  setState(() {
-                                    counter--;
+                            if (dateRegex.hasMatch(userInput)) {
+                              final delimiter = userInput.split('-');
+                              final day = int.tryParse(delimiter[2]) ?? 0;
+                              print(day);
+                              final month = int.tryParse(delimiter[1]) ?? 0;
+                              print(month);
+
+                              if (month < 1 ||
+                                  month > 12 ||
+                                  day < 1 ||
+                                  day > 31) {
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: Text('Invalid Date Format'),
+                                        content: Text(
+                                            'Please Enter A Valid Day (1-31) and Month (1-12) For ' +
+                                                widget.item.itemName),
+                                        actions: <Widget>[
+                                          TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: Text('OK'))
+                                        ],
+                                      );
+                                    });
+                                errorMessage = 'Invalid Date';
+                              } else {
+                                setState(() async {
+                                  widget.item.expirationDate = userInput;
+                                  await ListItemHelper.updateExpiry(
+                                      /*'Grocery List'*/
+                                      ListItemHelper.currentList.toString(),
+                                      widget.item.itemName,
+                                      userInput);
+                                  print(ListItemHelper.currentList.toString());
+                                  print(widget.item.itemName);
+                                });
+
+                                //this does not show for some reason
+                                Fluttertoast.showToast(
+                                  msg: 'Expiration Date Updated',
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.BOTTOM,
+                                );
+                              }
+                              //widget.item.expirationDate = userInput;
+                            } else {
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: Text('Invalid Date Format'),
+                                      content: Text(
+                                          'Please Enter The Expiration Date As YYYY-MM-DD For ' +
+                                              widget.item.itemName),
+                                      actions: <Widget>[
+                                        TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: Text('OK'))
+                                      ],
+                                    );
                                   });
-                                },
-                                ): Padding(
-                                  padding: EdgeInsets.only(left: screenWidth * 0.15),
-                                  child: Container(),
-                                ),
-                                Text(
-                                  "$counter",
-                                  style: TextStyle(fontSize: screenWidth * 0.03),
-                                ),
-                                IconButton(
-                                  icon: Icon(
-                                    Icons.add,
-                                    color: Theme.of(context).primaryColor,
-                                  ), onPressed: () {
-                                  setState(() {
-                                    counter++;
-                                  });
-                                },
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        */
+                            }
+                          })
                     ],
                   ),
                 ),

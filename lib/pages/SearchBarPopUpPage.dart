@@ -42,51 +42,6 @@ class _SearchBarPopUpPageState extends State<SearchBarPopUpPage> {
     }
   }
 
-  /*
-  @override
-  Widget build(BuildContext context) {
-    return Autocomplete<String>(
-      fieldViewBuilder: (
-        BuildContext context,
-        TextEditingController fieldTextEditingController,
-        FocusNode fieldFocusNode,
-        VoidCallback onFieldSubmitted,
-      ) {
-        return Container(
-            width: double.infinity,
-            height: 40,
-            color: Colors.white,
-            child: TextField(
-              controller: fieldTextEditingController,
-              focusNode: fieldFocusNode,
-              style: const TextStyle(fontSize: 16.0, color: Colors.black),
-              decoration: InputDecoration(
-                  hintText: 'Insert name of food',
-                  prefixIcon: Icon(Icons.search),
-                  suffixIcon: IconButton(
-                    icon: Icon(Icons.clear),
-                    onPressed: fieldTextEditingController.clear,
-                  ) //(Icons.clear)
-                  ),
-            ));
-      },
-
-      onSelected: (String selection) {
-        String selectedFood = selection;
-        debugPrint('You just selected $selection');
-      },
-
-      optionsBuilder: (TextEditingValue textEditingValue) {
-        String input = textEditingValue.text;
-        if (input == '') {
-          return const Iterable<String>.empty();
-        }
-        return getSuggestions(input);
-      }
-    );
-  }
-*/
-
   //Search bar popup to search for food items by name using autocomplete.
   //Todo: add more error handling!!!
 
@@ -175,14 +130,15 @@ class _SearchBarPopUpPageState extends State<SearchBarPopUpPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Padding(
-                      padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.008),
+                      padding: EdgeInsets.only(
+                          bottom: MediaQuery.of(context).size.height * 0.008),
                       child: Center(
                         child: GestureDetector(
                           child: screenImage,
                           behavior: HitTestBehavior.translucent,
                           onTap: () {
                             print(screenImage);
-                            showAlertDialog(context, result!);
+                            //showAlertDialog(context, result!);
                             _textController.clear();
                           },
                         ),
@@ -209,20 +165,30 @@ class _SearchBarPopUpPageState extends State<SearchBarPopUpPage> {
                     "https://api.edamam.com/api/food-database/v2/parser?app_id=07ca8641&app_key=f239759c5a8f2b695c852f20ea31f966&ingr=$itemName&nutrition-type=cooking"));
 
                 if (foods.statusCode == 200) {
+                  DateTime expirationDate =
+                      DateTime.now().add(Duration(days: 7));
+                  String expirationDateString =
+                      expirationDate.toString().split(' ')[0];
+
                   Map data = json.decode(foods.body);
                   final foodItem = data["parsed"][0]["food"];
-                  ListItemHelper.addItem("Grocery List", foodItem["label"],
-                      foodItem["category"], foodItem["image"], File(''), "NA");
+                  ListItemHelper.addItem(
+                      "Grocery List",
+                      foodItem["label"],
+                      foodItem["category"],
+                      foodItem["image"],
+                      File(''),
+                      expirationDateString);
                 }
 
                 //Wait for database to return result.
-                Product? res = await getProduct(itemName);
+                //Product? res = await getProduct(itemName);
 
                 //Reset the current state with item name and picture.
-                sleep(Duration(seconds: 1));
-                setState(() {
-                  result = res;
-                });
+                //sleep(Duration(seconds: 1));
+                //setState(() {
+                //  result = res;
+                //});
               },
               color: Colors.blue,
               child: const Text(
@@ -230,29 +196,13 @@ class _SearchBarPopUpPageState extends State<SearchBarPopUpPage> {
                 style: TextStyle(fontSize: 20),
               ),
             )
-
-            /*
-
-            TextField(
-              controller: _textController,
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: 'Search for an Item',
-                  suffixIcon: IconButton(
-                    onPressed: () {
-                      _textController.clear();
-                    },
-                    icon: const Icon(Icons.clear),
-                  )),
-            ),
-
-            */
           ],
         ),
       ),
     );
   }
 
+/*
   Future<Product?> getProduct(String barcode) async {
     //var barcode = '0048151623426';
 
@@ -323,4 +273,5 @@ class _SearchBarPopUpPageState extends State<SearchBarPopUpPage> {
       },
     );
   }
+}*/
 }
