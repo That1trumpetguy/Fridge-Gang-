@@ -241,14 +241,6 @@ class ListItemHelper {
       "name": listName
     };
 
-    //Dummy food item.
-    final foodItem = <String, dynamic>{
-      "name": " ",
-      "food type": " ",
-      "expiration date": " ",
-      "image": " "
-    };
-
     //Sets the flag based on list type.
     switch (listType) {
       case "Grocery List":
@@ -282,20 +274,6 @@ class ListItemHelper {
         .collection('Lists')
         .doc(listName)
         .set(newList);
-    db
-        .collection("users")
-        .doc(FirebaseAuth.instance.currentUser?.uid)
-        .collection(listName)
-        .doc(" ")
-        .set(foodItem);
-
-    final ref2 = db
-        .collection("users")
-        .doc(FirebaseAuth.instance.currentUser?.uid)
-        .collection(listName)
-        .doc(" ");
-    ref2.delete().then((doc) => print("Document deleted"),
-        onError: (e) => print("Error updating document $e"));
   }
 
   //updating expiration dates
@@ -431,6 +409,12 @@ class ListItemHelper {
     ref.doc("Pantry List").set(pList);
     ref.doc("Grocery List").set(gList);
     ref.doc("Expiration List").set(eList);
+
+    var ref2 = FirebaseFirestore.instance
+        .collection("users")
+        .doc(FirebaseAuth.instance.currentUser?.uid);
+
+    ref2.set({"lastViewed": "Grocery List"});
   }
 }
 /*
