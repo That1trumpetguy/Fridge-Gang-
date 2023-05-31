@@ -93,13 +93,19 @@ class _SceneState extends State<Scene2> {
 
 
   Future<Map<String, dynamic>> _fetchAllRecipes() async {
-    final breakfast = await fetchBreakfastRecipe();
-    final lunch = await fetchLunchRecipes();
-    final dinner = await fetchDinnerRecipes();
-    return{
-      'breakfast':breakfast,
-      'lunch':lunch,
-      'dinner':dinner,
+    final breakfastFuture = fetchBreakfastRecipe();
+    final lunchFuture = fetchLunchRecipes();
+    final dinnerFuture = fetchDinnerRecipes();
+    final List<dynamic> results = await Future.wait([
+      breakfastFuture,
+      lunchFuture,
+      dinnerFuture,
+    ]);
+
+    return {
+      'breakfast': results[0],
+      'lunch': results[1],
+      'dinner': results[2],
     };
   }
 
