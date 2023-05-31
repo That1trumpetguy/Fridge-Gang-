@@ -129,7 +129,23 @@ class _ListCardState extends State<ListCard> {
               widget.foodList.removeAt(widget.index);
 
               widget.callback(widget.foodList);
-
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Text("Item Deleted"),
+                    content: Text("The item has been deleted from the specified list."),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Text("OK"),
+                      ),
+                    ],
+                  );
+                },
+              );
               //Do action here //todo: add action to remove from list.
             },
             //borderRadius: BorderRadius.circular(20),
@@ -404,6 +420,23 @@ class _ListCardState extends State<ListCard> {
 
                         selection = null;
                         Navigator.of(context).pop();
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text("Item Added"),
+                              content: Text("The item has been added to the specified list."),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text("OK"),
+                                ),
+                              ],
+                            );
+                          },
+                        );
                       },
                       child: Text(
                         "Confirm",

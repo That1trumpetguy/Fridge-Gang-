@@ -257,9 +257,3 @@ class _ManEnterState extends State<ManEnter> {
     );
   }
 }
-
-void main() {
-  runApp(MaterialApp(
-    home: ManEnter(),
-  ));
-}

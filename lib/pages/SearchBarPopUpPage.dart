@@ -189,6 +189,23 @@ class _SearchBarPopUpPageState extends State<SearchBarPopUpPage> {
                       expirationDateString);
                 }
 
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text("Item Added"),
+                      content: Text("The item has been added to the specified list."),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Text("OK"),
+                        ),
+                      ],
+                    );
+                  },
+                );
                 //Wait for database to return result.
                 //Product? res = await getProduct(itemName);
 
