@@ -12,6 +12,8 @@ import 'package:flutter_app/style.dart';
 import 'package:flutter_app/utils.dart';
 import 'dart:ui';
 import 'package:google_fonts/google_fonts.dart';
+
+import '../helpers/CustomColors.dart';
 import '../api_services.dart';
 import '../helpers/ListItemHelper.dart';
 import '../models/ListItem.dart';
@@ -124,7 +126,7 @@ class _SceneState extends State<Scene2> {
                 width: screenWidth *0.25,
                 height: screenHeight * 0.1,
                 decoration: BoxDecoration(
-                  color: const Color(0xffdbdfd1),
+                  color: CustomColors.primary,
                   borderRadius: BorderRadius.circular(10.0),
                 ),
                 child: GestureDetector(
@@ -160,7 +162,7 @@ class _SceneState extends State<Scene2> {
                 width: screenWidth / 3,
                 height: screenHeight * 0.1,
                 decoration: BoxDecoration(
-                  color: const Color(0xffdbdfd1),
+                  color: CustomColors.primary,
                   borderRadius: BorderRadius.circular(10.0),
                 ),
                 child: GestureDetector(
@@ -276,7 +278,7 @@ class _SceneState extends State<Scene2> {
                       padding: const EdgeInsets.only(bottom: 8.0),
                       child: Container(
                         alignment: Alignment.center,
-                        color: Color(0xffdbdfd1),
+                        color: CustomColors.primary,
                         height: screenHeight * 0.035,
                         width: screenWidth * 0.8,
 
@@ -473,7 +475,7 @@ class _SceneState extends State<Scene2> {
                           child: Container(
                             height: screenHeight * (0.65 / 3),
                             decoration: BoxDecoration(
-                              color: const Color(0xffdbdfd1),
+                              color: CustomColors.primary,
                               borderRadius: BorderRadius.circular(12.0),
                             ),
                             child: Column(
@@ -566,7 +568,7 @@ class _SceneState extends State<Scene2> {
                           child: Container(
                             height: screenHeight * (0.65 / 3),
                             decoration: BoxDecoration(
-                              color: const Color(0xffdbdfd1),
+                              color: CustomColors.primary,
                               borderRadius: BorderRadius.circular(12.0),
                             ),
                             child: Column(
@@ -658,7 +660,7 @@ class _SceneState extends State<Scene2> {
                           child: Container(
                             height: screenHeight * (0.65 / 3),
                             decoration: BoxDecoration(
-                              color: const Color(0xffdbdfd1),
+                              color: CustomColors.primary,
                               borderRadius: BorderRadius.circular(12.0),
                             ),
                             child: Column(

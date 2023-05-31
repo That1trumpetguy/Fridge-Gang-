@@ -85,12 +85,9 @@ class ListItemHelper {
         //Image was uploaded
         imageName = imagePath;
       }
-    } else if (imgURL != null) {
-      //Use provided image
-      imageName = imgURL;
     }
 
-    final foodItem = <String, dynamic>{
+    final foodItem = <String, dynamic> {
       "name": foodName,
       "food type": foodType,
       "expiration date": expDate,

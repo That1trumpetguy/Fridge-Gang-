@@ -4,6 +4,7 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter/material.dart';
 
+import '../helpers/CustomColors.dart';
 import '../models/ListItem.dart';
 import 'ListCard.dart';
 
@@ -70,7 +71,7 @@ class _ExpiryListCardState extends State<ExpiryListCard> {
               child: Container(
                 decoration: BoxDecoration(
                   //borderRadius: BorderRadius.circular(20),
-                    color: Color(0xffdbdfd1),
+                    color: CustomColors.primary,
                     border: Border.all(color: Colors.grey)
                 ),
               ),

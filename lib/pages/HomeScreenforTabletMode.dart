@@ -9,6 +9,7 @@ import 'dart:ui';
 import 'package:http/http.dart' as http;
 import 'package:flutter_app/api_services.dart';
 
+import '../helpers/CustomColors.dart';
 import '../helpers/ListItemHelper.dart';
 import '../models/ListItem.dart';
 import 'RecipePage.dart';
@@ -571,7 +572,7 @@ Future<Map<String, dynamic>> _fetchAllRecipes() async {
                                                       decoration: BoxDecoration(
                                                         borderRadius:
                                                         BorderRadius.circular(25 * fem),
-                                                        color: const Color(0xffdbdfd1),
+                                                        color: CustomColors.primary,
                                                       ),
                                                     ),
                                                   ),
@@ -677,7 +678,7 @@ Future<Map<String, dynamic>> _fetchAllRecipes() async {
                                                   0 * fem, 0 * fem, 29 * fem, 0 * fem),
                                               width: double.infinity,
                                               decoration: BoxDecoration(
-                                                color: const Color(0xffdbdfd1),
+                                                color: CustomColors.primary,
                                                 borderRadius:
                                                 BorderRadius.circular(25 * fem),
                                               ),
@@ -785,7 +786,7 @@ Future<Map<String, dynamic>> _fetchAllRecipes() async {
                                                             borderRadius:
                                                             BorderRadius.circular(
                                                                 25 * fem),
-                                                            color: const Color(0xffdbdfd1),
+                                                            color: CustomColors.primary,
                                                           ),
                                                         ),
                                                       ),
@@ -966,7 +967,7 @@ Future<Map<String, dynamic>> _fetchAllRecipes() async {
                                   width: 206 * fem,
                                   height: double.infinity,
                                   decoration: BoxDecoration(
-                                    color: const Color(0xffdbdfd1),
+                                    color: CustomColors.primary,
                                     borderRadius: BorderRadius.circular(25 * fem),
                                   ),
                                   child: Align(
@@ -1005,7 +1006,7 @@ Future<Map<String, dynamic>> _fetchAllRecipes() async {
                                   width: 206 * fem,
                                   height: double.infinity,
                                   decoration: BoxDecoration(
-                                    color: const Color(0xffdbdfd1),
+                                    color: CustomColors.primary,
                                     borderRadius: BorderRadius.circular(25 * fem),
                                   ),
                                   child: Center(

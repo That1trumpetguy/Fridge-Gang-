@@ -9,6 +9,7 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 
+import '../helpers/CustomColors.dart';
 import '../helpers/ListItemHelper.dart';
 import '../models/ListItem.dart';
 import '../models/ListType.dart';
@@ -147,7 +148,7 @@ class _ListCardState extends State<ListCard> {
               child: Container(
                 decoration: BoxDecoration(
                     //borderRadius: BorderRadius.circular(20),
-                    color: Color(0xffdbdfd1),
+                    color: CustomColors.primary,
                     border: Border.all(color: Colors.grey)),
               ),
             ),
