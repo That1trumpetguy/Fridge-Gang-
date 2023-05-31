@@ -182,7 +182,8 @@ class _ManEnterState extends State<ManEnter> {
                   );
                   if (pickedDate != null) {
                     setState(() {
-                      _expirationDate = pickedDate;
+                      _expirationDate = DateTime(
+                          pickedDate.year, pickedDate.month, pickedDate.day);
                     });
                   }
                 },
