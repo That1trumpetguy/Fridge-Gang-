@@ -470,16 +470,8 @@ class _SceneState extends State<PhoneScene> {
                                   ),
                                   child: Column(
                                     children: [
-                                      Text(
-                                        'Breakfast',
-                                        textAlign: TextAlign.left,
-                                        style: SafeGoogleFont(
-                                          'Inter',
-                                          fontSize: screenWidth * 0.05,
-                                          fontWeight: FontWeight.w600,
-                                          color: const Color(0xff000000),
-                                        ),
-                                      ),
+                                      Padding( padding: EdgeInsets.all(8.0)),
+                                      
                                       Container(
                                         width: screenWidth,
                                         height: screenHeight * 0.25,
@@ -587,16 +579,7 @@ class _SceneState extends State<PhoneScene> {
                                   ),
                                   child: Column(
                                     children: [
-                                      Text(
-                                        'Lunch',
-                                        textAlign: TextAlign.left,
-                                        style: SafeGoogleFont(
-                                          'Inter',
-                                          fontSize: screenWidth * 0.05,
-                                          fontWeight: FontWeight.w600,
-                                          color: const Color(0xff000000),
-                                        ),
-                                      ),
+                                      Padding( padding: EdgeInsets.all(8.0)),
                                       Container(
                                         width: screenWidth,
                                         height: screenHeight * 0.25,
@@ -703,16 +686,7 @@ class _SceneState extends State<PhoneScene> {
                                   ),
                                   child: Column(
                                     children: [
-                                      Text(
-                                        'Dinner',
-                                        textAlign: TextAlign.left,
-                                        style: SafeGoogleFont(
-                                          'Inter',
-                                          fontSize: screenWidth * 0.05,
-                                          fontWeight: FontWeight.w600,
-                                          color: const Color(0xff000000),
-                                        ),
-                                      ),
+                                      Padding( padding: EdgeInsets.all(8.0)),
                                       Container(
                                         width: screenWidth,
                                         height: screenHeight * 0.25,
