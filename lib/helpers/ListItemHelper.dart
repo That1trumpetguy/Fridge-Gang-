@@ -74,7 +74,11 @@ class ListItemHelper {
   static void addItem(String listName, String foodName, String foodType,
       String imgURL, File image, String expDate) async {
     String imageName = '';
-    if (image != null) {
+
+    if (imgURL != null) {
+      //Use provided image
+      imageName = imgURL;
+    } else if (image != null) {
       //Upload the image to the Firebase
       String? imagePath = await uploadImage(image);
       if (imagePath != null) {

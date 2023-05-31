@@ -448,7 +448,7 @@ class _ListCardState extends State<ListCard> {
                           selection!,
                           widget.foodList[index].itemName,
                           '',
-                          imagePath,
+                          widget.foodList[index].imageName,
                           //argument here for file
                           File(''),
                           //argument for expiration date
