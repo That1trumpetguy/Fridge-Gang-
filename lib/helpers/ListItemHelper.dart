@@ -12,6 +12,31 @@ import '../models/ListType.dart';
 class ListItemHelper {
   static String? currentList;
 
+  static Future<String> getLastViewed() async {
+    var ref = FirebaseFirestore.instance
+        .collection("users")
+        .doc(FirebaseAuth.instance.currentUser?.uid);
+
+    String last = "";
+
+    await ref.get().then(
+      (querySnapshot) {
+        var data = querySnapshot.data();
+        last = data!["lastViewed"].toString();
+      }
+    );
+
+    return last;
+  }
+
+  static void setLastViewed(String list) async {
+    var ref = FirebaseFirestore.instance
+        .collection("users")
+        .doc(FirebaseAuth.instance.currentUser?.uid);
+
+    ref.update({"lastViewed": list});
+  }
+
   //Derives a list of grocery items from database. This is static for now....
   static Future<List<ListItem>> getGroceryListItems() async {
     var data = await Future.wait([getList("Grocery List")]);

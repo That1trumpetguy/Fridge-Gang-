@@ -130,6 +130,7 @@ class _GroceryListPageState extends State<GroceryListPage> {
           child: FloatingActionButton(
               child: new Icon(Icons.add),
               onPressed: () {
+                ListItemHelper.setLastViewed("Grocery List");
                 Navigator.of(context).push(MaterialPageRoute(
                   builder: (BuildContext context) => SearchBarPopUpPage(),
                 ));

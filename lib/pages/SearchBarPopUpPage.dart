@@ -11,6 +11,7 @@ import 'package:openfoodfacts/openfoodfacts.dart';
 
 class SearchBarPopUpPage extends StatefulWidget {
   const SearchBarPopUpPage({Key? key}) : super(key: key);
+  
 
   @override
   State<SearchBarPopUpPage> createState() => _SearchBarPopUpPageState();
@@ -20,7 +21,8 @@ class _SearchBarPopUpPageState extends State<SearchBarPopUpPage> {
   //Keeps track of what's happening in the text field.
   final _textController = TextEditingController();
   Product? result;
-
+  
+  String currentList = "Grocery List";
   //UserInput
   String itemName = '';
   var screenImage = Image.network(
@@ -42,11 +44,16 @@ class _SearchBarPopUpPageState extends State<SearchBarPopUpPage> {
     }
   }
 
+  Future<void> updateCurrentList() async {
+    currentList = await ListItemHelper.getLastViewed();
+  }
+
   //Search bar popup to search for food items by name using autocomplete.
   //Todo: add more error handling!!!
 
   @override
   Widget build(BuildContext context) {
+    updateCurrentList();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -171,9 +178,10 @@ class _SearchBarPopUpPageState extends State<SearchBarPopUpPage> {
                       expirationDate.toString().split(' ')[0];
 
                   Map data = json.decode(foods.body);
+                  
                   final foodItem = data["parsed"][0]["food"];
                   ListItemHelper.addItem(
-                      "Grocery List",
+                      currentList,
                       foodItem["label"],
                       foodItem["category"],
                       foodItem["image"],
@@ -191,8 +199,8 @@ class _SearchBarPopUpPageState extends State<SearchBarPopUpPage> {
                 //});
               },
               color: Colors.blue,
-              child: const Text(
-                'Add to Grocery List',
+              child: Text(
+                "Add to List",
                 style: TextStyle(fontSize: 20),
               ),
             )
@@ -201,77 +209,4 @@ class _SearchBarPopUpPageState extends State<SearchBarPopUpPage> {
       ),
     );
   }
-
-/*
-  Future<Product?> getProduct(String barcode) async {
-    //var barcode = '0048151623426';
-
-    final ProductQueryConfiguration configuration = ProductQueryConfiguration(
-      barcode,
-      language: OpenFoodFactsLanguage.ENGLISH,
-      fields: [ProductField.ALL],
-      version: ProductQueryVersion.v3,
-    );
-    final ProductResultV3 result =
-        await OpenFoodAPIClient.getProductV3(configuration);
-
-    if (result.status == ProductResultV3.statusSuccess &&
-        result.product != null) {
-      return result.product;
-    } else {
-      throw Exception('product not found, please insert data for $barcode');
-    }
-  }
-
-  //Alert dialog for adding an item to a grocery list.
-  showAlertDialog(BuildContext context, Product prod) {
-    // Create AlertDialog
-    AlertDialog alert = AlertDialog(
-      title: const Text("Please confirm"),
-      content:
-          const Text("Would you like to add this item to your grocery list?"),
-      actions: [
-        // The "Yes" button
-        TextButton(
-            onPressed: () {
-              //Todo: add item to list.
-              //Create new List item object.
-              DateTime expirationDate = DateTime.now().add(Duration(days: 7));
-              String expirationDateString =
-                  expirationDate.toString().split(' ')[0];
-              //formatting to get rid of 24hour clock
-
-              ListItem newItem = ListItem(
-                  itemName: prod?.productName ?? '',
-                  imageName: prod?.imageFrontSmallUrl ?? '',
-                  expirationDate: expirationDateString);
-              ListItemHelper.addItem(
-                  'Grocery List',
-                  prod?.productName ?? '',
-                  prod?.categories ?? '',
-                  prod?.imageFrontSmallUrl ?? '',
-                  File(''),
-                  expirationDateString);
-              // Close the dialog
-              Navigator.of(context).pop();
-            },
-            child: const Text('Yes')),
-        TextButton(
-            onPressed: () {
-              // Close the dialog
-              Navigator.of(context).pop();
-            },
-            child: const Text('No'))
-      ],
-    );
-
-    // show the dialog
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-  }
-}*/
 }

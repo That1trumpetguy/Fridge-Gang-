@@ -132,6 +132,7 @@ class _ListPageState extends State<ListPage> {
           child: FloatingActionButton(
               child: new Icon(Icons.add),
               onPressed: () {
+                ListItemHelper.setLastViewed(widget.listName);
                 Navigator.of(context).push(MaterialPageRoute(
                   builder: (BuildContext context) => SearchBarPopUpPage(),
                 ));

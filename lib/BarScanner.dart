@@ -22,6 +22,7 @@ class BarScanner extends StatefulWidget {
 
 class _BarScannerState extends State<BarScanner> {
   String CodeScan = 'None';
+  
 
   @override
   void initState() {
@@ -117,9 +118,16 @@ class _BarScannerState extends State<BarScanner> {
 class SearchMe {
   final String barcode;
 
+  String currentList = "Fridge List";
+
   SearchMe({required this.barcode});
 
+  Future<void> updateCurrentList() async {
+    currentList = await ListItemHelper.getLastViewed();
+  }
+
   Future<Product?> getProduct(String barcode) async {
+    updateCurrentList();
     final ProductQueryConfiguration configuration = ProductQueryConfiguration(
       barcode,
       language: OpenFoodFactsLanguage.ENGLISH,
@@ -139,6 +147,7 @@ class SearchMe {
   }
 
   void navigateToProductDetails(BuildContext context, Product? product) {
+    
     if (product != null) {
       Navigator.push(
         context,
@@ -148,7 +157,7 @@ class SearchMe {
             onAddToList: (ListItem newItem) {
               // Call the method to add the item to the list
               ListItemHelper.addItem(
-                'Fridge List',
+                currentList,
                 newItem.itemName,
                 '', //newItem.categories, somehow there is an error here, it does not want to accept foodType or categories
                 newItem.imageName,
