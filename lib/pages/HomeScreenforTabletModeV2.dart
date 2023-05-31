@@ -126,7 +126,7 @@ class _SceneState extends State<Scene2> {
                 width: screenWidth *0.25,
                 height: screenHeight * 0.1,
                 decoration: BoxDecoration(
-                  color: CustomColors.primary,
+                  color: ColorConstant.teal300,
                   borderRadius: BorderRadius.circular(10.0),
                 ),
                 child: GestureDetector(
@@ -147,7 +147,7 @@ class _SceneState extends State<Scene2> {
                           'Inter',
                           fontSize: screenWidth * 0.05,
                           fontWeight: FontWeight.w600,
-                          color: const Color(0xff000000),
+                          color: ColorConstant.whiteA700,
                         ),
                       ),
                     ),
@@ -162,7 +162,7 @@ class _SceneState extends State<Scene2> {
                 width: screenWidth / 3,
                 height: screenHeight * 0.1,
                 decoration: BoxDecoration(
-                  color: CustomColors.primary,
+                  color: ColorConstant.teal300,
                   borderRadius: BorderRadius.circular(10.0),
                 ),
                 child: GestureDetector(
@@ -183,7 +183,7 @@ class _SceneState extends State<Scene2> {
                           'Inter',
                           fontSize: screenWidth * 0.05,
                           fontWeight: FontWeight.w600,
-                          color: const Color(0xff000000),
+                          color: ColorConstant.whiteA700,
                         ),
                       ),
                     ),
@@ -278,7 +278,7 @@ class _SceneState extends State<Scene2> {
                       padding: const EdgeInsets.only(bottom: 8.0),
                       child: Container(
                         alignment: Alignment.center,
-                        color: CustomColors.primary,
+                        color: ColorConstant.teal300,
                         height: screenHeight * 0.035,
                         width: screenWidth * 0.8,
 
@@ -288,12 +288,21 @@ class _SceneState extends State<Scene2> {
                           if (!snapshot.hasData){
                             Center(child: CircularProgressIndicator());
                           } else {
-                            return DropdownButton<String>( //Dropdown menu.
+                            return DropdownButton<String>(//Dropdown menu.
                               value: value,
+                              dropdownColor: ColorConstant.teal300,
                               items: _listNames.map((ListType value) {
                                 return DropdownMenuItem<String>(
                                   value: value.listName,
-                                  child: Text(value.listName, style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),),
+
+                                  child: Text(value.listName,
+                                    style: const TextStyle(
+                                        fontSize: 25,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white),
+
+                                  ),
+
                                 );
 
                               }).toList(),
@@ -475,7 +484,7 @@ class _SceneState extends State<Scene2> {
                           child: Container(
                             height: screenHeight * (0.65 / 3),
                             decoration: BoxDecoration(
-                              color: CustomColors.primary,
+                              color: ColorConstant.gray100,
                               borderRadius: BorderRadius.circular(12.0),
                             ),
                             child: Column(
@@ -568,7 +577,7 @@ class _SceneState extends State<Scene2> {
                           child: Container(
                             height: screenHeight * (0.65 / 3),
                             decoration: BoxDecoration(
-                              color: CustomColors.primary,
+                              color: ColorConstant.gray100,
                               borderRadius: BorderRadius.circular(12.0),
                             ),
                             child: Column(
@@ -660,7 +669,7 @@ class _SceneState extends State<Scene2> {
                           child: Container(
                             height: screenHeight * (0.65 / 3),
                             decoration: BoxDecoration(
-                              color: CustomColors.primary,
+                              color: ColorConstant.gray100,
                               borderRadius: BorderRadius.circular(12.0),
                             ),
                             child: Column(

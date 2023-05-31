@@ -7,10 +7,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import '../firebase_options.dart';
 import '../models/ListType.dart';
-
+import 'package:flutter_app/style.dart';
 //Class to derive lists (grocery, fridge, custom) from the database.
 class CustomColors {
-  static final primary = Color.fromARGB(255, 92, 193, 233);
+  static final primary = ColorConstant.teal300;
 
   // in case we want the old one
   //static final primary = const Color(0xffdbdfd1);
