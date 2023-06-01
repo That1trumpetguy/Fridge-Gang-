@@ -121,6 +121,8 @@ EdgeInsetsGeometry getMarginOrPadding({
 class ColorConstant {
   static Color teal300 = fromHex('#60ccaf');
 
+  static Color light100 = fromHex ("#C2f5f0");
+
   static Color blueGray100 = fromHex('#d9d9d9');
 
   static Color black900 = fromHex('#000000');
@@ -133,7 +135,7 @@ class ColorConstant {
 
   static Color whiteA700 = fromHex('#ffffff');
 
-  static Color gray100 = fromHex('#f2f2f2');
+  static Color gray100 = fromHex('#e7f1f');
 
   static Color red300 = fromHex('#E57373');
 

@@ -200,7 +200,9 @@ class _SearchBarPopUpPageState extends State<SearchBarPopUpPage> {
                           onPressed: () {
                             Navigator.of(context).pop();
                           },
+
                           child: Text("OK"),
+
                         ),
                       ],
                     );

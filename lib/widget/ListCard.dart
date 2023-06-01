@@ -203,6 +203,7 @@ class _ListCardState extends State<ListCard> {
                         style: TextStyle(fontSize: screenWidth * 0.03),
                         textAlign: TextAlign.left,
                         overflow: TextOverflow.visible,
+
                       ),
                       SizedBox(height: 8),
                       Text(
@@ -210,6 +211,7 @@ class _ListCardState extends State<ListCard> {
                         style: TextStyle(fontSize: screenWidth * 0.03),
                         textAlign: TextAlign.left,
                         overflow: TextOverflow.visible,
+
                       ),
                       SizedBox(height: 8),
                       TextField(

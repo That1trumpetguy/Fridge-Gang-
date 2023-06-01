@@ -10,7 +10,7 @@ import '../models/ListType.dart';
 import 'package:flutter_app/style.dart';
 //Class to derive lists (grocery, fridge, custom) from the database.
 class CustomColors {
-  static final primary = ColorConstant.teal300;
+  static final primary = ColorConstant.light100;
 
   // in case we want the old one
   //static final primary = const Color(0xffdbdfd1);

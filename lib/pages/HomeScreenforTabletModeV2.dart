@@ -126,7 +126,7 @@ class _SceneState extends State<Scene2> {
                 width: screenWidth *0.25,
                 height: screenHeight * 0.1,
                 decoration: BoxDecoration(
-                  color: ColorConstant.teal300,
+                  color: ColorConstant.light100,
                   borderRadius: BorderRadius.circular(10.0),
                 ),
                 child: GestureDetector(
@@ -147,7 +147,7 @@ class _SceneState extends State<Scene2> {
                           'Inter',
                           fontSize: screenWidth * 0.05,
                           fontWeight: FontWeight.w600,
-                          color: ColorConstant.whiteA700,
+                          color: ColorConstant.black900,
                         ),
                       ),
                     ),
@@ -162,7 +162,7 @@ class _SceneState extends State<Scene2> {
                 width: screenWidth / 3,
                 height: screenHeight * 0.1,
                 decoration: BoxDecoration(
-                  color: ColorConstant.teal300,
+                  color: ColorConstant.light100,
                   borderRadius: BorderRadius.circular(10.0),
                 ),
                 child: GestureDetector(
@@ -183,7 +183,8 @@ class _SceneState extends State<Scene2> {
                           'Inter',
                           fontSize: screenWidth * 0.05,
                           fontWeight: FontWeight.w600,
-                          color: ColorConstant.whiteA700,
+                          color: ColorConstant.black900
+                          ,
                         ),
                       ),
                     ),
@@ -278,7 +279,7 @@ class _SceneState extends State<Scene2> {
                       padding: const EdgeInsets.only(bottom: 8.0),
                       child: Container(
                         alignment: Alignment.center,
-                        color: ColorConstant.teal300,
+                        color: ColorConstant.light100,
                         height: screenHeight * 0.035,
                         width: screenWidth * 0.8,
 
@@ -290,7 +291,7 @@ class _SceneState extends State<Scene2> {
                           } else {
                             return DropdownButton<String>(//Dropdown menu.
                               value: value,
-                              dropdownColor: ColorConstant.teal300,
+                              dropdownColor: ColorConstant.light100,
                               items: _listNames.map((ListType value) {
                                 return DropdownMenuItem<String>(
                                   value: value.listName,
@@ -299,7 +300,7 @@ class _SceneState extends State<Scene2> {
                                     style: const TextStyle(
                                         fontSize: 25,
                                         fontWeight: FontWeight.bold,
-                                        color: Colors.white),
+                                        ),
 
                                   ),
 
